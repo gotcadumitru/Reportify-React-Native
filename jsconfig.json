@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es2015",
+    "allowSyntheticDefaultImports": true,
+    "checkJs": true,
+    "jsx": "react-native",
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["./*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}
