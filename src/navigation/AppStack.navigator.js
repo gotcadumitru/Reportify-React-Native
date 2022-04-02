@@ -14,8 +14,29 @@ export default function AppStackNavigator({navigation}) {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name={SCREENS.SPLASH}
-        component={Connection.Splash}
+        name={SCREENS.ONBOARDING}
+        component={Connection.Onboarding}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.SIGN_IN}
+        component={Connection.SignIn}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.SIGN_UP}
+        component={Connection.SignUp}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.RESET_PASSWORD}
+        component={Connection.ResetPassword}
         options={{
           headerShown: false,
         }}

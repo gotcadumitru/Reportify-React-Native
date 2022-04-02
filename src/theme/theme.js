@@ -3,14 +3,13 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const COLORS = {
-  MAIN: '#487c96',
-  GREENY: '#C6FFDD',
-  YELLY: '#FBD786',
-  REDDY: '#f7797d',
-  PURPLE: '#555273',
-  DANGER: '#df4759',
-  GRAY: '#c5c5c5',
-  SUCCESS: '#4BB543',
+  LIGHT_GRAY: '#faf9fa',
+  GRAY: '#b6bccb',
+  RED: '#da2236',
+  PURPLE: '#5e45d6',
+  LIGHT_PURPLE: '#8f87ae',
+  GREEN: '#03ac5a',
+  DARK: '#3f3839',
 };
 
 const SCREEN_SIZE = {

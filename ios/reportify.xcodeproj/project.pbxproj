@@ -15,6 +15,7 @@
 		7699B88040F8A987B510C191 /* libPods-reportify-reportifyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-reportify-reportifyTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		B70AA04627F7249A00349347 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B70AA04527F7249A00349347 /* BootSplash.storyboard */; };
+		B7AA6B3D27F897E70049AB52 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = B7AA6B3C27F897E70049AB52 /* Fonts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = reportify/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-reportify-reportifyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-reportify-reportifyTests.release.xcconfig"; path = "Target Support Files/Pods-reportify-reportifyTests/Pods-reportify-reportifyTests.release.xcconfig"; sourceTree = "<group>"; };
 		B70AA04527F7249A00349347 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = reportify/BootSplash.storyboard; sourceTree = "<group>"; };
+		B7AA6B3C27F897E70049AB52 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -88,6 +90,7 @@
 		13B07FAE1A68108700A75B9A /* reportify */ = {
 			isa = PBXGroup;
 			children = (
+				B7AA6B3C27F897E70049AB52 /* Fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -109,6 +112,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3677FEFB689D49D29B65DCDF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +135,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				3677FEFB689D49D29B65DCDF /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -248,6 +259,7 @@
 				B70AA04627F7249A00349347 /* BootSplash.storyboard in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				B7AA6B3D27F897E70049AB52 /* Fonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
