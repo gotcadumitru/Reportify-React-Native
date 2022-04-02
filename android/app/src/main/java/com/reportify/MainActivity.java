@@ -1,5 +1,5 @@
 package com.reportify;
-
+import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
@@ -41,5 +41,9 @@ public class MainActivity extends ReactActivity {
       RNBootSplash.init(getPlainActivity()); // <- initialize the splash screen
       super.loadApp(appKey);
     }
+    @Override
+protected void onCreate(Bundle savedInstanceState) {
+  super.onCreate(null);
+}
   }
 }
