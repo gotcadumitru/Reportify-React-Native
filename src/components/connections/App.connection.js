@@ -6,6 +6,7 @@ import SignIn from 'components/screens/Auth/SignIn/SignIn.screen.js';
 import SignUp from 'components/screens/Auth/SignUp/SignUp.screen.js';
 import ResetPassword from 'components/screens/Auth/ResetPassword/ResetPassword.screen.js';
 import Onboarding from 'components/screens/Auth/Onboarding/Onboarding.screen.js';
+import ProfileSetup from 'components/screens/Auth/ProfileSetup/ProfileSetup.screen.js';
 
 import {
   setter,
@@ -31,4 +32,5 @@ export default {
   SignUp: connect(mapStateToProps, mapDispatchToProps)(SignUp),
   ResetPassword: connect(mapStateToProps, mapDispatchToProps)(ResetPassword),
   Onboarding: connect(mapStateToProps, mapDispatchToProps)(Onboarding),
+  ProfileSetup: connect(mapStateToProps, mapDispatchToProps)(ProfileSetup),
 };

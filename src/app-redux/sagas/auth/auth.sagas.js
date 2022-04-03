@@ -7,13 +7,14 @@ import {
   FORGOT_PASSWORD,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
-
+import {replaceNavigation} from 'navigation/RootNavigation';
 import {
   loginAppRequest,
   registerRequest,
   forgotPasswordRequest,
 } from 'api/index';
 import {setStorageData} from 'helpers/storage';
+import {SCREENS} from 'constants/screens/screen.names';
 // * Generators
 
 function* signInGenerator({email, password}) {
@@ -23,9 +24,14 @@ function* signInGenerator({email, password}) {
     yield put(setter({isSignedIn: true}));
     axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;
   } catch (error) {
+    console.log(error.response);
     yield put(
       setter({
-        response: {isResponse: true, message: error.message, type: false},
+        response: {
+          isResponse: true,
+          message: error.response.data.message,
+          type: false,
+        },
       }),
     );
   }
@@ -34,11 +40,17 @@ function* signInGenerator({email, password}) {
 function* signUpGenerator({email, password}) {
   try {
     const res = yield call(registerRequest, {email, password});
-    console.log(res);
+    if (res) {
+      replaceNavigation(SCREENS.PROFILE_SETUP);
+    }
   } catch (error) {
     yield put(
       setter({
-        response: {isResponse: true, message: error.message, type: false},
+        response: {
+          isResponse: true,
+          message: error.response.data.message,
+          type: false,
+        },
       }),
     );
   }
@@ -47,18 +59,32 @@ function* signUpGenerator({email, password}) {
 function* forgotPasswordGenerator({email}) {
   try {
     const res = yield call(forgotPasswordRequest, {email});
+    if (res)
+      yield put(
+        setter({
+          response: {
+            isResponse: true,
+            message: 'An email was send to ' + email,
+            type: true,
+          },
+        }),
+      );
   } catch (error) {
     yield put(
       setter({
-        response: {isResponse: true, message: error.message, type: false},
+        response: {
+          isResponse: true,
+          message: error.data.message,
+          type: false,
+        },
       }),
     );
   }
 }
+
 // * Watcher
 export function* authActionWatcher() {
   yield takeEvery(SIGN_IN, signInGenerator);
-  yield takeEvery(SIGN_UP, signUpGenerator);
   yield takeEvery(SIGN_UP, signUpGenerator);
   yield takeEvery(FORGOT_PASSWORD, forgotPasswordGenerator);
 }

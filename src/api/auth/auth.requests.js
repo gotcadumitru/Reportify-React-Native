@@ -32,8 +32,8 @@ export const getProfileRequest = async () => {
   });
 };
 
-export const forgotPasswordRequest = async email => {
-  return axios.post(API_ROUTES.FORGOT_PASSWORD, {email}).then(response => {
+export const forgotPasswordRequest = async data => {
+  return axios.post(API_ROUTES.FORGOT_PASSWORD, {...data}).then(response => {
     return response.data;
   });
 };

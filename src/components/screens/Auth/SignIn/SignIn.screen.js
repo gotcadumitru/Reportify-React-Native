@@ -139,7 +139,7 @@ export default function SingIn(props) {
           <TouchableOpacity
             style={[styles.btn, styles.shadow]}
             onPress={handleSubmit}>
-            <Text style={styles.btnText}>Sign in</Text>
+            <Text style={styles.btnText}>Sign In</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.btnSecond, styles.shadow]}

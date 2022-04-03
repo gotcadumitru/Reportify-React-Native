@@ -84,6 +84,14 @@ export default function AppStackNavigator({navigation}) {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name={SCREENS.PROFILE_SETUP}
+            component={Connection.ProfileSetup}
+            options={{
+              headerShown: false,
+              animationTypeForReplace: !isSignedIn ? 'pop' : 'push',
+            }}
+          />
         </>
       )}
     </Stack.Navigator>

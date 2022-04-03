@@ -18,6 +18,6 @@ export const signUp = (email, password) => ({
 });
 
 export const resetPassword = email => ({
-  type: TYPES.SIGN_UP,
+  type: TYPES.FORGOT_PASSWORD,
   email,
 });

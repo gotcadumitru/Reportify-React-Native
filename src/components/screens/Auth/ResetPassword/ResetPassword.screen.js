@@ -9,9 +9,24 @@ import {
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {COLORS, SCREEN_SIZE} from 'theme/theme';
-
+import {useFormik} from 'formik';
+import {resetPassSchema} from './resetPass.schema';
 export default function ResetPassword(props) {
-  const {navigation} = props;
+  const {navigation, resetPassword} = props;
+  const {handleSubmit, handleChange, handleBlur, values, errors, touched} =
+    useFormik({
+      initialValues: {
+        name: '',
+        surname: '',
+        oras: '',
+        localitate: '',
+        files: [],
+      },
+      onSubmit: data => {
+        resetPassword(data.email);
+      },
+      validationSchema: resetPassSchema,
+    });
   return (
     <View style={{height: SCREEN_SIZE.HEIGHT}}>
       <View style={styles.container}>
@@ -32,11 +47,13 @@ export default function ResetPassword(props) {
               style={styles.textInput}
               placeholder="you@your-domain.com"
               placeholderTextColor="#000000"
-              //   value={this.state.email}
-              onChangeText={val => {
-                // this.setState({email: val});
-              }}
+              value={values.email}
+              onChangeText={handleChange('email')}
+              onBlur={handleBlur('email')}
             />
+            <Text style={styles.errors}>
+              {errors.email && touched.email && errors.email}
+            </Text>
           </View>
           <Text style={styles.authText}>
             Please follow the instructions received in the email!
@@ -46,7 +63,7 @@ export default function ResetPassword(props) {
         <View style={[styles.bntView, {flex: 2}]}>
           <TouchableOpacity
             style={[styles.btn, styles.shadow]}
-            onPress={() => {}}>
+            onPress={handleSubmit}>
             <Text style={styles.btnText}>Recover</Text>
           </TouchableOpacity>
         </View>
@@ -189,6 +206,12 @@ const styles = StyleSheet.create({
   forgotPassText: {
     color: COLORS.PURPLE,
     fontWeight: 'bold',
+    textAlign: 'right',
+  },
+  errors: {
+    color: COLORS.RED,
+    fontWeight: '600',
+    marginVertical: 5,
     textAlign: 'right',
   },
 });
