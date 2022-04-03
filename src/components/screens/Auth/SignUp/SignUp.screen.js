@@ -14,20 +14,26 @@ import Feather from 'react-native-vector-icons/Feather';
 import {SCREENS} from 'constants/screens/screen.names';
 import {useFormik} from 'formik';
 import {signUpSchema} from './SignUp.schema';
-
 export default function SingUp(props) {
-  const {navigation} = props;
+  const {navigation, signUp} = props;
   const [isSecurePassword, setIsSecurePassword] = React.useState(true);
   const [isSecureRepPassword, setIsSecureRepPassword] = React.useState(true);
 
   const {handleSubmit, handleChange, handleBlur, values, errors, touched} =
     useFormik({
-      initialValues: {email: '', password: '', repPassword: ''},
-      onSubmit: submitForm,
+      initialValues: {
+        email: 'dragoshuniq@gmail.com',
+        password: '123456',
+        repPassword: '123456',
+      },
+      onSubmit: signUpUser,
       validationSchema: signUpSchema,
     });
 
-  function submitForm() {}
+  function signUpUser(data) {
+    const {email, password} = data;
+    signUp(email, password);
+  }
 
   return (
     <View style={{height: SCREEN_SIZE.HEIGHT}}>
@@ -155,7 +161,10 @@ export default function SingUp(props) {
               marginTop: 15,
               alignItems: 'flex-end',
             }}>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(SCREENS.RESET_PASSWORD);
+              }}>
               <Text style={styles.forgotPassText}>Forgot password?</Text>
             </TouchableOpacity>
           </View>

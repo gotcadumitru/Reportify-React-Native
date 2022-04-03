@@ -14,29 +14,21 @@ import Feather from 'react-native-vector-icons/Feather';
 import {SCREENS} from 'constants/screens/screen.names';
 import {useFormik} from 'formik';
 import {signInSchema} from './SignIn.schema';
-import axios from 'axios';
+
 export default function SingIn(props) {
-  const {navigation} = props;
+  const {navigation, signIn} = props;
   const [isSecurePassword, setIsSecurePassword] = React.useState(true);
   const {handleSubmit, handleChange, handleBlur, values, errors, touched} =
     useFormik({
-      initialValues: {email: '', password: ''},
-      onSubmit: submitForm,
-      // validationSchema: signInSchema,
+      initialValues: {email: 'dumitru.gotca.dev@gmail.com', password: '111111'},
+      onSubmit: signInSubmit,
+      validationSchema: signInSchema,
     });
 
-  function submitForm() {
-    console.log('dada');
-    axios
-      .post('http://localhost:8080/api/auth/login', {
-        email: 'dumitru.gotca.dev@gmail.com',
-        password: '111111',
-      })
-      .then(function (response) {
-        console.log(response);
-      });
+  function signInSubmit(data) {
+    const {email, password} = data;
+    signIn(email, password);
   }
-
   return (
     <View style={{height: SCREEN_SIZE.HEIGHT}}>
       <View style={styles.container}>

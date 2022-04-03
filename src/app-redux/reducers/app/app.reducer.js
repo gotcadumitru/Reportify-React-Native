@@ -2,7 +2,8 @@
 import * as TYPES from 'app-redux/actions/app/app.actions-types';
 // * Default state
 const defaultState = {
-  default: 0,
+  isSignedIn: false,
+  response: null,
 };
 
 // * Reducer

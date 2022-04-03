@@ -3,6 +3,7 @@ import {Image} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import {SCREENS} from 'constants/screens/screen.names';
 import {COLORS} from 'theme/theme';
+import LottieView from 'lottie-react-native';
 
 export default function OnboardingScreen(props) {
   const {navigation} = props;
@@ -17,9 +18,11 @@ export default function OnboardingScreen(props) {
         {
           backgroundColor: '#ffffff',
           image: (
-            <Image
-              source={require('assets/logo.png')}
-              style={{width: 250, height: 250}}
+            <LottieView
+              style={{height: 250}}
+              autoPlay
+              loop
+              source={require('assets/lottie/woman.json')}
             />
           ),
           title: 'Welcome',
@@ -28,9 +31,11 @@ export default function OnboardingScreen(props) {
         {
           backgroundColor: COLORS.PURPLE,
           image: (
-            <Image
-              source={require('assets/logo.png')}
-              style={{width: 250, height: 250}}
+            <LottieView
+              style={{height: 250}}
+              autoPlay
+              loop
+              source={require('assets/lottie/paper.json')}
             />
           ),
           title: 'Report the issues',
@@ -39,9 +44,11 @@ export default function OnboardingScreen(props) {
         {
           backgroundColor: COLORS.GREEN,
           image: (
-            <Image
-              source={require('assets/logo.png')}
-              style={{width: 250, height: 250}}
+            <LottieView
+              style={{height: 250}}
+              autoPlay
+              loop
+              source={require('assets/lottie/question.json')}
             />
           ),
           title: 'Live perfect',

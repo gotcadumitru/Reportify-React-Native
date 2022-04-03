@@ -2,45 +2,90 @@ import React from 'react';
 import Connection from 'components/connections/App.connection';
 import {createStackNavigator} from '@react-navigation/stack';
 import Splash from 'components/screens/Splash/Splash.screen.js';
+import Home from 'components/screens/Home/Home.screen.js';
+
+import RNBootSplash from 'react-native-bootsplash';
+import axios from 'axios';
+import {getStorageData} from 'helpers/storage';
+import {getProfileRequest} from 'api/index';
+import {useDispatch, useSelector} from 'react-redux';
+import {setter} from 'app-redux/actions/app/app.actions';
 import {SCREENS} from 'constants/screens/screen.names';
 import {COLORS} from 'theme/theme';
 
 const Stack = createStackNavigator();
 
 export default function AppStackNavigator({navigation}) {
-  if (false) {
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = React.useState(true);
+  const isSignedIn = useSelector(state => state.appReducer.isSignedIn);
+
+  React.useEffect(() => {
+    const checkAuth = async () => {
+      const token = await getStorageData('token');
+      if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(
+          token,
+        )}`;
+        const profile = await getProfileRequest();
+        if (profile) {
+          dispatch(setter({profile: profile.user, isSignedIn: true}));
+        }
+      }
+      await RNBootSplash.hide({fade: true});
+      setIsLoading(false);
+    };
+    checkAuth();
+  }, []);
+  if (isLoading) {
     return <Splash />;
   }
+
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name={SCREENS.ONBOARDING}
-        component={Connection.Onboarding}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name={SCREENS.SIGN_IN}
-        component={Connection.SignIn}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name={SCREENS.SIGN_UP}
-        component={Connection.SignUp}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name={SCREENS.RESET_PASSWORD}
-        component={Connection.ResetPassword}
-        options={{
-          headerShown: false,
-        }}
-      />
+      {isSignedIn ? (
+        <>
+          <Stack.Screen
+            name={'Home'}
+            component={Home}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <Stack.Screen
+            name={SCREENS.ONBOARDING}
+            component={Connection.Onboarding}
+            options={{
+              headerShown: false,
+              animationTypeForReplace: !isSignedIn ? 'pop' : 'push',
+            }}
+          />
+          <Stack.Screen
+            name={SCREENS.SIGN_IN}
+            component={Connection.SignIn}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={SCREENS.SIGN_UP}
+            component={Connection.SignUp}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={SCREENS.RESET_PASSWORD}
+            component={Connection.ResetPassword}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </>
+      )}
     </Stack.Navigator>
   );
 }
