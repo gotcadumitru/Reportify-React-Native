@@ -5,6 +5,7 @@ import {
   SIGN_IN,
   SIGN_UP,
   FORGOT_PASSWORD,
+  EDIT_USER,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {replaceNavigation} from 'navigation/RootNavigation';
@@ -12,6 +13,7 @@ import {
   loginAppRequest,
   registerRequest,
   forgotPasswordRequest,
+  editUserRequest,
 } from 'api/index';
 import {setStorageData} from 'helpers/storage';
 import {SCREENS} from 'constants/screens/screen.names';
@@ -82,9 +84,29 @@ function* forgotPasswordGenerator({email}) {
   }
 }
 
+function* editUserGenerator({data}) {
+  try {
+    const res = yield call(editUserRequest, {data});
+    if (res) {
+      yield put(setter({isSignedIn: true}));
+    }
+  } catch (error) {
+    yield put(
+      setter({
+        response: {
+          isResponse: true,
+          message: error.response.data.message,
+          type: false,
+        },
+      }),
+    );
+  }
+}
+
 // * Watcher
 export function* authActionWatcher() {
   yield takeEvery(SIGN_IN, signInGenerator);
   yield takeEvery(SIGN_UP, signUpGenerator);
   yield takeEvery(FORGOT_PASSWORD, forgotPasswordGenerator);
+  yield takeEvery(EDIT_USER, editUserGenerator);
 }

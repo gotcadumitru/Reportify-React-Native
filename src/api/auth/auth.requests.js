@@ -26,6 +26,15 @@ export const registerRequest = async data => {
     });
 };
 
+export const editUserRequest = async data => {
+  return axios
+    .post(API_ROUTES.EDIT_USER, {
+      ...data,
+    })
+    .then(response => {
+      return response.data;
+    });
+};
 export const getProfileRequest = async () => {
   return axios.get(API_ROUTES.PROFILE).then(response => {
     return response.data;

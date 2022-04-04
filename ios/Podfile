@@ -35,4 +35,9 @@ target 'reportify' do
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
+#  pod 'react-native-video/VideoCaching', :path => '../node_modules/react-native-video/react-native-video.podspec'
+# pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
+
+  pod 'GoogleSignIn', '~> 6.1.0'
+
 end

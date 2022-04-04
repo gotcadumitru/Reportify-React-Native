@@ -10,4 +10,5 @@ export const API_ROUTES = {
   GOOGLE_LOGIN: AUTH + '/googlelogin',
   FACEBOOK_LOGIN: AUTH + '/facebooklogin',
   FORGOT_PASSWORD: AUTH + '/forgotpassword',
+  EDIT_USER: AUTH + '/edit-user',
 };

@@ -56,6 +56,14 @@ export default function AppStackNavigator({navigation}) {
       ) : (
         <>
           <Stack.Screen
+            name={SCREENS.PROFILE_SETUP}
+            component={Connection.ProfileSetup}
+            options={{
+              headerShown: false,
+              animationTypeForReplace: !isSignedIn ? 'pop' : 'push',
+            }}
+          />
+          <Stack.Screen
             name={SCREENS.ONBOARDING}
             component={Connection.Onboarding}
             options={{
@@ -82,14 +90,6 @@ export default function AppStackNavigator({navigation}) {
             component={Connection.ResetPassword}
             options={{
               headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name={SCREENS.PROFILE_SETUP}
-            component={Connection.ProfileSetup}
-            options={{
-              headerShown: false,
-              animationTypeForReplace: !isSignedIn ? 'pop' : 'push',
             }}
           />
         </>

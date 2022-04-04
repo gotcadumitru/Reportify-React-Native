@@ -10,6 +10,7 @@ const COLORS = {
   LIGHT_PURPLE: '#8f87ae',
   GREEN: '#03ac5a',
   DARK: '#3f3839',
+  YELLOW: '#ffef00',
 };
 
 const SCREEN_SIZE = {

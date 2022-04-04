@@ -3,6 +3,7 @@ import {
   getProfileRequest,
   registerRequest,
   forgotPasswordRequest,
+  editUserRequest,
 } from './auth/auth.requests';
 
 export {
@@ -10,4 +11,5 @@ export {
   getProfileRequest,
   registerRequest,
   forgotPasswordRequest,
+  editUserRequest,
 };
