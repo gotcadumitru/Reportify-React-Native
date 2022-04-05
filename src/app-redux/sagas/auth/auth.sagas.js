@@ -1,11 +1,17 @@
 import {put, takeEvery, call} from 'redux-saga/effects';
 import axios from 'axios';
+
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {LoginManager, Profile} from 'react-native-fbsdk-next';
+
 // * Action types
 import {
   SIGN_IN,
   SIGN_UP,
   FORGOT_PASSWORD,
   EDIT_USER,
+  SIGN_IN_GOOGLE,
+  SIGN_IN_FACEBOOK,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {replaceNavigation} from 'navigation/RootNavigation';
@@ -26,7 +32,6 @@ function* signInGenerator({email, password}) {
     yield put(setter({isSignedIn: true}));
     axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;
   } catch (error) {
-    console.log(error.response);
     yield put(
       setter({
         response: {
@@ -103,10 +108,42 @@ function* editUserGenerator({data}) {
   }
 }
 
+function* signInGoogleGenerator() {
+  try {
+    yield GoogleSignin.hasPlayServices();
+    const userInfo = yield GoogleSignin.signIn();
+    console.log(userInfo);
+  } catch (error) {
+    yield put(
+      setter({
+        response: {
+          isResponse: true,
+          message: 'Sorry, you are not signed in!',
+          type: false,
+        },
+      }),
+    );
+  }
+}
+
+function* signInFacebookGenerator() {
+  try {
+    const loginResult = yield LoginManager.logInWithPermissions([
+      'public_profile',
+    ]);
+    console.log(loginResult);
+    if (!loginResult.isCanceled) {
+      const currentProfile = yield Profile.getCurrentProfile();
+    }
+  } catch (error) {}
+}
+
 // * Watcher
 export function* authActionWatcher() {
   yield takeEvery(SIGN_IN, signInGenerator);
   yield takeEvery(SIGN_UP, signUpGenerator);
+  yield takeEvery(SIGN_IN_GOOGLE, signInGoogleGenerator);
+  yield takeEvery(SIGN_IN_FACEBOOK, signInFacebookGenerator);
   yield takeEvery(FORGOT_PASSWORD, forgotPasswordGenerator);
   yield takeEvery(EDIT_USER, editUserGenerator);
 }

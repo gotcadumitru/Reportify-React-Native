@@ -16,7 +16,7 @@ import {useFormik} from 'formik';
 import {signInSchema} from './SignIn.schema';
 
 export default function SingIn(props) {
-  const {navigation, signIn} = props;
+  const {navigation, signIn, signInGoogle, signInFacebook} = props;
   const [isSecurePassword, setIsSecurePassword] = React.useState(true);
   const {handleSubmit, handleChange, handleBlur, values, errors, touched} =
     useFormik({
@@ -29,6 +29,7 @@ export default function SingIn(props) {
     const {email, password} = data;
     signIn(email, password);
   }
+
   return (
     <View style={{height: SCREEN_SIZE.HEIGHT}}>
       <View style={styles.container}>
@@ -39,11 +40,7 @@ export default function SingIn(props) {
               flexDirection: 'row',
               justifyContent: 'flex-start',
             }}>
-            <TouchableOpacity
-              style={{
-                textAlign: 'left',
-              }}
-              onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
               <Entypo name="chevron-with-circle-left" size={40} color="black" />
             </TouchableOpacity>
           </View>
@@ -160,14 +157,14 @@ export default function SingIn(props) {
           }}>
           <Text>or connect with</Text>
         </View>
-        <View style={[styles.socialMediaView, {flex: 2}]}>
+        <View style={[styles.socialMediaView, {flex: 3}]}>
           <TouchableOpacity
             style={[
               styles.socialMediaButton,
               {backgroundColor: '#2596be'},
               styles.shadow,
             ]}
-            onPress={() => {}}>
+            onPress={signInFacebook}>
             <FontAwesome
               name="facebook"
               size={SCREEN_SIZE.WIDTH * 0.1}
@@ -180,7 +177,7 @@ export default function SingIn(props) {
               {backgroundColor: '#DD2C00'},
               styles.shadow,
             ]}
-            onPress={() => {}}>
+            onPress={signInGoogle}>
             <FontAwesome
               name="google"
               size={SCREEN_SIZE.WIDTH * 0.1}

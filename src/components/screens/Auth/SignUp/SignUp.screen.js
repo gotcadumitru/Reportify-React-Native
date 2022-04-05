@@ -15,7 +15,7 @@ import {SCREENS} from 'constants/screens/screen.names';
 import {useFormik} from 'formik';
 import {signUpSchema} from './SignUp.schema';
 export default function SingUp(props) {
-  const {navigation, signUp} = props;
+  const {navigation, signUp, signInGoogle, signInFacebook} = props;
   const [isSecurePassword, setIsSecurePassword] = React.useState(true);
   const [isSecureRepPassword, setIsSecureRepPassword] = React.useState(true);
 
@@ -186,14 +186,14 @@ export default function SingUp(props) {
           }}>
           <Text>or connect with</Text>
         </View>
-        <View style={[styles.socialMediaView, {flex: 2}]}>
+        <View style={[styles.socialMediaView, {flex: 3}]}>
           <TouchableOpacity
             style={[
               styles.socialMediaButton,
               {backgroundColor: '#2596be'},
               styles.shadow,
             ]}
-            onPress={() => {}}>
+            onPress={signInFacebook}>
             <FontAwesome
               name="facebook"
               size={SCREEN_SIZE.WIDTH * 0.1}
@@ -206,7 +206,7 @@ export default function SingUp(props) {
               {backgroundColor: '#DD2C00'},
               styles.shadow,
             ]}
-            onPress={() => {}}>
+            onPress={signInGoogle}>
             <FontAwesome
               name="google"
               size={SCREEN_SIZE.WIDTH * 0.1}

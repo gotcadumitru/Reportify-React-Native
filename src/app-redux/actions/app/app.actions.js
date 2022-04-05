@@ -10,6 +10,14 @@ export const signIn = (email, password) => ({
   email,
   password,
 });
+export const signInGoogle = data => ({
+  type: TYPES.SIGN_IN_GOOGLE,
+  data,
+});
+export const signInFacebook = data => ({
+  type: TYPES.SIGN_IN_FACEBOOK,
+  data,
+});
 
 export const signUp = (email, password) => ({
   type: TYPES.SIGN_UP,

@@ -21,6 +21,7 @@ import Video from 'react-native-video';
 import FilePicker from 'utils/FilePicker';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
 export default function ProfileSetup(props) {
   const [step, setStep] = React.useState(0);
   const [isFilePicker, setIsFilePicker] = React.useState(false);
@@ -39,18 +40,10 @@ export default function ProfileSetup(props) {
 
   const orasOptions = useJudeteOptions();
   const localitateOptions = useLocalitatiOptions(values.oras);
-  console.log(values.files);
-  function setupProfile(data) {
+  // console.log(values.files);
+  async function setupProfile(data) {
     const {name, surname, localitate, oras, files} = data;
-
     let form = new FormData();
-    form.append('name', name);
-    form.append('surname', surname);
-    form.append('localitate', localitate);
-    form.append('oras', oras);
-    let fls = [];
-    files.forEach(file => {});
-    form.append('files', files);
   }
   const getStepType = () => {
     switch (step) {
@@ -267,9 +260,11 @@ export default function ProfileSetup(props) {
                     }}>
                     <Feather name="file-plus" size={50} color={COLORS.GRAY} />
                   </TouchableOpacity>
-                  <Pressable style={[styles.saveButton]} onPress={handleSubmit}>
+                  <TouchableOpacity
+                    style={[styles.saveButton]}
+                    onPress={handleSubmit}>
                     <Text style={styles.saveText}>Salvează</Text>
-                  </Pressable>
+                  </TouchableOpacity>
                 </>
               }
             />

@@ -12,7 +12,7 @@ import {COLORS, SCREEN_SIZE} from 'theme/theme';
 import {useFormik} from 'formik';
 import {resetPassSchema} from './resetPass.schema';
 export default function ResetPassword(props) {
-  const {navigation, resetPassword} = props;
+  const {navigation, resetPassword, signInGoogle, signInFacebook} = props;
   const {handleSubmit, handleChange, handleBlur, values, errors, touched} =
     useFormik({
       initialValues: {
@@ -89,7 +89,8 @@ export default function ResetPassword(props) {
               styles.socialMediaButton,
               {backgroundColor: '#2596be'},
               styles.shadow,
-            ]}>
+            ]}
+            onPress={signInFacebook}>
             <FontAwesome
               name="facebook"
               size={SCREEN_SIZE.WIDTH * 0.1}
@@ -102,7 +103,7 @@ export default function ResetPassword(props) {
               {backgroundColor: '#DD2C00'},
               styles.shadow,
             ]}
-            onPress={() => {}}>
+            onPress={signInGoogle}>
             <FontAwesome
               name="google"
               size={SCREEN_SIZE.WIDTH * 0.1}

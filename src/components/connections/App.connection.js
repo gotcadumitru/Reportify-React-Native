@@ -13,6 +13,8 @@ import {
   signIn,
   signUp,
   resetPassword,
+  signInGoogle,
+  signInFacebook,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -25,6 +27,8 @@ const mapDispatchToProps = dispatch => ({
   signIn: (email, password) => dispatch(signIn(email, password)),
   signUp: (email, password) => dispatch(signUp(email, password)),
   resetPassword: email => dispatch(resetPassword(email)),
+  signInGoogle: data => dispatch(signInGoogle(data)),
+  signInFacebook: data => dispatch(signInFacebook(data)),
 });
 
 export default {
