@@ -11,4 +11,5 @@ export const API_ROUTES = {
   FACEBOOK_LOGIN: AUTH + '/facebooklogin',
   FORGOT_PASSWORD: AUTH + '/forgotpassword',
   EDIT_USER: AUTH + '/edit-user',
+  UPLOAD_FILES: FILES + '/upload',
 };

@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Image,
   FlatList,
-  Pressable,
+  Platform,
 } from 'react-native';
 import {COLORS, SCREEN_SIZE} from 'theme/theme';
 import {useFormik} from 'formik';
@@ -21,17 +21,17 @@ import Video from 'react-native-video';
 import FilePicker from 'utils/FilePicker';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import axios from 'axios';
-export default function ProfileSetup(props) {
-  const [step, setStep] = React.useState(0);
-  const [isFilePicker, setIsFilePicker] = React.useState(false);
 
+export default function ProfileSetup(props) {
+  const [step, setStep] = React.useState(4);
+  const [isFilePicker, setIsFilePicker] = React.useState(false);
+  const {uploadFiles} = props;
   const {handleSubmit, handleChange, values, setFieldValue} = useFormik({
     initialValues: {
       name: '',
       surname: '',
-      localitate: 'Suceava',
-      oras: 'Suceava',
+      localitate: '',
+      oras: '',
       files: [],
     },
     onSubmit: setupProfile,
@@ -40,11 +40,12 @@ export default function ProfileSetup(props) {
 
   const orasOptions = useJudeteOptions();
   const localitateOptions = useLocalitatiOptions(values.oras);
-  // console.log(values.files);
-  async function setupProfile(data) {
+
+  function setupProfile(data) {
     const {name, surname, localitate, oras, files} = data;
-    let form = new FormData();
+    uploadFiles(files);
   }
+
   const getStepType = () => {
     switch (step) {
       case 0: {

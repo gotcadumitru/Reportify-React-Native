@@ -15,6 +15,7 @@ import {
   resetPassword,
   signInGoogle,
   signInFacebook,
+  uploadFiles,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -29,6 +30,7 @@ const mapDispatchToProps = dispatch => ({
   resetPassword: email => dispatch(resetPassword(email)),
   signInGoogle: data => dispatch(signInGoogle(data)),
   signInFacebook: data => dispatch(signInFacebook(data)),
+  uploadFiles: data => dispatch(uploadFiles(data)),
 });
 
 export default {

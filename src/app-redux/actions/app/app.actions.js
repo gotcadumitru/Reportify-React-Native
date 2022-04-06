@@ -29,3 +29,8 @@ export const resetPassword = email => ({
   type: TYPES.FORGOT_PASSWORD,
   email,
 });
+
+export const uploadFiles = data => ({
+  type: TYPES.UPLOAD_FILES,
+  data,
+});
