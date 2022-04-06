@@ -2,7 +2,7 @@ import {put, takeEvery, call} from 'redux-saga/effects';
 import axios from 'axios';
 
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {LoginManager, Profile} from 'react-native-fbsdk-next';
+import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 
 // * Action types
 import {
@@ -20,6 +20,8 @@ import {
   registerRequest,
   forgotPasswordRequest,
   editUserRequest,
+  googleSignInRequest,
+  facebookSignInRequest,
 } from 'api/index';
 import {setStorageData} from 'helpers/storage';
 import {SCREENS} from 'constants/screens/screen.names';
@@ -111,8 +113,10 @@ function* editUserGenerator({data}) {
 function* signInGoogleGenerator() {
   try {
     yield GoogleSignin.hasPlayServices();
-    const userInfo = yield GoogleSignin.signIn();
-    console.log(userInfo);
+    yield GoogleSignin.signIn();
+    const tokens = yield GoogleSignin.getTokens();
+    const res = yield call(googleSignInRequest, tokens.idToken);
+    console.log(res);
   } catch (error) {
     yield put(
       setter({
@@ -130,12 +134,20 @@ function* signInFacebookGenerator() {
   try {
     const loginResult = yield LoginManager.logInWithPermissions([
       'public_profile',
+      'email',
     ]);
-    console.log(loginResult);
     if (!loginResult.isCanceled) {
-      const currentProfile = yield Profile.getCurrentProfile();
+      const tokens = yield AccessToken.getCurrentAccessToken();
+      const res = yield call(facebookSignInRequest, {
+        token: tokens.accessToken,
+        userID: tokens.userID,
+      });
+
+      console.log(res);
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(JSON.stringify(error.response, null, 2));
+  }
 }
 
 // * Watcher

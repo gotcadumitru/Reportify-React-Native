@@ -4,6 +4,8 @@ import {
   registerRequest,
   forgotPasswordRequest,
   editUserRequest,
+  googleSignInRequest,
+  facebookSignInRequest,
 } from './auth/auth.requests';
 
 export {
@@ -12,4 +14,6 @@ export {
   registerRequest,
   forgotPasswordRequest,
   editUserRequest,
+  googleSignInRequest,
+  facebookSignInRequest,
 };
