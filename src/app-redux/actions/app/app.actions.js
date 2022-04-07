@@ -30,7 +30,15 @@ export const resetPassword = email => ({
   email,
 });
 
-export const uploadFiles = data => ({
+export const uploadFiles = files => ({
   type: TYPES.UPLOAD_FILES,
+  files,
+});
+export const editUser = data => ({
+  type: TYPES.EDIT_USER,
   data,
+});
+
+export const getProfile = () => ({
+  type: TYPES.GET_PROFILE,
 });

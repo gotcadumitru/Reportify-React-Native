@@ -47,6 +47,7 @@ export const registerRequest = async data => {
 };
 
 export const editUserRequest = async data => {
+  console.log(data);
   return axios
     .post(API_ROUTES.EDIT_USER, {
       ...data,

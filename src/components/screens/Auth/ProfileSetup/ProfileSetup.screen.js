@@ -23,15 +23,15 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function ProfileSetup(props) {
-  const [step, setStep] = React.useState(4);
+  const [step, setStep] = React.useState(0);
   const [isFilePicker, setIsFilePicker] = React.useState(false);
-  const {uploadFiles} = props;
+  const {editUser, profile} = props;
   const {handleSubmit, handleChange, values, setFieldValue} = useFormik({
     initialValues: {
-      name: '',
-      surname: '',
-      localitate: '',
-      oras: '',
+      name: profile?.name || '',
+      surname: profile?.surname || '',
+      localitate: profile?.localitate,
+      oras: profile?.oras,
       files: [],
     },
     onSubmit: setupProfile,
@@ -42,8 +42,7 @@ export default function ProfileSetup(props) {
   const localitateOptions = useLocalitatiOptions(values.oras);
 
   function setupProfile(data) {
-    const {name, surname, localitate, oras, files} = data;
-    uploadFiles(files);
+    editUser({...data, id: profile._id});
   }
 
   const getStepType = () => {
@@ -55,11 +54,12 @@ export default function ProfileSetup(props) {
         return 'surname';
       }
       case 2: {
-        return 'localitate';
-      }
-      case 3: {
         return 'oras';
       }
+      case 3: {
+        return 'localitate';
+      }
+
       case 4: {
         return 'files';
       }
@@ -154,7 +154,7 @@ export default function ProfileSetup(props) {
       case 0: {
         return (
           <>
-            <Text style={styles.inputLabel}>What is your name?</Text>
+            <Text style={styles.inputLabel}>Prenume</Text>
             <View style={styles.textInputView}>
               <TextInput
                 style={styles.textInput}
@@ -172,7 +172,7 @@ export default function ProfileSetup(props) {
       case 1: {
         return (
           <>
-            <Text style={styles.inputLabel}>What is your last name?</Text>
+            <Text style={styles.inputLabel}>Nume</Text>
             <View style={styles.textInputView}>
               <TextInput
                 style={styles.textInput}
@@ -192,16 +192,14 @@ export default function ProfileSetup(props) {
           <>
             <Text style={styles.inputLabel}>În ce județ locuiți?</Text>
             <Picker
-              selectedValue={values.localitate}
-              onValueChange={itemValue =>
-                setFieldValue('localitate', itemValue)
-              }>
-              {orasOptions.map(judet => {
+              selectedValue={values.oras}
+              onValueChange={itemValue => setFieldValue('oras', itemValue)}>
+              {orasOptions.map(oras => {
                 return (
                   <Picker.Item
-                    key={judet.id}
-                    label={judet.name}
-                    value={judet.name}
+                    key={oras.id}
+                    label={oras.name}
+                    value={oras.name}
                   />
                 );
               })}
@@ -293,15 +291,15 @@ export default function ProfileSetup(props) {
       }}>
       <SafeAreaView>
         <View style={{width: SCREEN_SIZE.WIDTH}}>
-          <TouchableOpacity
-            style={{marginLeft: 20, height: 50}}
-            onPress={() => {
-              setStep(step - 1);
-            }}>
-            {step > 0 && (
+          {step > 0 && (
+            <TouchableOpacity
+              style={{marginLeft: 20, height: 50}}
+              onPress={() => {
+                setStep(step - 1);
+              }}>
               <Ionicons name="ios-return-up-back" size={30} color="black" />
-            )}
-          </TouchableOpacity>
+            </TouchableOpacity>
+          )}
         </View>
         <View>{getInput()}</View>
         <View

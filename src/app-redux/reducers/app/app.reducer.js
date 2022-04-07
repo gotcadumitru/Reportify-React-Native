@@ -2,6 +2,7 @@
 import * as TYPES from 'app-redux/actions/app/app.actions-types';
 // * Default state
 const defaultState = {
+  isLoading: false,
   isSignedIn: false,
   response: null,
 };

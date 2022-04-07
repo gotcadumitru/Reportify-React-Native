@@ -10,12 +10,9 @@ export default function FilePicker(props) {
   const makePicture = type => {
     ImagePicker.openCamera({cropping: true, mediaType: type})
       .then(image => {
-        console.log(image);
         getFile([image]);
       })
-      .catch(err => {
-        console.log(err);
-      })
+
       .finally(onClosePicker);
   };
 
@@ -23,9 +20,6 @@ export default function FilePicker(props) {
     ImagePicker.openPicker(pickerParams)
       .then(images => {
         getFile(images);
-      })
-      .catch(err => {
-        console.log(err);
       })
       .finally(onClosePicker);
   };

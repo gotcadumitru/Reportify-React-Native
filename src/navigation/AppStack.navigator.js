@@ -28,8 +28,10 @@ export default function AppStackNavigator({navigation}) {
           token,
         )}`;
         const profile = await getProfileRequest();
-        if (profile) {
+        if (profile?.localitate && profile?.oras) {
           dispatch(setter({profile: profile.user, isSignedIn: true}));
+        } else {
+          navigation.replace(SCREENS.PROFILE_SETUP);
         }
       }
       await RNBootSplash.hide({fade: true});
@@ -37,6 +39,7 @@ export default function AppStackNavigator({navigation}) {
     };
     checkAuth();
   }, []);
+
   if (isLoading) {
     return <Splash />;
   }

@@ -12,16 +12,17 @@ import {
   EDIT_USER,
   SIGN_IN_GOOGLE,
   SIGN_IN_FACEBOOK,
+  GET_PROFILE,
 } from 'app-redux/actions/app/app.actions-types';
-import {setter} from 'app-redux/actions/app/app.actions';
+import {setter, getProfile} from 'app-redux/actions/app/app.actions';
 import {replaceNavigation} from 'navigation/RootNavigation';
 import {
   loginAppRequest,
   registerRequest,
   forgotPasswordRequest,
-  editUserRequest,
   googleSignInRequest,
   facebookSignInRequest,
+  getProfileRequest,
 } from 'api/index';
 import {setStorageData} from 'helpers/storage';
 import {SCREENS} from 'constants/screens/screen.names';
@@ -91,32 +92,14 @@ function* forgotPasswordGenerator({email}) {
   }
 }
 
-function* editUserGenerator({data}) {
-  try {
-    const res = yield call(editUserRequest, {data});
-    if (res) {
-      yield put(setter({isSignedIn: true}));
-    }
-  } catch (error) {
-    yield put(
-      setter({
-        response: {
-          isResponse: true,
-          message: error.response.data.message,
-          type: false,
-        },
-      }),
-    );
-  }
-}
-
 function* signInGoogleGenerator() {
   try {
     yield GoogleSignin.hasPlayServices();
     yield GoogleSignin.signIn();
     const tokens = yield GoogleSignin.getTokens();
     const res = yield call(googleSignInRequest, tokens.idToken);
-    console.log(res);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;
+    yield put(getProfile());
   } catch (error) {
     yield put(
       setter({
@@ -142,11 +125,42 @@ function* signInFacebookGenerator() {
         token: tokens.accessToken,
         userID: tokens.userID,
       });
-
-      console.log(res);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;
+      yield put(getProfile());
     }
   } catch (error) {
-    console.log(JSON.stringify(error.response, null, 2));
+    yield put(
+      setter({
+        response: {
+          isResponse: true,
+          message: 'Sorry, you are not signed in!',
+          type: false,
+        },
+      }),
+    );
+  }
+}
+
+function* getProfileGenerator() {
+  try {
+    const res = yield call(getProfileRequest);
+    const user = res.user;
+    yield put(setter({profile: user}));
+    if (user?.localitate && user?.oras) {
+      yield put(setter({isSignedIn: true}));
+    } else {
+      replaceNavigation(SCREENS.PROFILE_SETUP);
+    }
+  } catch (error) {
+    yield put(
+      setter({
+        response: {
+          isResponse: true,
+          message: error.response.data.message,
+          type: false,
+        },
+      }),
+    );
   }
 }
 
@@ -157,5 +171,5 @@ export function* authActionWatcher() {
   yield takeEvery(SIGN_IN_GOOGLE, signInGoogleGenerator);
   yield takeEvery(SIGN_IN_FACEBOOK, signInFacebookGenerator);
   yield takeEvery(FORGOT_PASSWORD, forgotPasswordGenerator);
-  yield takeEvery(EDIT_USER, editUserGenerator);
+  yield takeEvery(GET_PROFILE, getProfileGenerator);
 }

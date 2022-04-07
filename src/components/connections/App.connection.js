@@ -16,6 +16,8 @@ import {
   signInGoogle,
   signInFacebook,
   uploadFiles,
+  getProfile,
+  editUser,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -30,7 +32,9 @@ const mapDispatchToProps = dispatch => ({
   resetPassword: email => dispatch(resetPassword(email)),
   signInGoogle: data => dispatch(signInGoogle(data)),
   signInFacebook: data => dispatch(signInFacebook(data)),
-  uploadFiles: data => dispatch(uploadFiles(data)),
+  uploadFiles: files => dispatch(uploadFiles(files)),
+  getProfile: () => dispatch(getProfile()),
+  editUser: data => dispatch(editUser(data)),
 });
 
 export default {
