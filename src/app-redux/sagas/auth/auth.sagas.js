@@ -9,13 +9,12 @@ import {
   SIGN_IN,
   SIGN_UP,
   FORGOT_PASSWORD,
-  EDIT_USER,
   SIGN_IN_GOOGLE,
   SIGN_IN_FACEBOOK,
   GET_PROFILE,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter, getProfile} from 'app-redux/actions/app/app.actions';
-import {replaceNavigation} from 'navigation/RootNavigation';
+import {replaceNavigation} from 'navigation/Root.navigation';
 import {
   loginAppRequest,
   registerRequest,
@@ -100,6 +99,7 @@ function* signInGoogleGenerator() {
     const res = yield call(googleSignInRequest, tokens.idToken);
     axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;
     yield put(getProfile());
+    yield setStorageData('token', res.token);
   } catch (error) {
     yield put(
       setter({
@@ -127,6 +127,7 @@ function* signInFacebookGenerator() {
       });
       axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;
       yield put(getProfile());
+      yield setStorageData('token', res.token);
     }
   } catch (error) {
     yield put(

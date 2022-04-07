@@ -2,7 +2,7 @@ import React from 'react';
 import Connection from 'components/connections/App.connection';
 import {createStackNavigator} from '@react-navigation/stack';
 import Splash from 'components/screens/Splash/Splash.screen.js';
-import Home from 'components/screens/Home/Home.screen.js';
+import TatNavigation from './Tab.navigation';
 
 import RNBootSplash from 'react-native-bootsplash';
 import axios from 'axios';
@@ -11,7 +11,6 @@ import {getProfileRequest} from 'api/index';
 import {useDispatch, useSelector} from 'react-redux';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {SCREENS} from 'constants/screens/screen.names';
-import {COLORS} from 'theme/theme';
 
 const Stack = createStackNavigator();
 
@@ -22,20 +21,25 @@ export default function AppStackNavigator({navigation}) {
 
   React.useEffect(() => {
     const checkAuth = async () => {
-      const token = await getStorageData('token');
-      if (token) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(
-          token,
-        )}`;
-        const profile = await getProfileRequest();
-        if (profile?.localitate && profile?.oras) {
-          dispatch(setter({profile: profile.user, isSignedIn: true}));
-        } else {
-          navigation.replace(SCREENS.PROFILE_SETUP);
+      try {
+        const token = await getStorageData('token');
+        if (token) {
+          axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(
+            token,
+          )}`;
+          const profile = await getProfileRequest();
+          const {user} = profile;
+          if (user?.localitate && user?.oras) {
+            dispatch(setter({profile: user, isSignedIn: true}));
+          } else {
+            navigation.replace(SCREENS.PROFILE_SETUP);
+          }
         }
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+        await RNBootSplash.hide({fade: true});
       }
-      await RNBootSplash.hide({fade: true});
-      setIsLoading(false);
     };
     checkAuth();
   }, []);
@@ -49,8 +53,8 @@ export default function AppStackNavigator({navigation}) {
       {isSignedIn ? (
         <>
           <Stack.Screen
-            name={'Home'}
-            component={Home}
+            name={'Tab'}
+            component={TatNavigation}
             options={{
               headerShown: false,
             }}

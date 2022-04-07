@@ -1,7 +1,7 @@
 import React from 'react';
-import AppNavigation from './AppStack.navigator';
+import AppNavigation from './AppStack.navigation';
 import {NavigationContainer} from '@react-navigation/native';
-import {navigationRef} from './RootNavigation';
+import {navigationRef} from './Root.navigation';
 import ErrorModal from 'utils/PopUpModal';
 import Loader from 'utils/Loader';
 

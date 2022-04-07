@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Image} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import {SCREENS} from 'constants/screens/screen.names';
 import {COLORS} from 'theme/theme';
