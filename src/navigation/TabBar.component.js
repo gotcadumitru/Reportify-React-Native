@@ -2,33 +2,46 @@ import React, {useEffect, useRef} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {View, Pressable, StyleSheet, Text} from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {COLORS, SCREEN_SIZE} from 'theme/theme';
+import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
+import {TabScreens} from 'constants/screens/tabBar.screens';
+import {SCREENS} from 'constants/screens/screen.names';
+import LottieView from 'lottie-react-native';
 
 const TabIconButton = props => {
-  const {isFocused} = props;
+  const {isFocused, screen} = props;
   const animateRef = useRef(null);
+  const lottieRef = useRef(null);
 
   useEffect(() => {
     if (isFocused) {
       animateRef.current.animate({
-        0: {scale: 0.5, rotate: '0deg'},
-        1: {scale: 1.5, rotate: '360deg'},
+        0: {scale: 1, rotate: '0deg', opacity: 0.5},
+        1: {scale: 1.5, rotate: '360deg', opacity: 1},
       });
     } else {
       animateRef.current.animate({
-        0: {scale: 1.5, rotate: '360deg'},
-        1: {scale: 1, rotate: '0deg'},
+        0: {scale: 1.5, rotate: '360deg', opacity: 1},
+        1: {scale: 1, rotate: '0deg', opacity: 0.5},
       });
     }
   }, [isFocused]);
 
+  useEffect(() => {
+    if (isFocused && lottieRef.current) {
+      lottieRef?.current?.play();
+    }
+  }, [isFocused, lottieRef.current]);
+
   return (
     <View>
       <Animatable.View ref={animateRef} duration={1000}>
-        <Icon
-          name={'ios-book'}
-          color={isFocused ? COLORS.GREEN : COLORS.WHITE}
-          size={24}
+        <LottieView
+          style={{height: screen.height, width: screen.width}}
+          ref={lottieRef}
+          loop={isFocused}
+          autoPlay={isFocused}
+          source={screen.icon}
+          progress={0.5}
         />
       </Animatable.View>
     </View>
@@ -37,22 +50,11 @@ const TabIconButton = props => {
 
 const TabBar = props => {
   const {state, descriptors, navigation} = props;
-  const tabViewRef = React.useRef(null);
-  const [bgColor, setBgColor] = React.useState('');
-
-  useEffect(() => {
-    console.log('dada');
-    const unsubscribe = navigation.addListener('focus', () => {
-      tabViewRef.current.animate({0: {opacity: 0.5}, 1: {opacity: 1}});
-    });
-    return () => unsubscribe;
-  }, [navigation]);
-
   return (
-    <Animatable.View ref={tabViewRef}>
-      <View style={[styles.container, {backgroundColor: bgColor}]}>
+    <Animatable.View>
+      <View style={styles.container}>
         {state.routes.map((route, index) => {
-          if (route.name == 'PlaceholderScreen') {
+          if (route.name === SCREENS.ADD_WHEEL) {
             return (
               <View key={index} style={styles.itemContainer}>
                 {/* <SelectWheel /> */}
@@ -89,21 +91,13 @@ const TabBar = props => {
                 styles.itemContainer,
                 {borderRightWidth: label == 'notes' ? 3 : 0},
               ]}>
-              <Pressable
-                onPress={onPress}
-                style={{
-                  backgroundColor: isFocused ? '#030D16' : '#182028',
-                  borderRadius: 20,
-                }}>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flex: 1,
-                    padding: 10,
-                  }}>
-                  <TabIconButton route={label} isFocused={isFocused} />
-                  <Text>Label</Text>
+              <Pressable onPress={onPress} style={styles.tabIcon}>
+                <View>
+                  <TabIconButton
+                    route={label}
+                    isFocused={isFocused}
+                    screen={TabScreens[index]}
+                  />
                 </View>
               </Pressable>
             </View>
@@ -119,9 +113,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     bottom: 25,
-    backgroundColor: COLORS.LIGHT_PURPLE,
+    backgroundColor: 'white',
     borderRadius: 25,
     marginHorizontal: SCREEN_SIZE.WIDTH * 0.05,
+    ...APP_STYLES.SHADOW,
   },
   itemContainer: {
     flex: 1,
@@ -129,7 +124,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
     borderRadius: 1,
-    borderColor: '#333B42',
+    borderColor: COLORS.LIGHT_GRAY,
+  },
+  tabIcon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    padding: 10,
   },
 });
 

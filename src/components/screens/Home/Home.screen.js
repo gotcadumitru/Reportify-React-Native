@@ -6,9 +6,10 @@ import {setter} from 'app-redux/actions/app/app.actions';
 export default function Home() {
   const dispatch = useDispatch();
   const logoutUser = () => {
-    clearStorageData().then(() => {
-      dispatch(setter({isSignedIn: false}));
-    });
+    // clearStorageData().then(() => {
+    //   dispatch(setter({isSignedIn: false}));
+    // });
+    console.log('dada');
   };
   return (
     <View>

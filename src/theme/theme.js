@@ -11,6 +11,8 @@ const COLORS = {
   GREEN: '#03ac5a',
   DARK: '#3f3839',
   YELLOW: '#ffef00',
+  LIGHT_BLUE: '#00BFFF',
+  DARK_BLUE: '#2680EB',
 };
 
 const SCREEN_SIZE = {

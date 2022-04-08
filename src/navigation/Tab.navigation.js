@@ -1,8 +1,8 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import TabBar from './TabBar.component';
+import {TabScreens} from 'constants/screens/tabBar.screens';
 import Home from 'components/screens/Home/Home.screen';
-const TabArr = [1, 2, 3, 4];
 
 const Tab = createBottomTabNavigator();
 
@@ -13,11 +13,11 @@ export default function TabNavigation() {
         headerShown: false,
       }}
       tabBar={props => <TabBar {...props} />}>
-      {TabArr.map((item, index) => {
+      {TabScreens.map((screen, index) => {
         return (
           <Tab.Screen
             key={index}
-            name={'HomeScreenasdsad' + index}
+            name={screen.name}
             component={Home}
             options={{
               tabBarShowLabel: false,
