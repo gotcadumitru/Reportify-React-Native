@@ -15,13 +15,13 @@ const TabIconButton = props => {
   useEffect(() => {
     if (isFocused) {
       animateRef.current.animate({
-        0: {scale: 1, rotate: '0deg', opacity: 0.5},
+        0: {scale: 1, rotate: '0deg', opacity: 0.8},
         1: {scale: 1.5, rotate: '360deg', opacity: 1},
       });
     } else {
       animateRef.current.animate({
         0: {scale: 1.5, rotate: '360deg', opacity: 1},
-        1: {scale: 1, rotate: '0deg', opacity: 0.5},
+        1: {scale: 1, rotate: '0deg', opacity: 0.8},
       });
     }
   }, [isFocused]);
@@ -29,14 +29,29 @@ const TabIconButton = props => {
   useEffect(() => {
     if (isFocused && lottieRef.current) {
       lottieRef?.current?.play();
+    } else {
+      lottieRef?.current?.play(0.5);
+      lottieRef?.current?.pause();
     }
   }, [isFocused, lottieRef.current]);
 
   return (
-    <View>
+    <View
+      style={{
+        ...(screen.name === SCREENS.ADD_WHEEL && {
+          position: 'absolute',
+          bottom: 15,
+          backgroundColor: 'white',
+          borderRadius: 50,
+          alignItems: 'center',
+        }),
+      }}>
       <Animatable.View ref={animateRef} duration={1000}>
         <LottieView
-          style={{height: screen.height, width: screen.width}}
+          style={{
+            height: screen.height,
+            width: screen.width,
+          }}
           ref={lottieRef}
           loop={isFocused}
           autoPlay={isFocused}
@@ -54,15 +69,6 @@ const TabBar = props => {
     <Animatable.View>
       <View style={styles.container}>
         {state.routes.map((route, index) => {
-          if (route.name === SCREENS.ADD_WHEEL) {
-            return (
-              <View key={index} style={styles.itemContainer}>
-                {/* <SelectWheel /> */}
-                <Text>dada</Text>
-              </View>
-            );
-          }
-
           const {options} = descriptors[route.key];
           const label =
             options.tabBarLabel !== undefined
@@ -85,20 +91,13 @@ const TabBar = props => {
           };
 
           return (
-            <View
-              key={index}
-              style={[
-                styles.itemContainer,
-                {borderRightWidth: label == 'notes' ? 3 : 0},
-              ]}>
+            <View key={index} style={styles.itemContainer}>
               <Pressable onPress={onPress} style={styles.tabIcon}>
-                <View>
-                  <TabIconButton
-                    route={label}
-                    isFocused={isFocused}
-                    screen={TabScreens[index]}
-                  />
-                </View>
+                <TabIconButton
+                  route={label}
+                  isFocused={isFocused}
+                  screen={TabScreens[index]}
+                />
               </Pressable>
             </View>
           );
@@ -116,7 +115,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 25,
     marginHorizontal: SCREEN_SIZE.WIDTH * 0.05,
-    ...APP_STYLES.SHADOW,
   },
   itemContainer: {
     flex: 1,
@@ -130,7 +128,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    padding: 10,
   },
 });
 

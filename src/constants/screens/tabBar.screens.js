@@ -14,9 +14,9 @@ export const TabScreens = [
   },
   {
     name: SCREENS.ADD_WHEEL,
-    icon: require('assets/lottie/icons/maps.json'),
-    height: 30,
-    width: 30,
+    icon: require('assets/lottie/icons/add.json'),
+    height: 60,
+    width: 60,
   },
   {
     name: SCREENS.LOCATIONS,
