@@ -11,7 +11,8 @@ import {setter} from 'app-redux/actions/app/app.actions';
 
 function* editUserGenerator({data}) {
   try {
-    const {name, surname, localitate, oras, files, id} = data;
+    const {name, surname, localitate, oras, files, id, profileImage, birthday} =
+      data;
     let filesIDs = yield uploadFilesGenerator({files});
     const res = yield call(editUserRequest, {
       name,
@@ -20,13 +21,13 @@ function* editUserGenerator({data}) {
       oras,
       domiciliuFiles: filesIDs,
       id,
+      profileImage,
+      birthday,
     });
     if (res) {
-      console.log(JSON.stringify(res, null, 2));
       yield put(setter({isSignedIn: true}));
     }
   } catch (error) {
-    console.log(error);
     yield put(
       setter({
         response: {

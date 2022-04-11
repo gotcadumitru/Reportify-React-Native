@@ -12,6 +12,7 @@ import {
   SIGN_IN_GOOGLE,
   SIGN_IN_FACEBOOK,
   GET_PROFILE,
+  LOGOUT,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter, getProfile} from 'app-redux/actions/app/app.actions';
 import {replaceNavigation} from 'navigation/Root.navigation';
@@ -23,7 +24,8 @@ import {
   facebookSignInRequest,
   getProfileRequest,
 } from 'api/index';
-import {setStorageData} from 'helpers/storage';
+import {setStorageData, clearStorageData} from 'helpers/storage';
+
 import {SCREENS} from 'constants/screens/screen.names';
 // * Generators
 
@@ -49,8 +51,11 @@ function* signInGenerator({email, password}) {
 function* signUpGenerator({email, password}) {
   try {
     const res = yield call(registerRequest, {email, password});
+
     if (res) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;
       replaceNavigation(SCREENS.PROFILE_SETUP);
+      yield put(getProfile());
     }
   } catch (error) {
     yield put(
@@ -165,6 +170,15 @@ function* getProfileGenerator() {
   }
 }
 
+function* logoutGenerator() {
+  try {
+    yield clearStorageData();
+    yield put(setter({isSignedIn: false}));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 // * Watcher
 export function* authActionWatcher() {
   yield takeEvery(SIGN_IN, signInGenerator);
@@ -173,4 +187,5 @@ export function* authActionWatcher() {
   yield takeEvery(SIGN_IN_FACEBOOK, signInFacebookGenerator);
   yield takeEvery(FORGOT_PASSWORD, forgotPasswordGenerator);
   yield takeEvery(GET_PROFILE, getProfileGenerator);
+  yield takeEvery(LOGOUT, logoutGenerator);
 }

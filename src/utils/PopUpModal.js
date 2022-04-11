@@ -46,7 +46,6 @@ export default function ErrorModal(props) {
       ...APP_STYLES.SHADOW,
     },
     text: {
-      color: COLORS.BLACK,
       fontSize: 14,
       textAlign: 'center',
     },
@@ -79,11 +78,7 @@ export default function ErrorModal(props) {
             color={app.response?.type ? COLORS.GREEN : COLORS.RED}
           />
         </View>
-        <Text
-          style={[
-            styles.text,
-            {marginTop: 25, fontSize: 18, color: COLORS.BLACK},
-          ]}>
+        <Text style={[styles.text, {marginTop: 25, fontSize: 18}]}>
           {app.response?.type ? 'Well done!' : 'Oooops, something went wrong!'}
         </Text>
         <View style={styles.borderMessage}>

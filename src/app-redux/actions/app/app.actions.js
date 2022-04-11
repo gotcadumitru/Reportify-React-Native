@@ -42,3 +42,7 @@ export const editUser = data => ({
 export const getProfile = () => ({
   type: TYPES.GET_PROFILE,
 });
+
+export const logout = () => ({
+  type: TYPES.LOGOUT,
+});

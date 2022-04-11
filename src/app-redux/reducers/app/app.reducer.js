@@ -5,6 +5,7 @@ const defaultState = {
   isLoading: false,
   isSignedIn: false,
   response: null,
+  profile: null,
 };
 
 // * Reducer

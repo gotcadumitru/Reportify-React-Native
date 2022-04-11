@@ -22,7 +22,7 @@ export default function SingUp(props) {
   const {handleSubmit, handleChange, handleBlur, values, errors, touched} =
     useFormik({
       initialValues: {
-        email: 'dragoshuniq@gmail.com',
+        email: 'dragoshuniq@yahoo.com',
         password: '123456',
         repPassword: '123456',
       },

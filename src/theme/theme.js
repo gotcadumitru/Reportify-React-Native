@@ -13,6 +13,7 @@ const COLORS = {
   YELLOW: '#ffef00',
   LIGHT_BLUE: '#00BFFF',
   DARK_BLUE: '#2680EB',
+  ORANGE: '#ffa500',
 };
 
 const SCREEN_SIZE = {
@@ -39,6 +40,16 @@ const APP_STYLES = {
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
 
+    elevation: 2,
+  },
+  LIGHT_SHADOW: {
+    shadowColor: '#faf9fa',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
     elevation: 2,
   },
 };

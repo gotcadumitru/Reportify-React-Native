@@ -3,7 +3,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {View, Pressable, StyleSheet, Text} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
-import {TabScreens} from 'constants/screens/tabBar.screens';
+import {TabScreens} from 'constants/screens/screens.selector';
 import {SCREENS} from 'constants/screens/screen.names';
 import LottieView from 'lottie-react-native';
 
@@ -91,7 +91,9 @@ const TabBar = props => {
           };
 
           return (
-            <View key={index} style={styles.itemContainer}>
+            <View
+              key={index}
+              style={[styles.itemContainer, APP_STYLES.LIGHT_SHADOW]}>
               <Pressable onPress={onPress} style={styles.tabIcon}>
                 <TabIconButton
                   route={label}
@@ -115,6 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 25,
     marginHorizontal: SCREEN_SIZE.WIDTH * 0.05,
+    ...APP_STYLES.LIGHT_SHADOW,
   },
   itemContainer: {
     flex: 1,

@@ -1,4 +1,5 @@
 import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import Connection from 'components/connections/App.connection';
 import {createStackNavigator} from '@react-navigation/stack';
 import Splash from 'components/screens/Splash/Splash.screen.js';
@@ -11,6 +12,7 @@ import {getProfileRequest} from 'api/index';
 import {useDispatch, useSelector} from 'react-redux';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {SCREENS} from 'constants/screens/screen.names';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
 
@@ -49,15 +51,19 @@ export default function AppStackNavigator({navigation}) {
   }
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
       {isSignedIn ? (
         <>
           <Stack.Screen
-            name={'Tab'}
+            name={SCREENS.TAB_NAVIGATION}
             component={TatNavigation}
-            options={{
-              headerShown: false,
-            }}
+          />
+          <Stack.Screen
+            name={SCREENS.EDIT_PROFILE}
+            component={Connection.EditProfile}
           />
         </>
       ) : (
@@ -66,36 +72,19 @@ export default function AppStackNavigator({navigation}) {
             name={SCREENS.ONBOARDING}
             component={Connection.Onboarding}
             options={{
-              headerShown: false,
               animationTypeForReplace: !isSignedIn ? 'pop' : 'push',
             }}
           />
-          <Stack.Screen
-            name={SCREENS.SIGN_IN}
-            component={Connection.SignIn}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name={SCREENS.SIGN_UP}
-            component={Connection.SignUp}
-            options={{
-              headerShown: false,
-            }}
-          />
+          <Stack.Screen name={SCREENS.SIGN_IN} component={Connection.SignIn} />
+          <Stack.Screen name={SCREENS.SIGN_UP} component={Connection.SignUp} />
           <Stack.Screen
             name={SCREENS.RESET_PASSWORD}
             component={Connection.ResetPassword}
-            options={{
-              headerShown: false,
-            }}
           />
           <Stack.Screen
             name={SCREENS.PROFILE_SETUP}
             component={Connection.ProfileSetup}
             options={{
-              headerShown: false,
               animationTypeForReplace: !isSignedIn ? 'pop' : 'push',
             }}
           />

@@ -40,6 +40,8 @@ export const registerRequest = async data => {
       oras: '',
       localitate: '',
       files: [],
+      profileImage: '',
+      birthday: '',
     })
     .then(response => {
       return response.data;

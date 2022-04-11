@@ -4,10 +4,12 @@ export const SCREENS = {
   SIGN_IN: 'SignIn',
   SIGN_UP: 'SignUp',
   RESET_PASSWORD: 'ResetPassword',
+  TAB_NAVIGATION: 'TabNavigation',
   PROFILE_SETUP: 'ProfileSetup',
   MY_PROFILE: 'MyProfile',
   REPORTS: 'Reports',
   FAVORITE: 'Favorite',
   LOCATIONS: 'Locations',
   ADD_WHEEL: 'AddWheel',
+  EDIT_PROFILE: 'EditProfile',
 };

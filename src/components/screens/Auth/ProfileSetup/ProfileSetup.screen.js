@@ -8,7 +8,6 @@ import {
   StyleSheet,
   Image,
   FlatList,
-  Platform,
 } from 'react-native';
 import {COLORS, SCREEN_SIZE} from 'theme/theme';
 import {useFormik} from 'formik';
@@ -33,6 +32,8 @@ export default function ProfileSetup(props) {
       localitate: profile?.localitate,
       oras: profile?.oras,
       files: [],
+      birthday: new Date(),
+      profileImage: 'profile',
     },
     onSubmit: setupProfile,
     validationSchema: profileSchema,
@@ -74,7 +75,6 @@ export default function ProfileSetup(props) {
     files.splice(index, 1);
     setFieldValue('files', files);
   };
-
   const renderFile = ({item, index}) => {
     if (item?.mime?.includes('image')) {
       return (
@@ -311,12 +311,12 @@ export default function ProfileSetup(props) {
           {step < 4 && (
             <TouchableOpacity
               onPress={onChangeStep}
-              disabled={values[getStepType()].length < 1}>
+              disabled={values[getStepType()]?.length < 1}>
               <Ionicons
                 name="arrow-redo-circle"
                 size={50}
                 color={
-                  values[getStepType()].length < 1 ? COLORS.GRAY : COLORS.GREEN
+                  values[getStepType()]?.length < 1 ? COLORS.GRAY : COLORS.GREEN
                 }
               />
             </TouchableOpacity>

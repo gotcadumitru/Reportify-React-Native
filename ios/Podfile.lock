@@ -312,6 +312,8 @@ PODS:
     - glog
   - react-native-blob-util (0.15.0):
     - React-Core
+  - react-native-date-picker (4.2.0):
+    - React-Core
   - react-native-document-picker (8.1.0):
     - React-Core
   - react-native-fbsdk-next (7.3.3):
@@ -486,6 +488,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
+  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
@@ -585,6 +588,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-blob-util:
     :path: "../node_modules/react-native-blob-util"
+  react-native-date-picker:
+    :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-fbsdk-next:
@@ -684,6 +689,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 90f0bfd5d04e0b066c29216a110ffb9a6c34f23f
   React-logger: 8474fefa09d05f573a13c044cb0dfd751d4e52e3
   react-native-blob-util: a5d3561045ed98cfb2fb80cbbff600fae0e8edee
+  react-native-date-picker: d83ab9cccbc497642a93fdca783ae76ecd6b17b6
   react-native-document-picker: 5663fe4bcdb646200683a41790464d2793307ac8
   react-native-fbsdk-next: 6d497a06fc5c33360f5794b4428a0236789a60e6
   react-native-pdf: a6a5a3f0bdf340eb2eed6c96034424d2cc3f84b0

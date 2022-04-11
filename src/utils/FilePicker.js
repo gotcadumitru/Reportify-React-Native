@@ -6,7 +6,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
 
 export default function FilePicker(props) {
-  const {isVisible, onClosePicker, getFile} = props;
+  const {isVisible, onClosePicker, getFile, justPhoto} = props;
   const makePicture = type => {
     ImagePicker.openCamera({cropping: true, mediaType: type})
       .then(image => {
@@ -41,11 +41,13 @@ export default function FilePicker(props) {
       isVisible={isVisible}
       style={styles.bottomModal}>
       <View style={styles.modalView}>
-        <Pressable
-          style={[styles.modalButton, {backgroundColor: COLORS.PURPLE}]}
-          onPress={selectFile}>
-          <Text style={styles.modalButtonText}>Selectează fișier</Text>
-        </Pressable>
+        {!justPhoto && (
+          <Pressable
+            style={[styles.modalButton, {backgroundColor: COLORS.PURPLE}]}
+            onPress={selectFile}>
+            <Text style={styles.modalButtonText}>Selectează fișier</Text>
+          </Pressable>
+        )}
         <Pressable
           style={[styles.modalButton, {backgroundColor: COLORS.LIGHT_PURPLE}]}
           onPress={() => makePicture('any')}>

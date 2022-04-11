@@ -8,3 +8,4 @@ export const PROFILE_SETUP = 'PROFILE_SETUP';
 export const EDIT_USER = 'EDIT_USER';
 export const UPLOAD_FILES = 'UPLOAD_FILES';
 export const GET_PROFILE = 'GET_PROFILE';
+export const LOGOUT = 'LOGOUT';

@@ -7,6 +7,8 @@ import SignUp from 'components/screens/Auth/SignUp/SignUp.screen.js';
 import ResetPassword from 'components/screens/Auth/ResetPassword/ResetPassword.screen.js';
 import Onboarding from 'components/screens/Auth/Onboarding/Onboarding.screen.js';
 import ProfileSetup from 'components/screens/Auth/ProfileSetup/ProfileSetup.screen.js';
+import MyProfile from 'components/screens/User/Profile/Profile.screen.js';
+import EditProfile from 'components/screens/User/Profile/EditProfile.screen.js';
 
 import {
   setter,
@@ -18,6 +20,7 @@ import {
   uploadFiles,
   getProfile,
   editUser,
+  logout,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -35,6 +38,7 @@ const mapDispatchToProps = dispatch => ({
   uploadFiles: files => dispatch(uploadFiles(files)),
   getProfile: () => dispatch(getProfile()),
   editUser: data => dispatch(editUser(data)),
+  logout: () => dispatch(logout()),
 });
 
 export default {
@@ -43,4 +47,6 @@ export default {
   ResetPassword: connect(mapStateToProps, mapDispatchToProps)(ResetPassword),
   Onboarding: connect(mapStateToProps, mapDispatchToProps)(Onboarding),
   ProfileSetup: connect(mapStateToProps, mapDispatchToProps)(ProfileSetup),
+  MyProfile: connect(mapStateToProps, mapDispatchToProps)(MyProfile),
+  EditProfile: connect(mapStateToProps, mapDispatchToProps)(EditProfile),
 };
