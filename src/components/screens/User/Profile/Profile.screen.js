@@ -13,7 +13,15 @@ import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function Profile(props) {
-  const {navigation, logout} = props;
+  const {navigation, logout, profile, getProfile} = props;
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getProfile();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   const renderStats = ({item}) => {
     return (
       <View style={styles.statsItem}>
@@ -38,7 +46,6 @@ export default function Profile(props) {
       </TouchableOpacity>
     );
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -47,12 +54,12 @@ export default function Profile(props) {
         </TouchableOpacity>
         <View style={styles.userInfoContainer}>
           <Animatable.Image
-            source={require('assets/dummy.png')}
+            source={{uri: profile?.profileImage?.fileUrl}}
             style={styles.userImage}
             animation="slideInDown"
           />
           <Animatable.Text animation="slideInRight" style={styles.userNameText}>
-            FirstName LastName
+            {profile?.name} {profile?.surname}
           </Animatable.Text>
         </View>
         <Animatable.View
@@ -145,6 +152,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 20,
+    textAlign: 'center',
   },
   statsRenderContainer: {
     flexGrow: 1,

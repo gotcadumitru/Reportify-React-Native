@@ -10,10 +10,16 @@ import {setter} from 'app-redux/actions/app/app.actions';
 // * Generators
 
 function* editUserGenerator({data}) {
+  yield put(setter({isLoading: true}));
+
   try {
     const {name, surname, localitate, oras, files, id, profileImage, birthday} =
       data;
     let filesIDs = yield uploadFilesGenerator({files});
+    let profileImageID = [''];
+    if (profileImage)
+      profileImageID = yield uploadFilesGenerator({files: profileImage});
+
     const res = yield call(editUserRequest, {
       name,
       surname,
@@ -21,7 +27,7 @@ function* editUserGenerator({data}) {
       oras,
       domiciliuFiles: filesIDs,
       id,
-      profileImage,
+      profileImage: profileImageID[0],
       birthday,
     });
     if (res) {
@@ -37,11 +43,12 @@ function* editUserGenerator({data}) {
         },
       }),
     );
+  } finally {
+    yield put(setter({isLoading: false}));
   }
 }
 
 function* uploadFilesGenerator({files}) {
-  yield put(setter({isLoading: true}));
   try {
     const formData = new FormData();
     files.forEach(file => {
@@ -81,8 +88,6 @@ function* uploadFilesGenerator({files}) {
         },
       }),
     );
-  } finally {
-    yield put(setter({isLoading: false}));
   }
 }
 

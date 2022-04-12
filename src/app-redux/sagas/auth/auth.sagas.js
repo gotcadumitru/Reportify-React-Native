@@ -50,10 +50,12 @@ function* signInGenerator({email, password}) {
 
 function* signUpGenerator({email, password}) {
   try {
+    yield put(setter({isLoading: true}));
     const res = yield call(registerRequest, {email, password});
 
     if (res) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;
+      yield setStorageData('token', res.token);
       replaceNavigation(SCREENS.PROFILE_SETUP);
       yield put(getProfile());
     }
@@ -67,6 +69,8 @@ function* signUpGenerator({email, password}) {
         },
       }),
     );
+  } finally {
+    yield put(setter({isLoading: false}));
   }
 }
 

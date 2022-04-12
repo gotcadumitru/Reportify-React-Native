@@ -12,13 +12,37 @@ import Input from 'utils/Input';
 import FilePicker from 'utils/FilePicker';
 import DatePicker from 'utils/DatePicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useFormik} from 'formik';
+import {profileSchema} from 'components/screens/Auth/ProfileSetup/profileSetup.schema';
+import LottieView from 'lottie-react-native';
 
 import * as Animatable from 'react-native-animatable';
 
 export default function EditProfile(props) {
-  const {navigation} = props;
+  const {editUser, profile, navigation} = props;
+
   const [isPhotoSelect, setIsPhotoSelect] = React.useState(false);
   const [isDatePicker, setIsDatePicker] = React.useState(false);
+  const [imageLoading, setImageLoading] = React.useState(true);
+
+  const {handleSubmit, handleChange, values, setFieldValue} = useFormik({
+    initialValues: {
+      name: profile?.name || '',
+      surname: profile?.surname || '',
+      localitate: profile?.localitate,
+      oras: profile?.oras,
+      files: [],
+      birthday: new Date(profile?.birthday) || new Date(),
+      profileImage: profile?.profileImage,
+    },
+    onSubmit: editProfile,
+    validationSchema: profileSchema,
+  });
+
+  function editProfile(data) {
+    const {profileImage, name, surname, localitate, oras} = data;
+    let img = editUser({name, surname, id: profile._id});
+  }
 
   return (
     <View style={styles.container}>
@@ -26,43 +50,74 @@ export default function EditProfile(props) {
         justPhoto
         onClosePicker={() => setIsPhotoSelect(false)}
         isVisible={isPhotoSelect}
+        single
       />
+      {imageLoading && (
+        <LottieView
+          source={require('assets/lottie/imageLoad.json')}
+          autoPlay
+          loop
+          style={[styles.picture, {alignSelf: 'center'}]}
+        />
+      )}
       <View>
         <Animatable.Image
-          source={require('assets/dummy.png')}
+          source={{uri: profile?.profileImage?.fileUrl}}
           animation="slideInDown"
-          style={styles.picture}
-        />
-        <TouchableOpacity
-          style={[styles.iconButton, {right: 20}]}
-          onPress={() => setIsPhotoSelect(true)}>
-          <Ionicons name="camera" color="white" size={40} />
-        </TouchableOpacity>
-        <TouchableOpacity
           style={[
-            styles.iconButton,
-            {left: 20, backgroundColor: 'transparent'},
+            styles.picture,
+            {...(imageLoading && {position: 'absolute', zIndex: -10})},
           ]}
-          onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back-circle" color="white" size={40} />
-        </TouchableOpacity>
+          onLoadEnd={() => setImageLoading(false)}
+        />
+        {!imageLoading && (
+          <>
+            <TouchableOpacity
+              style={[styles.iconButton, {right: 20}]}
+              onPress={() => setIsPhotoSelect(true)}>
+              <Ionicons name="camera" color="white" size={40} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.iconButton,
+                {left: 20, backgroundColor: 'transparent'},
+              ]}
+              onPress={() => navigation.goBack()}>
+              <Ionicons name="chevron-back-circle" color="white" size={40} />
+            </TouchableOpacity>
+          </>
+        )}
       </View>
       <Animatable.View
         style={{paddingHorizontal: 30, flex: 1}}
         animation="slideInUp">
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Input title={'Județ'} value={'Suceava'} editable={false} />
-          <Input title={'Localitate'} value={'Suceava'} editable={false} />
-          <Input title={'Nume'} value={'Hello'} editable />
-          <Input title={'Prenume'} value={'Hello'} editable />
+          <Input title={'Județ'} value={values.oras} editable={false} />
+          <Input
+            title={'Localitate'}
+            value={values.localitate}
+            editable={false}
+          />
+          <Input
+            title={'Prenume'}
+            value={values.name}
+            editable
+            onChangeText={handleChange('name')}
+          />
+          <Input
+            title={'Nume'}
+            value={values.surname}
+            editable
+            onChangeText={handleChange('surname')}
+          />
           <DatePicker
-            value={new Date()}
+            value={values?.birthday}
             isVisible={isDatePicker}
             toggleVisibility={value => setIsDatePicker(value)}
             title={'Data de naștere'}
-            getValue={value => console.log(value)}
+            getValue={date => setFieldValue('birthday', date)}
           />
-          <TouchableOpacity style={styles.saveButton}>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
             <Text style={styles.saveButtonText}>Salvează</Text>
           </TouchableOpacity>
         </ScrollView>

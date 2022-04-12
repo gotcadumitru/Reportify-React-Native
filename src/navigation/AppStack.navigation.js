@@ -71,9 +71,6 @@ export default function AppStackNavigator({navigation}) {
           <Stack.Screen
             name={SCREENS.ONBOARDING}
             component={Connection.Onboarding}
-            options={{
-              animationTypeForReplace: !isSignedIn ? 'pop' : 'push',
-            }}
           />
           <Stack.Screen name={SCREENS.SIGN_IN} component={Connection.SignIn} />
           <Stack.Screen name={SCREENS.SIGN_UP} component={Connection.SignUp} />
@@ -84,9 +81,6 @@ export default function AppStackNavigator({navigation}) {
           <Stack.Screen
             name={SCREENS.PROFILE_SETUP}
             component={Connection.ProfileSetup}
-            options={{
-              animationTypeForReplace: !isSignedIn ? 'pop' : 'push',
-            }}
           />
         </>
       )}

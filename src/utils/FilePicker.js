@@ -6,7 +6,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
 
 export default function FilePicker(props) {
-  const {isVisible, onClosePicker, getFile, justPhoto} = props;
+  const {isVisible, onClosePicker, getFile, justPhoto, single} = props;
   const makePicture = type => {
     ImagePicker.openCamera({cropping: true, mediaType: type})
       .then(image => {
@@ -17,7 +17,7 @@ export default function FilePicker(props) {
   };
 
   const choosePicture = () => {
-    ImagePicker.openPicker(pickerParams)
+    ImagePicker.openPicker({...pickerParams, multiple: !single})
       .then(images => {
         getFile(images);
       })
@@ -53,15 +53,19 @@ export default function FilePicker(props) {
           onPress={() => makePicture('any')}>
           <Text style={styles.modalButtonText}>Capturează foto</Text>
         </Pressable>
-        <Pressable
-          style={[styles.modalButton, {backgroundColor: COLORS.LIGHT_PURPLE}]}
-          onPress={() => makePicture('video')}>
-          <Text style={styles.modalButtonText}>Capturează video</Text>
-        </Pressable>
+        {!justPhoto && (
+          <Pressable
+            style={[styles.modalButton, {backgroundColor: COLORS.LIGHT_PURPLE}]}
+            onPress={() => makePicture('video')}>
+            <Text style={styles.modalButtonText}>Capturează video</Text>
+          </Pressable>
+        )}
         <Pressable
           style={[styles.modalButton, {backgroundColor: COLORS.GREEN}]}
           onPress={choosePicture}>
-          <Text style={styles.modalButtonText}>Selectează foto/video</Text>
+          <Text style={styles.modalButtonText}>
+            Selectează foto{!justPhoto && '/video'}
+          </Text>
         </Pressable>
         <Pressable style={styles.modalButton} onPress={onClosePicker}>
           <Text style={styles.modalButtonText}>Ieșire</Text>

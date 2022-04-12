@@ -9,6 +9,7 @@ import {
   Image,
   FlatList,
 } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import {COLORS, SCREEN_SIZE} from 'theme/theme';
 import {useFormik} from 'formik';
 import {profileSchema} from './profileSetup.schema';
@@ -24,6 +25,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 export default function ProfileSetup(props) {
   const [step, setStep] = React.useState(0);
   const [isFilePicker, setIsFilePicker] = React.useState(false);
+  const [isProfilePic, setIsProfilePic] = React.useState(false);
+
   const {editUser, profile} = props;
   const {handleSubmit, handleChange, values, setFieldValue} = useFormik({
     initialValues: {
@@ -32,8 +35,8 @@ export default function ProfileSetup(props) {
       localitate: profile?.localitate,
       oras: profile?.oras,
       files: [],
-      birthday: new Date(),
-      profileImage: 'profile',
+      birthday: profile?.birthday ?? new Date(),
+      profileImage: profile?.profileImage,
     },
     onSubmit: setupProfile,
     validationSchema: profileSchema,
@@ -55,14 +58,20 @@ export default function ProfileSetup(props) {
         return 'surname';
       }
       case 2: {
-        return 'oras';
+        return 'birthday';
       }
-      case 3: {
+      case 3:
+        return 'oras';
+
+      case 4: {
         return 'localitate';
       }
 
-      case 4: {
+      case 5: {
         return 'files';
+      }
+      case 6: {
+        return 'profileImage';
       }
 
       default: {
@@ -75,6 +84,9 @@ export default function ProfileSetup(props) {
     files.splice(index, 1);
     setFieldValue('files', files);
   };
+
+  console.log(values.profileImage);
+
   const renderFile = ({item, index}) => {
     if (item?.mime?.includes('image')) {
       return (
@@ -155,7 +167,11 @@ export default function ProfileSetup(props) {
         return (
           <>
             <Text style={styles.inputLabel}>Prenume</Text>
-            <View style={styles.textInputView}>
+            <View
+              style={[
+                styles.textInputView,
+                {alignItems: 'center', justifyContent: 'center'},
+              ]}>
               <TextInput
                 style={styles.textInput}
                 value={values.name}
@@ -190,6 +206,24 @@ export default function ProfileSetup(props) {
       case 2: {
         return (
           <>
+            <Text style={styles.inputLabel}>Data de naștere </Text>
+            <View style={styles.textInputView}>
+              <DatePicker
+                style={{
+                  width: SCREEN_SIZE.WIDTH,
+                }}
+                mode="date"
+                date={values?.birthday}
+                onDateChange={date => setFieldValue('birthday', date)}
+              />
+            </View>
+          </>
+        );
+      }
+
+      case 3: {
+        return (
+          <>
             <Text style={styles.inputLabel}>În ce județ locuiți?</Text>
             <Picker
               selectedValue={values.oras}
@@ -207,7 +241,7 @@ export default function ProfileSetup(props) {
           </>
         );
       }
-      case 3: {
+      case 4: {
         return (
           <>
             <Text style={styles.inputLabel}>În ce localitate locuiți?</Text>
@@ -229,7 +263,7 @@ export default function ProfileSetup(props) {
           </>
         );
       }
-      case 4: {
+      case 5: {
         return (
           <View style={{height: SCREEN_SIZE.HEIGHT * 0.85}}>
             <FilePicker
@@ -261,12 +295,57 @@ export default function ProfileSetup(props) {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={[styles.saveButton]}
-                    onPress={handleSubmit}>
-                    <Text style={styles.saveText}>Salvează</Text>
+                    onPress={onChangeStep}>
+                    <Text style={styles.saveText}>Continuă</Text>
                   </TouchableOpacity>
                 </>
               }
             />
+          </View>
+        );
+      }
+      case 6: {
+        return (
+          <View>
+            <View style={{marginTop: 50}}>
+              <Image
+                style={styles.profileImage}
+                source={
+                  values?.profileImage
+                    ? {
+                        uri: values?.profileImage[0].path,
+                      }
+                    : require('assets/noimage.png')
+                }
+              />
+              <View
+                style={{
+                  marginTop: 20,
+                  justifyContent: 'space-evenly',
+                  flexDirection: 'row',
+                }}>
+                <FilePicker
+                  justPhoto
+                  isVisible={isProfilePic}
+                  getFile={files => setFieldValue('profileImage', [...files])}
+                  onClosePicker={() => {
+                    setIsProfilePic(false);
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => setIsProfilePic(true)}
+                  style={styles.cameraIcon}>
+                  <Ionicons name="camera" size={50} color="black" />
+                </TouchableOpacity>
+              </View>
+              <View style={{marginTop: 50}}>
+                <TouchableOpacity
+                  style={[styles.saveButton]}
+                  onPress={handleSubmit}>
+                  <Text style={styles.saveText}>Salvează</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         );
       }
@@ -276,9 +355,7 @@ export default function ProfileSetup(props) {
     }
   };
   const onChangeStep = () => {
-    if (step + 1 < 5) setStep(step + 1);
-    else {
-    }
+    if (step + 1 < 7) setStep(step + 1);
   };
 
   return (
@@ -308,7 +385,7 @@ export default function ProfileSetup(props) {
             alignSelf: 'flex-end',
             marginRight: 20,
           }}>
-          {step < 4 && (
+          {step < 5 && (
             <TouchableOpacity
               onPress={onChangeStep}
               disabled={values[getStepType()]?.length < 1}>
@@ -382,5 +459,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 16,
+  },
+  profileImage: {
+    width: 300,
+    height: 300,
+    borderRadius: 300,
+    alignSelf: 'center',
+  },
+  cameraIcon: {
+    padding: 20,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
   },
 });
