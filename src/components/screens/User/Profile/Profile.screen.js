@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Pressable,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {ProfileScreens} from 'constants/screens/screens.selector';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';

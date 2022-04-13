@@ -47,7 +47,7 @@ export const ProfileScreens = [
     color: COLORS.PURPLE,
   },
   {
-    name: SCREENS.EDIT_PROFILE,
+    name: SCREENS.USER_DOCUMENTS,
     icon: 'ios-information-circle',
     label: 'Documente',
     color: COLORS.ORANGE,

@@ -24,3 +24,9 @@ export function popNavigation(n) {
     navigationRef.dispatch(StackActions.pop(n));
   }
 }
+
+export function goBackNavigation() {
+  if (navigationRef.isReady()) {
+    navigationRef.dispatch(StackActions.goBack());
+  }
+}

@@ -85,8 +85,6 @@ export default function ProfileSetup(props) {
     setFieldValue('files', files);
   };
 
-  console.log(values.profileImage);
-
   const renderFile = ({item, index}) => {
     if (item?.mime?.includes('image')) {
       return (
@@ -313,7 +311,7 @@ export default function ProfileSetup(props) {
                 source={
                   values?.profileImage
                     ? {
-                        uri: values?.profileImage[0].path,
+                        uri: values?.profileImage.path,
                       }
                     : require('assets/noimage.png')
                 }
@@ -325,9 +323,10 @@ export default function ProfileSetup(props) {
                   flexDirection: 'row',
                 }}>
                 <FilePicker
+                  single
                   justPhoto
                   isVisible={isProfilePic}
-                  getFile={files => setFieldValue('profileImage', [...files])}
+                  getFile={image => setFieldValue('profileImage', image)}
                   onClosePicker={() => {
                     setIsProfilePic(false);
                   }}

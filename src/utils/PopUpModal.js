@@ -5,7 +5,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import Mui from 'react-native-vector-icons/MaterialIcons';
-export default function ErrorModal(props) {
+export default function PopModal(props) {
   const dispatch = useDispatch();
   const app = useSelector(state => state.appReducer);
   const closeModal = () => {
@@ -29,6 +29,7 @@ export default function ErrorModal(props) {
       shadowRadius: 4,
       elevation: 5,
       justifyContent: 'flex-end',
+      zIndex: 1000,
     },
     borderMessage: {
       paddingVertical: 10,
@@ -67,9 +68,7 @@ export default function ErrorModal(props) {
   });
 
   return (
-    <Modal
-      isVisible={Boolean(app.response?.isResponse)}
-      onBackdropPress={closeModal}>
+    <Modal isVisible={app.response?.isResponse} onBackdropPress={closeModal}>
       <View style={styles.modalView}>
         <View style={styles.icon}>
           <Mui

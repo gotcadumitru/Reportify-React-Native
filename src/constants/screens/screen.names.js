@@ -12,4 +12,5 @@ export const SCREENS = {
   LOCATIONS: 'Locations',
   ADD_WHEEL: 'AddWheel',
   EDIT_PROFILE: 'EditProfile',
+  USER_DOCUMENTS: 'Documents',
 };

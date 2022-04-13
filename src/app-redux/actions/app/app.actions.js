@@ -34,9 +34,10 @@ export const uploadFiles = files => ({
   type: TYPES.UPLOAD_FILES,
   files,
 });
-export const editUser = data => ({
+export const editUser = (data, backForward) => ({
   type: TYPES.EDIT_USER,
   data,
+  backForward,
 });
 
 export const getProfile = () => ({

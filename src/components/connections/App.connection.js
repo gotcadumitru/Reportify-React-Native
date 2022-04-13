@@ -9,6 +9,7 @@ import Onboarding from 'components/screens/Auth/Onboarding/Onboarding.screen.js'
 import ProfileSetup from 'components/screens/Auth/ProfileSetup/ProfileSetup.screen.js';
 import MyProfile from 'components/screens/User/Profile/Profile.screen.js';
 import EditProfile from 'components/screens/User/Profile/EditProfile.screen.js';
+import Documents from 'components/screens/User/Profile/Documents.screen.js';
 
 import {
   setter,
@@ -37,7 +38,7 @@ const mapDispatchToProps = dispatch => ({
   signInFacebook: data => dispatch(signInFacebook(data)),
   uploadFiles: files => dispatch(uploadFiles(files)),
   getProfile: () => dispatch(getProfile()),
-  editUser: data => dispatch(editUser(data)),
+  editUser: (data, backForward) => dispatch(editUser(data, backForward)),
   logout: () => dispatch(logout()),
 });
 
@@ -49,4 +50,5 @@ export default {
   ProfileSetup: connect(mapStateToProps, mapDispatchToProps)(ProfileSetup),
   MyProfile: connect(mapStateToProps, mapDispatchToProps)(MyProfile),
   EditProfile: connect(mapStateToProps, mapDispatchToProps)(EditProfile),
+  Documents: connect(mapStateToProps, mapDispatchToProps)(Documents),
 };

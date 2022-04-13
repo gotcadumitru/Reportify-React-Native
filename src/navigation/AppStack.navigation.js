@@ -65,6 +65,19 @@ export default function AppStackNavigator({navigation}) {
             name={SCREENS.EDIT_PROFILE}
             component={Connection.EditProfile}
           />
+          <Stack.Screen
+            name={SCREENS.USER_DOCUMENTS}
+            component={Connection.Documents}
+            options={({navigation, route}) => ({
+              headerShown: true,
+              title: 'Documente',
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name="chevron-back" size={30} />
+                </TouchableOpacity>
+              ),
+            })}
+          />
         </>
       ) : (
         <>

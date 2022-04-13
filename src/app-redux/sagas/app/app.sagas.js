@@ -3,35 +3,47 @@ import axios from 'axios';
 import {API_ROUTES} from 'constants/endpoints/endpoints';
 
 import {editUserRequest} from 'api/index';
+import {goBackNavigation} from 'navigation/Root.navigation';
 
 // * Action types
 import {UPLOAD_FILES, EDIT_USER} from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
 // * Generators
 
-function* editUserGenerator({data}) {
-  yield put(setter({isLoading: true}));
-
+function* editUserGenerator({data, backForward}) {
   try {
+    yield put(setter({isLoading: true}));
+
     const {name, surname, localitate, oras, files, id, profileImage, birthday} =
       data;
-    let filesIDs = yield uploadFilesGenerator({files});
-    let profileImageID = [''];
+    let filesIDs;
+    if (files) filesIDs = yield uploadFilesGenerator({files});
+    let profileImageID;
     if (profileImage)
-      profileImageID = yield uploadFilesGenerator({files: profileImage});
-
+      profileImageID = yield uploadFilesGenerator({files: [profileImage]});
     const res = yield call(editUserRequest, {
       name,
       surname,
       localitate,
       oras,
-      domiciliuFiles: filesIDs,
+      ...(files && {domiciliuFiles: filesIDs}),
       id,
-      profileImage: profileImageID[0],
+      ...(profileImage && {profileImage: profileImageID[0]}),
       birthday,
     });
     if (res) {
-      yield put(setter({isSignedIn: true}));
+      yield put(
+        setter({
+          isSignedIn: true,
+          ...(backForward && {
+            hasResponse: {
+              isResponse: true,
+              message: 'Profilul dvs a fost salvat cu succes!',
+              type: true,
+            },
+          }),
+        }),
+      );
     }
   } catch (error) {
     yield put(

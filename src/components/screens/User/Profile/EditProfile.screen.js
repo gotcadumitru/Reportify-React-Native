@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   ScrollView,
 } from 'react-native';
 import {COLORS} from 'theme/theme';
@@ -23,8 +22,9 @@ export default function EditProfile(props) {
 
   const [isPhotoSelect, setIsPhotoSelect] = React.useState(false);
   const [isDatePicker, setIsDatePicker] = React.useState(false);
-  const [imageLoading, setImageLoading] = React.useState(true);
-
+  const [imageLoading, setImageLoading] = React.useState(
+    Boolean(profile?.profileImage),
+  );
   const {handleSubmit, handleChange, values, setFieldValue} = useFormik({
     initialValues: {
       name: profile?.name || '',
@@ -38,10 +38,21 @@ export default function EditProfile(props) {
     onSubmit: editProfile,
     validationSchema: profileSchema,
   });
-
+  console.log(values);
   function editProfile(data) {
-    const {profileImage, name, surname, localitate, oras} = data;
-    let img = editUser({name, surname, id: profile._id});
+    const {profileImage, name, surname, localitate, oras, birthday} = data;
+    editUser(
+      {
+        name,
+        surname,
+        localitate,
+        birthday,
+        oras,
+        ...(profileImage?.isLocal && {profileImage}),
+        id: profile._id,
+      },
+      true,
+    );
   }
 
   return (
@@ -51,18 +62,29 @@ export default function EditProfile(props) {
         onClosePicker={() => setIsPhotoSelect(false)}
         isVisible={isPhotoSelect}
         single
+        getFile={image =>
+          setFieldValue('profileImage', {...image, isLocal: true})
+        }
       />
       {imageLoading && (
         <LottieView
           source={require('assets/lottie/imageLoad.json')}
           autoPlay
           loop
-          style={[styles.picture, {alignSelf: 'center'}]}
+          style={[{height: 300, width: '100%', alignSelf: 'center'}]}
         />
       )}
       <View>
         <Animatable.Image
-          source={{uri: profile?.profileImage?.fileUrl}}
+          source={
+            !Boolean(profile?.profileImage)
+              ? require('assets/noimage.png')
+              : {
+                  uri: values?.profileImage?.isLocal
+                    ? values?.profileImage?.path
+                    : values?.profileImage?.fileUrl,
+                }
+          }
           animation="slideInDown"
           style={[
             styles.picture,

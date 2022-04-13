@@ -9,11 +9,14 @@ import LottieView from 'lottie-react-native';
 export default function Loader() {
   const dispatch = useDispatch();
   const app = useSelector(state => state.appReducer);
-  const closeModal = () => {
-    dispatch(setter({isLoading: false}));
-  };
+
   return (
-    <Modal isVisible={Boolean(app.isLoading)}>
+    <Modal
+      isVisible={Boolean(app.isLoading)}
+      onModalHide={() => {
+        if (app?.hasResponse)
+          dispatch(setter({response: app.hasResponse, hasResponse: null}));
+      }}>
       <View style={styles.modalView}>
         <LottieView
           source={require('assets/lottie/loading.json')}

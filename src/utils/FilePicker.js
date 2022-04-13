@@ -76,6 +76,7 @@ export default function FilePicker(props) {
 }
 const pickerParams = {
   //   cropping: true,
+  compressImageQuality: 0.7,
   multiple: true,
   freeStyleCropEnabled: true,
   mediaType: 'any',
