@@ -2,7 +2,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import TabBar from './TabBar.component';
 import {TabScreens} from 'constants/screens/screens.selector';
-import Home from 'components/screens/User/Home.screen';
+import Home from 'components/screens/User/Home/Home.screen';
 import Connection from 'components/connections/App.connection';
 
 const Tab = createBottomTabNavigator();
