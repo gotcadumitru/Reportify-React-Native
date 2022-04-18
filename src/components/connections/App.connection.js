@@ -10,6 +10,7 @@ import ProfileSetup from 'components/screens/Auth/ProfileSetup/ProfileSetup.scre
 import MyProfile from 'components/screens/User/Profile/Profile.screen.js';
 import EditProfile from 'components/screens/User/Profile/EditProfile.screen.js';
 import Documents from 'components/screens/User/Profile/Documents.screen.js';
+import Reports from 'components/screens/User/Home/Reports.screen.js';
 
 import {
   setter,
@@ -22,6 +23,7 @@ import {
   getProfile,
   editUser,
   logout,
+  getAllPosts,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -40,6 +42,7 @@ const mapDispatchToProps = dispatch => ({
   getProfile: () => dispatch(getProfile()),
   editUser: (data, backForward) => dispatch(editUser(data, backForward)),
   logout: () => dispatch(logout()),
+  getAllPosts: () => dispatch(getAllPosts()),
 });
 
 export default {
@@ -51,4 +54,5 @@ export default {
   MyProfile: connect(mapStateToProps, mapDispatchToProps)(MyProfile),
   EditProfile: connect(mapStateToProps, mapDispatchToProps)(EditProfile),
   Documents: connect(mapStateToProps, mapDispatchToProps)(Documents),
+  Reports: connect(mapStateToProps, mapDispatchToProps)(Reports),
 };

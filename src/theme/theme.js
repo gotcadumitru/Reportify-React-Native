@@ -4,6 +4,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const COLORS = {
   LIGHT_GRAY: '#faf9fa',
+  MEDIUM_GRAY: '#DCDCDC',
   GRAY: '#b6bccb',
   RED: '#da2236',
   PURPLE: '#5e45d6',

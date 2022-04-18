@@ -7,7 +7,7 @@ export const TabScreens = [
     icon: require('assets/lottie/icons/reports.json'),
     height: 30,
     width: 30,
-    source: 'MyProfile',
+    source: 'Reports',
   },
   {
     name: SCREENS.FAVORITE,

@@ -12,4 +12,5 @@ export const API_ROUTES = {
   FORGOT_PASSWORD: AUTH + '/forgotpassword',
   EDIT_USER: AUTH + '/edit-user',
   UPLOAD_FILES: FILES + '/upload',
+  POSTS: POST,
 };

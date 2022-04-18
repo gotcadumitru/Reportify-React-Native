@@ -2,12 +2,17 @@ import {put, takeEvery, call} from 'redux-saga/effects';
 import axios from 'axios';
 import {API_ROUTES} from 'constants/endpoints/endpoints';
 
-import {editUserRequest} from 'api/index';
-import {goBackNavigation} from 'navigation/Root.navigation';
+import {editUserRequest, getAllPostsRequest} from 'api/index';
 
 // * Action types
-import {UPLOAD_FILES, EDIT_USER} from 'app-redux/actions/app/app.actions-types';
+import {
+  UPLOAD_FILES,
+  EDIT_USER,
+  GET_ALL_POSTS,
+} from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
+import {getStorageData} from 'helpers/storage';
+
 // * Generators
 
 function* editUserGenerator({data, backForward}) {
@@ -103,8 +108,37 @@ function* uploadFilesGenerator({files}) {
   }
 }
 
+function* getAllPostsGenerator() {
+  try {
+    yield put(setter({isLoading: true}));
+    const format = yield getStorageData('format');
+    if (format) {
+      yield put(setter({format}));
+    }
+    const res = yield call(getAllPostsRequest);
+    if (res) {
+      yield put(setter({posts: res.posts}));
+    }
+  } catch (e) {
+    yield put(
+      setter({
+        response: {
+          isResponse: true,
+          message:
+            'Oooops! Something went wrong when getting data, please try again!',
+
+          type: false,
+        },
+      }),
+    );
+  } finally {
+    yield put(setter({isLoading: false}));
+  }
+}
+
 // * Watcher
 export function* appActionWatcher() {
   yield takeEvery(UPLOAD_FILES, uploadFilesGenerator);
   yield takeEvery(EDIT_USER, editUserGenerator);
+  yield takeEvery(GET_ALL_POSTS, getAllPostsGenerator);
 }

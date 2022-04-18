@@ -32,6 +32,7 @@ import {SCREENS} from 'constants/screens/screen.names';
 function* signInGenerator({email, password}) {
   try {
     const res = yield call(loginAppRequest, {email, password});
+
     yield setStorageData('token', res.token);
     yield put(setter({isSignedIn: true}));
     axios.defaults.headers.common['Authorization'] = `Bearer ${res.token}`;

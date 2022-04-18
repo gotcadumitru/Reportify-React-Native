@@ -47,3 +47,7 @@ export const getProfile = () => ({
 export const logout = () => ({
   type: TYPES.LOGOUT,
 });
+
+export const getAllPosts = () => ({
+  type: TYPES.GET_ALL_POSTS,
+});

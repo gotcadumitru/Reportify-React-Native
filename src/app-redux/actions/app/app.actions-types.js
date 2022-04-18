@@ -9,3 +9,4 @@ export const EDIT_USER = 'EDIT_USER';
 export const UPLOAD_FILES = 'UPLOAD_FILES';
 export const GET_PROFILE = 'GET_PROFILE';
 export const LOGOUT = 'LOGOUT';
+export const GET_ALL_POSTS = 'GET_ALL_POSTS';

@@ -68,3 +68,9 @@ export const forgotPasswordRequest = async data => {
     return response.data;
   });
 };
+
+export const getAllPosts = async () => {
+  return axios.post(API_ROUTES.POSTS).then(response => {
+    return response.data;
+  });
+};

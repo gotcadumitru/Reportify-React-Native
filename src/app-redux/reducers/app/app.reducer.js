@@ -7,6 +7,8 @@ const defaultState = {
   response: null,
   profile: null,
   hasResponse: null,
+  posts: [],
+  format: 1,
 };
 
 // * Reducer
