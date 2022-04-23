@@ -6,3 +6,9 @@ export const getAllPostsRequest = async () => {
     return response.data;
   });
 };
+
+export const addPostRequest = async data => {
+  return axios.post(API_ROUTES.POSTS, {...data}).then(response => {
+    return response;
+  });
+};

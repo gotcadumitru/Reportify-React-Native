@@ -25,6 +25,7 @@ import {
   editUser,
   logout,
   getAllPosts,
+  addPost,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -44,6 +45,7 @@ const mapDispatchToProps = dispatch => ({
   editUser: (data, backForward) => dispatch(editUser(data, backForward)),
   logout: () => dispatch(logout()),
   getAllPosts: () => dispatch(getAllPosts()),
+  addPost: data => dispatch(addPost(data)),
 });
 
 export default {

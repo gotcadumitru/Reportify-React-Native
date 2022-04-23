@@ -2,13 +2,14 @@ import {put, takeEvery, call} from 'redux-saga/effects';
 import axios from 'axios';
 import {API_ROUTES} from 'constants/endpoints/endpoints';
 
-import {editUserRequest, getAllPostsRequest} from 'api/index';
+import {editUserRequest, getAllPostsRequest, addPostRequest} from 'api/index';
 
 // * Action types
 import {
   UPLOAD_FILES,
   EDIT_USER,
   GET_ALL_POSTS,
+  ADD_POST,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {getStorageData} from 'helpers/storage';
@@ -136,9 +137,46 @@ function* getAllPostsGenerator() {
   }
 }
 
+function* addPostGenerator({data}) {
+  try {
+    yield put(setter({isLoading: true}));
+
+    const {files} = data;
+    let filesIDs = yield uploadFilesGenerator({files});
+    const res = yield call(addPostRequest, {
+      ...data,
+      files: filesIDs,
+    });
+    if (res) {
+      yield put(
+        setter({
+          hasResponse: {
+            isResponse: true,
+            message: 'Raportul a fost creat cu success!',
+            type: true,
+          },
+        }),
+      );
+    }
+  } catch (error) {
+    yield put(
+      setter({
+        response: {
+          isResponse: true,
+          message: error.response.data.message,
+          type: false,
+        },
+      }),
+    );
+  } finally {
+    yield put(setter({isLoading: false}));
+  }
+}
+
 // * Watcher
 export function* appActionWatcher() {
   yield takeEvery(UPLOAD_FILES, uploadFilesGenerator);
   yield takeEvery(EDIT_USER, editUserGenerator);
   yield takeEvery(GET_ALL_POSTS, getAllPostsGenerator);
+  yield takeEvery(ADD_POST, addPostGenerator);
 }

@@ -11,6 +11,8 @@ export default function Input(props) {
     editable,
     multiline,
     width = SCREEN_SIZE.WIDTH * 0.8,
+    placeholder,
+    onSubmitEditing,
   } = props;
   return (
     <View style={[style, {marginVertical: 5, alignSelf: 'center'}]}>
@@ -20,9 +22,9 @@ export default function Input(props) {
           styles.input,
           {
             width,
-            backgroundColor: !editable ? COLORS.PURPLE : '#CFD8DC',
+            backgroundColor: !editable ? COLORS.MEDIUM_GRAY : COLORS.INPUT,
             color: !editable ? 'white' : 'black',
-            ...(multiline && {height: 250}),
+            ...(multiline && {minHeight: 100}),
           },
         ]}
         onChangeText={onChangeText}
@@ -30,6 +32,8 @@ export default function Input(props) {
         editable={editable}
         selectTextOnFocus={editable}
         multiline={Boolean(multiline)}
+        placeholder={placeholder}
+        onSubmitEditing={onSubmitEditing}
       />
     </View>
   );
@@ -44,18 +48,15 @@ const styles = StyleSheet.create({
   input: {
     paddingLeft: 20,
     width: '100%',
-    height: 50,
+    minHeight: 50,
     borderRadius: 10,
-    backgroundColor: '#CFD8DC',
-    opacity: 0.3,
-    shadowColor: '#000',
+    shadowColor: COLORS.INPUT,
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 2,
     },
     shadowOpacity: 0.44,
-    shadowRadius: 10.32,
-
-    elevation: 16,
+    shadowRadius: 4.32,
+    elevation: 4,
   },
 });

@@ -8,7 +8,7 @@ import {
   facebookSignInRequest,
 } from './auth/auth.requests';
 
-import {getAllPostsRequest} from './user/user.requests';
+import {getAllPostsRequest, addPostRequest} from './user/user.requests';
 
 export {
   loginAppRequest,
@@ -19,4 +19,5 @@ export {
   googleSignInRequest,
   facebookSignInRequest,
   getAllPostsRequest,
+  addPostRequest,
 };

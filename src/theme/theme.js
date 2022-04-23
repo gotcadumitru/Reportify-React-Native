@@ -15,6 +15,7 @@ const COLORS = {
   LIGHT_BLUE: '#00BFFF',
   DARK_BLUE: '#2680EB',
   ORANGE: '#ffa500',
+  INPUT: '#f3f6f4',
 };
 
 const SCREEN_SIZE = {

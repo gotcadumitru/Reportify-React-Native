@@ -30,30 +30,28 @@ export default function Input(props) {
 const styles = StyleSheet.create({
   icon: {position: 'absolute', right: 10},
   title: {
-    color: COLORS.GRAY,
-    fontSize: 14,
-    fontWeight: '500',
+    marginLeft: 10,
+    marginBottom: 5,
+    fontWeight: 'bold',
   },
   input: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
     paddingLeft: 20,
     width: '100%',
-    height: 50,
+    minHeight: 50,
     borderRadius: 10,
-    backgroundColor: '#CFD8DC',
-    opacity: 0.3,
-    shadowColor: '#000',
+    shadowColor: COLORS.INPUT,
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 2,
     },
     shadowOpacity: 0.44,
-    shadowRadius: 10.32,
-
-    elevation: 16,
-    justifyContent: 'center',
+    shadowRadius: 4.32,
+    elevation: 4,
+    backgroundColor: COLORS.INPUT,
   },
   text: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 14,
   },
 });

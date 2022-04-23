@@ -51,3 +51,8 @@ export const logout = () => ({
 export const getAllPosts = () => ({
   type: TYPES.GET_ALL_POSTS,
 });
+
+export const addPost = data => ({
+  type: TYPES.ADD_POST,
+  data,
+});

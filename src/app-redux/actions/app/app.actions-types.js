@@ -10,3 +10,4 @@ export const UPLOAD_FILES = 'UPLOAD_FILES';
 export const GET_PROFILE = 'GET_PROFILE';
 export const LOGOUT = 'LOGOUT';
 export const GET_ALL_POSTS = 'GET_ALL_POSTS';
+export const ADD_POST = 'ADD_POST';
