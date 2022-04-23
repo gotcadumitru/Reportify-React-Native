@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import {COLORS} from 'theme/theme';
+import {COLORS, SCREEN_SIZE} from 'theme/theme';
 import Input from 'utils/Input';
 import FilePicker from 'utils/FilePicker';
 import DatePicker from 'utils/DatePicker';
@@ -38,7 +38,6 @@ export default function EditProfile(props) {
     onSubmit: editProfile,
     validationSchema: profileSchema,
   });
-  console.log(values);
   function editProfile(data) {
     const {profileImage, name, surname, localitate, oras, birthday} = data;
     editUser(
@@ -110,9 +109,7 @@ export default function EditProfile(props) {
           </>
         )}
       </View>
-      <Animatable.View
-        style={{paddingHorizontal: 30, flex: 1}}
-        animation="slideInUp">
+      <Animatable.View style={{flex: 1}} animation="slideInUp">
         <ScrollView showsVerticalScrollIndicator={false}>
           <Input title={'Județ'} value={values.oras} editable={false} />
           <Input
@@ -133,11 +130,13 @@ export default function EditProfile(props) {
             onChangeText={handleChange('surname')}
           />
           <DatePicker
+            isModal={true}
             value={values?.birthday}
             isVisible={isDatePicker}
             toggleVisibility={value => setIsDatePicker(value)}
             title={'Data de naștere'}
             getValue={date => setFieldValue('birthday', date)}
+            maxDate={new Date()}
           />
           <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
             <Text style={styles.saveButtonText}>Salvează</Text>
@@ -152,6 +151,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    width: SCREEN_SIZE.WIDTH,
   },
   picture: {
     borderBottomEndRadius: 50,
@@ -164,6 +164,8 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 20,
     marginVertical: 30,
+    width: SCREEN_SIZE.WIDTH * 0.8,
+    alignSelf: 'center',
   },
   saveButtonText: {
     color: 'white',

@@ -38,7 +38,7 @@ const TabIconButton = props => {
   return (
     <View
       style={{
-        ...(screen.name === SCREENS.ADD_WHEEL && {
+        ...(screen.name === SCREENS.ADD_REPORT && {
           position: 'absolute',
           bottom: 15,
           backgroundColor: 'white',

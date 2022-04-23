@@ -19,7 +19,6 @@ import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 
 const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
-const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 
 export default function Reports(props) {
   const {profile, getAllPosts, posts, format} = props;
@@ -30,10 +29,9 @@ export default function Reports(props) {
 
   const renderFile = ({item, index}) => {
     if (item?.mimetype?.includes('image')) {
-      console.log(item);
       return (
-        <View style={{backgroundColor: 'red', height: 150, width: 150}}>
-          <Image source={{uri: item.fileUrl}} style={[styles.fileView]} />
+        <View>
+          <Image source={{uri: item.fileUrl}} style={styles.fileView} />
         </View>
       );
     } else if (item?.type?.includes('pdf')) {
@@ -42,7 +40,7 @@ export default function Reports(props) {
           <Pdf
             fitPolicy={0}
             source={{uri: item.fileUrl}}
-            style={[styles.fileView]}
+            style={styles.fileView}
           />
         </View>
       );
@@ -71,14 +69,10 @@ export default function Reports(props) {
           renderItem={renderFile}
           sliderWidth={SLIDER_WIDTH}
           itemWidth={ITEM_WIDTH}
-          layout={'tinder'}
+          layout={'stack'}
+          layoutCardOffset={`18`}
         />
-        {/* <Image
-          source={{
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Gull_portrait_ca_usa.jpg',
-          }}
-          style={{width: 200, height: 200}}
-        /> */}
+
         <Text>{item?.title}</Text>
       </View>
     );
@@ -187,7 +181,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fileView: {
-    height: ITEM_WIDTH,
+    height: 250,
     width: ITEM_WIDTH,
     alignSelf: 'center',
     borderTopEndRadius: 20,

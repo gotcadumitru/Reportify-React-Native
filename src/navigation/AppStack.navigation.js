@@ -65,6 +65,7 @@ export default function AppStackNavigator({navigation}) {
             name={SCREENS.EDIT_PROFILE}
             component={Connection.EditProfile}
           />
+
           <Stack.Screen
             name={SCREENS.USER_DOCUMENTS}
             component={Connection.Documents}

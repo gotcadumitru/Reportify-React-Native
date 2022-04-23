@@ -35,7 +35,7 @@ export default function ProfileSetup(props) {
       localitate: profile?.localitate,
       oras: profile?.oras,
       files: [],
-      birthday: profile?.birthday ?? new Date(),
+      birthday: new Date(),
       profileImage: profile?.profileImage,
     },
     onSubmit: setupProfile,
@@ -210,8 +210,9 @@ export default function ProfileSetup(props) {
                 style={{
                   width: SCREEN_SIZE.WIDTH,
                 }}
+                maxDate={new Date()}
                 mode="date"
-                date={values?.birthday}
+                date={values?.birthday || new Date()}
                 onDateChange={date => setFieldValue('birthday', date)}
               />
             </View>

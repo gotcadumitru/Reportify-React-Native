@@ -11,6 +11,7 @@ import MyProfile from 'components/screens/User/Profile/Profile.screen.js';
 import EditProfile from 'components/screens/User/Profile/EditProfile.screen.js';
 import Documents from 'components/screens/User/Profile/Documents.screen.js';
 import Reports from 'components/screens/User/Home/Reports.screen.js';
+import AddReport from 'components/screens/User/Home/AddReport.screen.js';
 
 import {
   setter,
@@ -55,4 +56,5 @@ export default {
   EditProfile: connect(mapStateToProps, mapDispatchToProps)(EditProfile),
   Documents: connect(mapStateToProps, mapDispatchToProps)(Documents),
   Reports: connect(mapStateToProps, mapDispatchToProps)(Reports),
+  AddReport: connect(mapStateToProps, mapDispatchToProps)(AddReport),
 };

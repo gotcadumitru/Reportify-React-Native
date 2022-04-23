@@ -1,3 +1,5 @@
+import React from 'react';
+import {TouchableOpacity} from 'react-native';
 import {SCREENS} from './screen.names';
 import {COLORS} from 'theme/theme';
 
@@ -17,11 +19,16 @@ export const TabScreens = [
     source: 'MyProfile',
   },
   {
-    name: SCREENS.ADD_WHEEL,
+    name: SCREENS.ADD_REPORT,
     icon: require('assets/lottie/icons/add.json'),
     height: 60,
     width: 60,
-    source: 'MyProfile',
+    source: 'AddReport',
+    options: {
+      headerShown: true,
+      title: 'Raportare problemă',
+      headerLeft: () => null,
+    },
   },
   {
     name: SCREENS.LOCATIONS,

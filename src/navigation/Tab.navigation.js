@@ -22,6 +22,7 @@ export default function TabNavigation() {
             component={Connection[screen.source]}
             options={{
               tabBarShowLabel: false,
+              ...screen?.options,
             }}
           />
         );

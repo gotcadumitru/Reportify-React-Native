@@ -10,7 +10,7 @@ export const SCREENS = {
   REPORTS: 'Reports',
   FAVORITE: 'Favorite',
   LOCATIONS: 'Locations',
-  ADD_WHEEL: 'AddWheel',
+  ADD_REPORT: 'AddReport',
   EDIT_PROFILE: 'EditProfile',
   USER_DOCUMENTS: 'Documents',
 };
