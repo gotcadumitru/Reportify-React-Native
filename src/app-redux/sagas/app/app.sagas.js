@@ -15,7 +15,7 @@ import {
   EDIT_USER,
   GET_ALL_POSTS,
   ADD_POST,
-  LIKE_ITEM,
+  VOTE_ITEM,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {getStorageData} from 'helpers/storage';
@@ -182,27 +182,33 @@ function* addPostGenerator({data}) {
   }
 }
 
-function* likeItemGenerator({index}) {
+function* voteItemGenerator({index, field}) {
   try {
     const state = yield select(getState);
     const {posts, profile} = state;
-    const likedArr = posts[index].likes;
-    const isLiked = likedArr.includes(profile.id);
-    let likes;
-    if (isLiked) {
-      likes = likedArr.filter(id => profile.id !== id);
+    const fieldToExclude = field !== 'likes' ? 'likes' : 'disLikes';
+
+    const arrToUpdate = posts[index][field];
+    const arrToRemove = posts[index][fieldToExclude];
+    const includesInArray = arrToUpdate.includes(profile.id);
+
+    let addedItems;
+    if (includesInArray) {
+      addedItems = arrToUpdate.filter(id => profile.id !== id);
     } else {
-      likes = [...likedArr, profile.id];
+      addedItems = [...arrToUpdate, profile.id];
     }
+    let removedItems = arrToRemove.filter(id => profile.id !== id);
+
     let newPosts = [...posts];
-    newPosts[index].likes = likes;
+    newPosts[index][field] = addedItems;
+    newPosts[index][fieldToExclude] = removedItems;
+
+    yield put(setter({posts: newPosts}));
     const res = yield editPostGenerator({
-      data: {likes},
+      data: {[field]: addedItems, [fieldToExclude]: removedItems},
       id: newPosts[index]._id,
     });
-    if (res) {
-      yield put(setter({posts: newPosts}));
-    }
   } catch (e) {
     console.log(e);
   }
@@ -221,5 +227,5 @@ export function* appActionWatcher() {
   yield takeEvery(EDIT_USER, editUserGenerator);
   yield takeEvery(GET_ALL_POSTS, getAllPostsGenerator);
   yield takeEvery(ADD_POST, addPostGenerator);
-  yield takeEvery(LIKE_ITEM, likeItemGenerator);
+  yield takeEvery(VOTE_ITEM, voteItemGenerator);
 }

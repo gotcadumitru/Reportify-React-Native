@@ -12,6 +12,7 @@ import EditProfile from 'components/screens/User/Profile/EditProfile.screen.js';
 import Documents from 'components/screens/User/Profile/Documents.screen.js';
 import Reports from 'components/screens/User/Home/Reports.screen.js';
 import AddReport from 'components/screens/User/Home/AddReport.screen.js';
+import MapsReports from 'components/screens/User/Home/MapsReports.screen.js';
 
 import {
   setter,
@@ -26,7 +27,7 @@ import {
   logout,
   getAllPosts,
   addPost,
-  likeItem,
+  voteItem,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -47,7 +48,7 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
   getAllPosts: () => dispatch(getAllPosts()),
   addPost: data => dispatch(addPost(data)),
-  likeItem: index => dispatch(likeItem(index)),
+  voteItem: (index, field) => dispatch(voteItem(index, field)),
 });
 
 export default {
@@ -61,4 +62,5 @@ export default {
   Documents: connect(mapStateToProps, mapDispatchToProps)(Documents),
   Reports: connect(mapStateToProps, mapDispatchToProps)(Reports),
   AddReport: connect(mapStateToProps, mapDispatchToProps)(AddReport),
+  MapsReports: connect(mapStateToProps, mapDispatchToProps)(MapsReports),
 };

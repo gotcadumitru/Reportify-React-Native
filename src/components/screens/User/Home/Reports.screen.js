@@ -17,11 +17,10 @@ import Carousel from 'react-native-snap-carousel';
 import Pdf from 'react-native-pdf';
 import Video from 'react-native-video';
 import Share from 'react-native-share';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import base64File from 'helpers/base64File';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
-import {LIKE_ITEM} from 'app-redux/actions/app/app.actions-types';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
@@ -38,7 +37,7 @@ export default function Reports(props) {
     getProfile,
     navigation,
     setter,
-    likeItem,
+    voteItem,
   } = props;
 
   React.useEffect(() => {
@@ -119,8 +118,26 @@ export default function Reports(props) {
 
   const renderPost = ({item, index}) => {
     const isLiked = item?.likes?.includes(profile?.id);
+    const isDisliked = item?.disLikes?.includes(profile?.id);
+
     return (
-      <View>
+      <View style={{marginTop: 20}}>
+        <View style={styles.likesContainer}>
+          <TouchableOpacity onPress={() => voteItem(index, 'likes')}>
+            <AntDesign
+              name={`like${Number(!isLiked) + 1}`}
+              size={34}
+              color={'white'}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => voteItem(index, 'disLikes')}>
+            <AntDesign
+              name={`dislike${Number(!isDisliked) + 1}`}
+              size={34}
+              color={'white'}
+            />
+          </TouchableOpacity>
+        </View>
         <View style={styles.reportHeaderComponent}>
           <Image
             source={{uri: item.author.profileImage.fileUrl}}
@@ -143,15 +160,11 @@ export default function Reports(props) {
             <Text style={styles.authorText}>Titlu: {item.title}</Text>
           </View>
           <View style={styles.reportShareContainer}>
-            <TouchableOpacity
-              style={{width: 50}}
-              onPress={() => {
-                likeItem(index);
-              }}>
+            <TouchableOpacity style={{width: 50}}>
               <Ionicons
-                name={isLiked ? 'heart' : 'heart-outline'}
+                name={false ? 'book' : 'bookmark-outline'}
                 size={30}
-                color={COLORS.RED}
+                color={COLORS.DARK}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -382,5 +395,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     flex: 1,
+  },
+  likesContainer: {
+    position: 'absolute',
+    right: SCREEN_SIZE.WIDTH * 0.1,
+    top: 80,
+    zIndex: 1000,
+    height: 100,
+    justifyContent: 'space-between',
   },
 });

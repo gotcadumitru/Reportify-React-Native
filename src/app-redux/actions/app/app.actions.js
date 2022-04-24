@@ -56,7 +56,8 @@ export const addPost = data => ({
   type: TYPES.ADD_POST,
   data,
 });
-export const likeItem = index => ({
-  type: TYPES.LIKE_ITEM,
+export const voteItem = (index, field) => ({
+  type: TYPES.VOTE_ITEM,
   index,
+  field,
 });

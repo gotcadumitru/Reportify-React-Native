@@ -35,7 +35,7 @@ export const TabScreens = [
     icon: require('assets/lottie/icons/maps.json'),
     height: 30,
     width: 30,
-    source: 'MyProfile',
+    source: 'MapsReports',
   },
   {
     name: SCREENS.MY_PROFILE,
