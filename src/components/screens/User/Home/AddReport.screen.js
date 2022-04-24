@@ -31,7 +31,7 @@ const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
 export default function AddReport(props) {
-  const {addPost} = props;
+  const {addPost, setter, isResetPost} = props;
   const [isFilePicker, setIsFilePicker] = React.useState(false);
   const [isLocationPicker, setIsLocationPicker] = React.useState(false);
 
@@ -39,20 +39,28 @@ export default function AddReport(props) {
 
   const carouselRef = React.useRef(null);
 
-  const {handleSubmit, handleChange, values, setFieldValue} = useFormik({
-    initialValues: {
-      title: '',
-      description: '',
-      tags: [],
-      labelLocation: '',
-      location: null,
-      category: REPORT_CATEGORIES[1],
-      importanceLevel: REPORTS_IMPORTANCE_LEVEL[1],
-      priority: REPORTS_PRIORITY[1],
-      files: [],
-    },
-    onSubmit: addReport,
-  });
+  const {handleSubmit, handleChange, values, setFieldValue, resetForm} =
+    useFormik({
+      initialValues: {
+        title: '',
+        description: '',
+        tags: [],
+        labelLocation: '',
+        location: null,
+        category: REPORT_CATEGORIES[1],
+        importanceLevel: REPORTS_IMPORTANCE_LEVEL[1],
+        priority: REPORTS_PRIORITY[1],
+        files: [],
+      },
+      onSubmit: addReport,
+    });
+
+  React.useEffect(() => {
+    if (isResetPost) {
+      resetForm();
+      setter({isResetPost: false});
+    }
+  }, [isResetPost]);
 
   function addReport(data) {
     addPost({
@@ -68,6 +76,7 @@ export default function AddReport(props) {
     files.splice(index, 1);
     setFieldValue('files', files);
   };
+
   const renderFile = ({item, index}) => {
     if (item?.mime?.includes('image')) {
       return (

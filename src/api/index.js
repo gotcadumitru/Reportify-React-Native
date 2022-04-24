@@ -8,7 +8,11 @@ import {
   facebookSignInRequest,
 } from './auth/auth.requests';
 
-import {getAllPostsRequest, addPostRequest} from './user/user.requests';
+import {
+  getAllPostsRequest,
+  addPostRequest,
+  editPostRequest,
+} from './user/user.requests';
 
 export {
   loginAppRequest,
@@ -20,4 +24,5 @@ export {
   facebookSignInRequest,
   getAllPostsRequest,
   addPostRequest,
+  editPostRequest,
 };

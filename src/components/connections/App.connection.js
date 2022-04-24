@@ -26,6 +26,7 @@ import {
   logout,
   getAllPosts,
   addPost,
+  likeItem,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -46,6 +47,7 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
   getAllPosts: () => dispatch(getAllPosts()),
   addPost: data => dispatch(addPost(data)),
+  likeItem: index => dispatch(likeItem(index)),
 });
 
 export default {

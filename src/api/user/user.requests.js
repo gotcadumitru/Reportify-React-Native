@@ -12,3 +12,9 @@ export const addPostRequest = async data => {
     return response;
   });
 };
+
+export const editPostRequest = async (data, id) => {
+  return axios.put(`${API_ROUTES.POSTS}/${id}`, {...data}).then(response => {
+    return response;
+  });
+};

@@ -9,6 +9,8 @@ const defaultState = {
   hasResponse: null,
   posts: [],
   format: 1,
+  isResetPost: false,
+  isRefreshing: false,
 };
 
 // * Reducer

@@ -56,3 +56,7 @@ export const addPost = data => ({
   type: TYPES.ADD_POST,
   data,
 });
+export const likeItem = index => ({
+  type: TYPES.LIKE_ITEM,
+  index,
+});

@@ -10,22 +10,78 @@ import {
   Animated,
   FlatList,
   Image,
+  RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import Pdf from 'react-native-pdf';
 import Video from 'react-native-video';
+import Share from 'react-native-share';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import base64File from 'helpers/base64File';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
+import {LIKE_ITEM} from 'app-redux/actions/app/app.actions-types';
 
 const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
 export default function Reports(props) {
-  const {profile, getAllPosts, posts, format} = props;
   const scrollX = React.useRef(new Animated.Value(0)).current;
+
+  const {
+    profile,
+    getAllPosts,
+    posts,
+    format,
+    isLoading,
+    getProfile,
+    navigation,
+    setter,
+    likeItem,
+  } = props;
+
   React.useEffect(() => {
     getAllPosts();
   }, []);
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getAllPosts();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  const onRefresh = () => {
+    getAllPosts();
+  };
+
+  const onShareItem = async item => {
+    try {
+      const image = item.files.find(file => file.mimetype.includes('image'));
+      if (image) {
+        setter({isLoading: true});
+        const base64Image = await base64File(image.fileUrl);
+
+        Share.open({
+          title: item.title,
+          subject: item.title,
+          message: item.description,
+          ...(image && {url: base64Image}),
+        }).finally(res => {
+          setter({isLoading: false});
+        });
+      }
+    } catch (error) {
+      setter({
+        response: {
+          isResponse: true,
+          message: 'A aparut o eroare!',
+          type: false,
+        },
+      });
+    }
+  };
 
   const renderFile = ({item, index}) => {
     if (item?.mimetype?.includes('image')) {
@@ -61,19 +117,50 @@ export default function Reports(props) {
     }
   };
 
-  const renderPost = ({item}) => {
+  const renderPost = ({item, index}) => {
+    const isLiked = item?.likes?.includes(profile?.id);
     return (
       <View>
+        <View style={styles.reportHeaderComponent}>
+          <Image
+            source={{uri: item.author.profileImage.fileUrl}}
+            style={styles.authorAvatar}
+          />
+          <Text style={styles.authorText}>
+            {item.author.name} {item.author.surname}
+          </Text>
+        </View>
         <Carousel
-          data={profile?.domiciliuFiles}
+          data={item.files}
           renderItem={renderFile}
           sliderWidth={SLIDER_WIDTH}
           itemWidth={ITEM_WIDTH}
           layout={'stack'}
           layoutCardOffset={`18`}
         />
-
-        <Text>{item?.title}</Text>
+        <View style={styles.reportFooterComponent}>
+          <View style={{flex: 1}}>
+            <Text style={styles.authorText}>Titlu: {item.title}</Text>
+          </View>
+          <View style={styles.reportShareContainer}>
+            <TouchableOpacity
+              style={{width: 50}}
+              onPress={() => {
+                likeItem(index);
+              }}>
+              <Ionicons
+                name={isLiked ? 'heart' : 'heart-outline'}
+                size={30}
+                color={COLORS.RED}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{width: 50}}
+              onPress={() => onShareItem(item)}>
+              <Ionicons name="share-social" size={30} color={COLORS.DARK} />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     );
   };
@@ -106,6 +193,9 @@ export default function Reports(props) {
           data={posts}
           showsVerticalScrollIndicator={false}
           renderItem={renderPost}
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+          }
           ListHeaderComponent={
             <View>
               <View>
@@ -170,6 +260,7 @@ export default function Reports(props) {
               </Text>
             </View>
           }
+          ListFooterComponent={<View style={{height: 250}} />}
         />
       </View>
     </SafeAreaView>
@@ -184,6 +275,7 @@ const styles = StyleSheet.create({
     height: 250,
     width: ITEM_WIDTH,
     alignSelf: 'center',
+    // borderRadius: 20,
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
   },
@@ -260,5 +352,35 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '600',
     fontSize: 16,
+  },
+  reportHeaderComponent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: SCREEN_SIZE.WIDTH * 0.05,
+    marginBottom: 15,
+  },
+  authorAvatar: {
+    height: 40,
+    width: 40,
+    borderRadius: 1000,
+  },
+  authorText: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    marginLeft: 10,
+  },
+  reportFooterComponent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: SCREEN_SIZE.WIDTH * 0.05,
+    paddingVertical: 10,
+    backgroundColor: 'white',
+    borderBottomEndRadius: 20,
+    borderBottomStartRadius: 20,
+  },
+  reportShareContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    flex: 1,
   },
 });
