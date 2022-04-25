@@ -26,12 +26,13 @@ import {
   REPORTS_PRIORITY,
   REPORTS_IMPORTANCE_LEVEL,
 } from 'constants/data/report.data';
+import {getCategories} from 'app-redux/actions/app/app.actions';
 
 const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
 export default function AddReport(props) {
-  const {addPost, setter, isResetPost} = props;
+  const {addPost, setter, isResetPost, categories} = props;
   const [isFilePicker, setIsFilePicker] = React.useState(false);
   const [isLocationPicker, setIsLocationPicker] = React.useState(false);
 
@@ -47,13 +48,18 @@ export default function AddReport(props) {
         tags: [],
         labelLocation: '',
         location: null,
-        category: REPORT_CATEGORIES[1],
+        mainCategory: categories[0],
+        category: categories[0]?.options[0],
         importanceLevel: REPORTS_IMPORTANCE_LEVEL[1],
         priority: REPORTS_PRIORITY[1],
         files: [],
       },
       onSubmit: addReport,
     });
+
+  React.useEffect(() => {
+    getCategories();
+  }, []);
 
   React.useEffect(() => {
     if (isResetPost) {
@@ -67,7 +73,7 @@ export default function AddReport(props) {
       ...data,
       importanceLevel: data.importanceLevel.label,
       priority: data.priority.label,
-      category: data.priority.label,
+      category: data.category.name,
     });
   }
 
@@ -231,12 +237,26 @@ export default function AddReport(props) {
             <Picker
               style={{width: SCREEN_SIZE.WIDTH * 0.7, alignSelf: 'center'}}
               numberOfLines={1}
-              selectedValue={values.category.value}
+              selectedValue={values.mainCategory?.id}
               onValueChange={(item, index) =>
-                setFieldValue('category', REPORT_CATEGORIES[index])
+                setFieldValue('mainCategory', categories[index])
               }>
-              {REPORT_CATEGORIES.map(({label, value}) => {
-                return <Picker.Item label={label} value={value} key={value} />;
+              {categories.map(({name, id}) => {
+                return <Picker.Item label={name} value={id} key={id} />;
+              })}
+            </Picker>
+          </View>
+          <View style={{marginTop: 10}}>
+            <Text style={styles.title}>Subcategorie</Text>
+            <Picker
+              style={{width: SCREEN_SIZE.WIDTH * 0.7, alignSelf: 'center'}}
+              numberOfLines={1}
+              selectedValue={values.category?.id}
+              onValueChange={(item, index) =>
+                setFieldValue('category', values.mainCategory.options[index])
+              }>
+              {values.mainCategory.options.map(({name, id}) => {
+                return <Picker.Item label={name} value={id} key={id} />;
               })}
             </Picker>
           </View>

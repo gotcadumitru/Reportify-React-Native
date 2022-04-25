@@ -15,6 +15,7 @@
     "build:android": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assembleDebug && cd ../"
   },
   "dependencies": {
+    "@miblanchard/react-native-slider": "^2.1.0",
     "@react-native-async-storage/async-storage": "^1.17.3",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-google-signin/google-signin": "^7.2.2",
@@ -29,6 +30,7 @@
     "dayjs": "^1.11.0",
     "fbjs": "^3.0.4",
     "formik": "^2.2.9",
+    "geolib": "^3.3.3",
     "lodash": "^4.17.21",
     "lottie-ios": "3.2.3",
     "lottie-react-native": "^5.0.1",

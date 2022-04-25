@@ -65,6 +65,20 @@ export default function AppStackNavigator({navigation}) {
             name={SCREENS.EDIT_PROFILE}
             component={Connection.EditProfile}
           />
+          <Stack.Screen
+            name={SCREENS.FILTER}
+            component={Connection.Filter}
+            options={({navigation, route}) => ({
+              gestureEnabled: false,
+              headerShown: true,
+              title: 'Filtre',
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name="chevron-back" size={30} />
+                </TouchableOpacity>
+              ),
+            })}
+          />
 
           <Stack.Screen
             name={SCREENS.USER_DOCUMENTS}

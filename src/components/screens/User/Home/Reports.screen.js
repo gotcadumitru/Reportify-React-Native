@@ -18,6 +18,7 @@ import Pdf from 'react-native-pdf';
 import Video from 'react-native-video';
 import Share from 'react-native-share';
 import base64File from 'helpers/base64File';
+import {SCREENS} from 'constants/screens/screen.names';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -31,25 +32,20 @@ export default function Reports(props) {
   const {
     profile,
     getAllPosts,
-    posts,
+    filteredPosts,
     format,
     isLoading,
     getProfile,
     navigation,
     setter,
     voteItem,
+    getCategories,
   } = props;
 
   React.useEffect(() => {
     getAllPosts();
+    getCategories();
   }, []);
-
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      getAllPosts();
-    });
-    return unsubscribe;
-  }, [navigation]);
 
   const onRefresh = () => {
     getAllPosts();
@@ -188,22 +184,29 @@ export default function Reports(props) {
           }>{`${profile?.localitate}, ${profile?.oras}`}</Text>
       </View>
       <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchView}
-          placeholder="Căutare"
-          placeholderTextColor={COLORS.DARK}
-        />
-        <Ionicons
-          name="search"
-          size={24}
-          style={styles.searchIcon}
-          color={COLORS.RED}
-        />
+        <View style={{justifyContent: 'center'}}>
+          <TextInput
+            style={styles.searchView}
+            placeholder="Căutare"
+            placeholderTextColor={COLORS.DARK}
+          />
+          <Ionicons
+            name="search"
+            size={24}
+            style={styles.searchIcon}
+            color={COLORS.RED}
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.searchFilterContainer}
+          onPress={() => navigation.navigate(SCREENS.FILTER)}>
+          <Ionicons name="filter" size={24} color={COLORS.DARK} />
+        </TouchableOpacity>
       </View>
 
       <View>
         <FlatList
-          data={posts}
+          data={filteredPosts}
           showsVerticalScrollIndicator={false}
           renderItem={renderPost}
           refreshControl={
@@ -303,7 +306,7 @@ const styles = StyleSheet.create({
   },
   searchView: {
     alignSelf: 'center',
-    width: SCREEN_SIZE.WIDTH * 0.9,
+    width: SCREEN_SIZE.WIDTH * 0.7,
     height: 40,
     borderRadius: 20,
     borderColor: COLORS.MEDIUM_GRAY,
@@ -311,11 +314,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '600',
     paddingHorizontal: 50,
+    ...APP_STYLES.SHADOW,
   },
   searchContainer: {
+    width: SCREEN_SIZE.WIDTH,
     marginTop: 30,
     alignSelf: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   searchIcon: {
     position: 'absolute',
@@ -327,9 +334,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'space-around',
-    // borderRadius: 20,
-    // width: SCREEN_SIZE.WIDTH * 0.9,
-    // alignSelf: 'center',
   },
   normalDot: {
     height: 8,
@@ -403,5 +407,12 @@ const styles = StyleSheet.create({
     zIndex: 1000,
     height: 100,
     justifyContent: 'space-between',
+  },
+  searchFilterContainer: {
+    backgroundColor: COLORS.MEDIUM_GRAY,
+    borderRadius: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    ...APP_STYLES.SHADOW,
   },
 });

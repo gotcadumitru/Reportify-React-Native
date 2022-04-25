@@ -18,3 +18,9 @@ export const editPostRequest = async (data, id) => {
     return response;
   });
 };
+
+export const categoriesRequest = async () => {
+  return axios.get(API_ROUTES.CATEGORIES).then(response => {
+    return response.data;
+  });
+};

@@ -61,3 +61,7 @@ export const voteItem = (index, field) => ({
   index,
   field,
 });
+
+export const getCategories = () => ({
+  type: TYPES.GET_CATEGORIES,
+});

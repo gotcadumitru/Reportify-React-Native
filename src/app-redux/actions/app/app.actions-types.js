@@ -12,3 +12,4 @@ export const LOGOUT = 'LOGOUT';
 export const GET_ALL_POSTS = 'GET_ALL_POSTS';
 export const ADD_POST = 'ADD_POST';
 export const VOTE_ITEM = 'VOTE_ITEM';
+export const GET_CATEGORIES = 'GET_CATEGORIES';

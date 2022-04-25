@@ -13,4 +13,5 @@ export const SCREENS = {
   ADD_REPORT: 'AddReport',
   EDIT_PROFILE: 'EditProfile',
   USER_DOCUMENTS: 'Documents',
+  FILTER: 'Filter',
 };

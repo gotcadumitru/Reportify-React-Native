@@ -25,14 +25,14 @@ const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const MapsReports = props => {
-  const {posts, voteItem, profile} = props;
+  const {posts, voteItem, profile, getAllPosts} = props;
 
   let mapIndex = 0;
   let mapAnimation = new Animated.Value(0);
 
   useEffect(() => {
     mapAnimation.addListener(({value}) => {
-      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
+      let index = Math.floor(value / CARD_WIDTH + 0.3);
       if (index >= posts.length) {
         index = posts.length - 1;
       }
@@ -58,6 +58,10 @@ const MapsReports = props => {
       }, 10);
     });
   });
+
+  useEffect(() => {
+    getAllPosts();
+  }, []);
 
   const interpolations = posts.map((marker, index) => {
     const inputRange = [
@@ -88,13 +92,6 @@ const MapsReports = props => {
 
   const _map = React.useRef(null);
   const _scrollView = React.useRef(null);
-  const [userLocation, setUserLocation] = React.useState(null);
-
-  React.useEffect(() => {
-    Geolocation.getCurrentPosition(({coords}) => {
-      setUserLocation(coords);
-    });
-  }, []);
 
   const onShareItem = async item => {
     try {
@@ -128,7 +125,7 @@ const MapsReports = props => {
       <MapView
         ref={_map}
         initialRegion={{
-          ...userLocation,
+          ...posts[0].location,
           latitudeDelta: 0.06,
           longitudeDelta: 0.05,
         }}

@@ -1,12 +1,15 @@
 import {put, takeEvery, call, select} from 'redux-saga/effects';
 import axios from 'axios';
 import {API_ROUTES} from 'constants/endpoints/endpoints';
+import getUserLocation from 'helpers/getUserLocation';
+import {getDistance} from 'geolib';
 
 import {
   editUserRequest,
   getAllPostsRequest,
   addPostRequest,
   editPostRequest,
+  categoriesRequest,
 } from 'api/index';
 
 // * Action types
@@ -16,10 +19,11 @@ import {
   GET_ALL_POSTS,
   ADD_POST,
   VOTE_ITEM,
+  GET_CATEGORIES,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {getStorageData} from 'helpers/storage';
-import {sortByDate} from 'helpers/sort';
+import {sortByDate, sortByLength} from 'helpers/sort';
 // * Generators
 
 const getState = state => state.appReducer;
@@ -124,9 +128,26 @@ function* getAllPostsGenerator() {
     if (format) {
       yield put(setter({format}));
     }
+    const {coords} = yield call(getUserLocation);
+
     const res = yield call(getAllPostsRequest);
     if (res) {
-      yield put(setter({posts: res.posts.sort(sortByDate)}));
+      const sortedPosts = res.posts
+        .sort((a, b) => sortByLength(a, b, 'likes'))
+        .map(post => {
+          post.distance = getDistance(
+            {latitude: coords.latitude, longitude: coords.longitude},
+            post.location,
+          );
+          return post;
+        });
+      yield put(
+        setter({
+          posts: sortedPosts,
+          filteredPosts: sortedPosts,
+          userLocation: coords,
+        }),
+      );
     }
   } catch (e) {
     yield put(
@@ -135,7 +156,6 @@ function* getAllPostsGenerator() {
           isResponse: true,
           message:
             'Oooops! Something went wrong when getting data, please try again!',
-
           type: false,
         },
       }),
@@ -209,15 +229,22 @@ function* voteItemGenerator({index, field}) {
       data: {[field]: addedItems, [fieldToExclude]: removedItems},
       id: newPosts[index]._id,
     });
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 }
 
 function* editPostGenerator({data, id}) {
   try {
     const res = yield call(editPostRequest, {...data}, id);
     return res;
+  } catch (error) {}
+}
+
+function* getCategoriesGenerator() {
+  try {
+    const res = yield call(categoriesRequest);
+    if (res) {
+      yield put(setter({categories: res.categories}));
+    }
   } catch (error) {}
 }
 
@@ -228,4 +255,5 @@ export function* appActionWatcher() {
   yield takeEvery(GET_ALL_POSTS, getAllPostsGenerator);
   yield takeEvery(ADD_POST, addPostGenerator);
   yield takeEvery(VOTE_ITEM, voteItemGenerator);
+  yield takeEvery(GET_CATEGORIES, getCategoriesGenerator);
 }

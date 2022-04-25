@@ -13,4 +13,5 @@ export const API_ROUTES = {
   EDIT_USER: AUTH + '/edit-user',
   UPLOAD_FILES: FILES + '/upload',
   POSTS: POST,
+  CATEGORIES: POST + '/categories',
 };

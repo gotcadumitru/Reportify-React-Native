@@ -13,6 +13,7 @@ import Documents from 'components/screens/User/Profile/Documents.screen.js';
 import Reports from 'components/screens/User/Home/Reports.screen.js';
 import AddReport from 'components/screens/User/Home/AddReport.screen.js';
 import MapsReports from 'components/screens/User/Home/MapsReports.screen.js';
+import Filter from 'components/screens/User/Home/Filter.screen.js';
 
 import {
   setter,
@@ -28,6 +29,7 @@ import {
   getAllPosts,
   addPost,
   voteItem,
+  getCategories,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -49,6 +51,7 @@ const mapDispatchToProps = dispatch => ({
   getAllPosts: () => dispatch(getAllPosts()),
   addPost: data => dispatch(addPost(data)),
   voteItem: (index, field) => dispatch(voteItem(index, field)),
+  getCategories: () => dispatch(getCategories()),
 });
 
 export default {
@@ -63,4 +66,5 @@ export default {
   Reports: connect(mapStateToProps, mapDispatchToProps)(Reports),
   AddReport: connect(mapStateToProps, mapDispatchToProps)(AddReport),
   MapsReports: connect(mapStateToProps, mapDispatchToProps)(MapsReports),
+  Filter: connect(mapStateToProps, mapDispatchToProps)(Filter),
 };
