@@ -16,7 +16,9 @@ export default function Input(props) {
     <View style={[style, {marginVertical: 5, alignSelf: 'center', width}]}>
       <Text style={styles.title}>{title}</Text>
       <Pressable style={styles.input} onPress={onPress}>
-        <Text style={styles.text}>{dayjs(value).format('DD/MM/YYYY')}</Text>
+        <Text style={styles.text}>
+          {value ? dayjs(value).format('DD/MM/YYYY') : 'Alegeți o dată'}
+        </Text>
         {Icon && (
           <View style={styles.icon}>
             <Icon />

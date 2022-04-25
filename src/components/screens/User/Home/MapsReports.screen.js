@@ -25,7 +25,7 @@ const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const MapsReports = props => {
-  const {posts, voteItem, profile, getAllPosts} = props;
+  const {posts, voteItem, profile, getAllPosts, isLoading} = props;
 
   let mapIndex = 0;
   let mapAnimation = new Animated.Value(0);
@@ -122,39 +122,41 @@ const MapsReports = props => {
 
   return (
     <View style={styles.container}>
-      <MapView
-        ref={_map}
-        initialRegion={{
-          ...posts[0].location,
-          latitudeDelta: 0.06,
-          longitudeDelta: 0.05,
-        }}
-        showsUserLocation
-        style={styles.container}>
-        {posts.map((marker, index) => {
-          const scaleStyle = {
-            transform: [
-              {
-                scale: interpolations[index].scale,
-              },
-            ],
-          };
-          return (
-            <MapView.Marker
-              key={index}
-              coordinate={marker.location}
-              onPress={e => onMarkerPress(e)}>
-              <Animated.View style={styles.markerWrap}>
-                <Animated.Image
-                  source={require('assets/marker.png')}
-                  style={[styles.marker, scaleStyle]}
-                  resizeMode="cover"
-                />
-              </Animated.View>
-            </MapView.Marker>
-          );
-        })}
-      </MapView>
+      {!isLoading && (
+        <MapView
+          ref={_map}
+          initialRegion={{
+            ...posts[0].location,
+            latitudeDelta: 0.06,
+            longitudeDelta: 0.05,
+          }}
+          showsUserLocation
+          style={styles.container}>
+          {posts.map((marker, index) => {
+            const scaleStyle = {
+              transform: [
+                {
+                  scale: interpolations[index].scale,
+                },
+              ],
+            };
+            return (
+              <MapView.Marker
+                key={index}
+                coordinate={marker.location}
+                onPress={e => onMarkerPress(e)}>
+                <Animated.View style={styles.markerWrap}>
+                  <Animated.Image
+                    source={require('assets/marker.png')}
+                    style={[styles.marker, scaleStyle]}
+                    resizeMode="cover"
+                  />
+                </Animated.View>
+              </MapView.Marker>
+            );
+          })}
+        </MapView>
+      )}
       <View style={styles.searchBox}>
         <View style={styles.searchContainer}>
           <TextInput

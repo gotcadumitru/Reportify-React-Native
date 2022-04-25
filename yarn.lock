@@ -6583,6 +6583,11 @@ react-native-bootsplash@^4.1.4:
     fs-extra "^10.1.0"
     jimp "^0.16.1"
 
+react-native-bouncy-checkbox@^2.1.10:
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/react-native-bouncy-checkbox/-/react-native-bouncy-checkbox-2.1.10.tgz#c72b3744f90902296e067a53d97748de3451619b"
+  integrity sha512-znKVSJQ71+NRTcOG9zuMXBRrUgFsUutGbQoOwasRyVlrJU4djX1Ny0CvCMgOy/Fh+lu9qdLtQFUQLfKwnWXt3Q==
+
 react-native-codegen@*:
   version "0.0.14"
   resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.14.tgz#1c8a9d39935e611a22765aefb06c2d81b2341672"

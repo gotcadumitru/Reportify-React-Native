@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {useFormik} from 'formik';
 import {Slider} from '@miblanchard/react-native-slider';
 import DatePicker from 'utils/DatePicker';
@@ -15,6 +16,7 @@ import Mui from 'react-native-vector-icons/MaterialCommunityIcons';
 import dayjs from 'dayjs';
 import {sortByDate, sortByLength} from 'helpers/sort';
 import {getDistance} from 'geolib';
+import _ from 'lodash';
 
 export default function FilterScreen(props) {
   const {navigation, filters, setter, posts} = props;
@@ -38,11 +40,40 @@ export default function FilterScreen(props) {
     }
   }
 
+  const filterByDate = (post, filters) => {
+    const {startDate, endDate} = filters;
+    if (startDate && endDate) {
+      return (
+        new Date(post.createdAt) >= startDate &&
+        new Date(post.createdAt) <= endDate
+      );
+    } else if (startDate && !endDate) {
+      return new Date(post.createdAt) >= startDate;
+    } else if (!startDate && endDate) {
+      return new Date(post.createdAt) >= startDate;
+    }
+    return true;
+  };
+  const distanceFilter = (post, filters) => {
+    const {isDistance} = filters;
+    if (!isDistance) return true;
+    const checkDistance = _.inRange(
+      post.distance,
+      filters.distance[0],
+      filters.distance[1],
+    );
+    return checkDistance;
+  };
+
   function applyFilters(filters) {
     let filteredPosts = filteredByType(filters.type);
-    console.log(filteredPosts);
-    // setter({filters});
-    // navigation.goBack();
+
+    filteredPosts = filteredPosts
+      .filter(post => filterByDate(post, filters))
+      .filter(post => distanceFilter(post, filters));
+
+    setter({filters, filteredPosts});
+    navigation.goBack();
   }
 
   return (
@@ -147,23 +178,46 @@ export default function FilterScreen(props) {
           />
         </View>
         <View style={styles.sliderContainer}>
-          <Text style={[styles.text, {marginBottom: 30}]}>
-            Distanța: {values.distance[0]} km - {values.distance[1]} km
-          </Text>
-          <Slider
-            value={values.distance}
-            onValueChange={value => setFieldValue('distance', value)}
-            animationType="timing"
-            maximumValue={100}
-            minimumValue={1}
-            step={1}
-            maximumTrackTintColor={COLORS.MEDIUM_GRAY}
-            minimumTrackTintColor={COLORS.RED}
-            trackMarks={[0, 100]}
-            animateTransitions
-            trackStyle={{borderRadius: 10, height: 10}}
-            thumbStyle={{height: 26, width: 26, borderRadius: 20}}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <BouncyCheckbox
+              size={25}
+              fillColor={COLORS.RED}
+              unfillColor="#FFFFFF"
+              disableText
+              iconStyle={{borderColor: COLORS.RED}}
+              onPress={(isChecked: boolean) =>
+                setFieldValue('isDistance', isChecked)
+              }
+              isChecked={values.isDistance}
+            />
+            <Text style={styles.text}>
+              Distanța
+              {values.isDistance &&
+                `: ${values.distance[0]} km - ${values.distance[1]} km`}
+            </Text>
+          </View>
+          {values.isDistance && (
+            <View style={{marginTop: 30}}>
+              <Slider
+                value={values.distance}
+                onValueChange={value => setFieldValue('distance', value)}
+                animationType="timing"
+                maximumValue={100}
+                minimumValue={1}
+                step={1}
+                maximumTrackTintColor={COLORS.MEDIUM_GRAY}
+                minimumTrackTintColor={COLORS.RED}
+                trackMarks={[0, 100]}
+                animateTransitions
+                trackStyle={{borderRadius: 10, height: 10}}
+                thumbStyle={{height: 26, width: 26, borderRadius: 20}}
+              />
+            </View>
+          )}
         </View>
       </View>
       <View style={{marginBottom: 50}}>

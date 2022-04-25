@@ -135,9 +135,11 @@ function* getAllPostsGenerator() {
       const sortedPosts = res.posts
         .sort((a, b) => sortByLength(a, b, 'likes'))
         .map(post => {
-          post.distance = getDistance(
-            {latitude: coords.latitude, longitude: coords.longitude},
-            post.location,
+          post.distance = Math.ceil(
+            getDistance(
+              {latitude: coords.latitude, longitude: coords.longitude},
+              post.location,
+            ) / 1000,
           );
           return post;
         });

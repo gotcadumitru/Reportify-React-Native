@@ -18,11 +18,12 @@ const defaultState = {
   userLocation: null,
   filters: {
     type: 'popular',
-    startDate: new Date(dayjs().subtract(1, 'month')),
+    startDate: null,
     isStartDate: false,
-    endDate: new Date(),
+    endDate: null,
     isEndDate: false,
     distance: [1, 70],
+    isDistance: false,
   },
 };
 

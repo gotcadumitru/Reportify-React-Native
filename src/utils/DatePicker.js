@@ -28,7 +28,7 @@ export default function DatePickerModal(props) {
         modal={isModal}
         mode="date"
         open={isVisible}
-        date={value}
+        date={value || new Date()}
         onConfirm={date => {
           getValue(date);
           toggleVisibility(false);
