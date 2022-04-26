@@ -12,10 +12,10 @@ export const TabScreens = [
     source: 'Reports',
   },
   {
-    name: SCREENS.FAVORITE,
-    icon: require('assets/lottie/icons/favorite.json'),
+    name: SCREENS.CHAT,
+    icon: require('assets/lottie/icons/chat.json'),
     height: 40,
-    width: 50,
+    width: 40,
     source: 'MyProfile',
   },
   {

@@ -14,12 +14,18 @@ import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Mui from 'react-native-vector-icons/MaterialCommunityIcons';
 import dayjs from 'dayjs';
-import {sortByDate, sortByLength} from 'helpers/sort';
+import {
+  sortByDate,
+  sortByLength,
+  filteredByType,
+  filterByDate,
+  distanceFilter,
+} from 'helpers/sort';
 import {getDistance} from 'geolib';
 import _ from 'lodash';
 
 export default function FilterScreen(props) {
-  const {navigation, filters, setter, posts} = props;
+  const {navigation, filters, setter, posts, resetFilters} = props;
   const {handleSubmit, handleChange, values, setFieldValue} = useFormik({
     initialValues: {
       ...filters,
@@ -27,52 +33,12 @@ export default function FilterScreen(props) {
     onSubmit: applyFilters,
   });
 
-  function filteredByType(type) {
-    switch (type) {
-      case 'popular':
-        return posts.sort((a, b) => sortByLength(a, b, 'likes'));
-      case 'date':
-        return posts.sort(sortByDate);
-      case 'distance':
-        return posts.sort((a, b) => sortByLength(a, b, 'distance'));
-      default:
-        return posts;
-    }
-  }
-
-  const filterByDate = (post, filters) => {
-    const {startDate, endDate} = filters;
-    if (startDate && endDate) {
-      return (
-        new Date(post.createdAt) >= startDate &&
-        new Date(post.createdAt) <= endDate
-      );
-    } else if (startDate && !endDate) {
-      return new Date(post.createdAt) >= startDate;
-    } else if (!startDate && endDate) {
-      return new Date(post.createdAt) >= startDate;
-    }
-    return true;
-  };
-  const distanceFilter = (post, filters) => {
-    const {isDistance} = filters;
-    if (!isDistance) return true;
-    const checkDistance = _.inRange(
-      post.distance,
-      filters.distance[0],
-      filters.distance[1],
-    );
-    return checkDistance;
-  };
-
   function applyFilters(filters) {
-    let filteredPosts = filteredByType(filters.type);
-
+    let filteredPosts = filteredByType(posts, filters.type);
     filteredPosts = filteredPosts
       .filter(post => filterByDate(post, filters))
       .filter(post => distanceFilter(post, filters));
-
-    setter({filters, filteredPosts});
+    setter({filters, filteredPosts, areFilters: true});
     navigation.goBack();
   }
 
@@ -223,6 +189,17 @@ export default function FilterScreen(props) {
       <View style={{marginBottom: 50}}>
         <TouchableOpacity style={styles.applyButton} onPress={handleSubmit}>
           <Text style={styles.applyButtonText}>Aplică filtrele</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.applyButton,
+            {marginTop: 10, backgroundColor: COLORS.RED},
+          ]}
+          onPress={() => {
+            resetFilters();
+            navigation.goBack();
+          }}>
+          <Text style={styles.applyButtonText}>Resetează filtrele</Text>
         </TouchableOpacity>
       </View>
     </View>

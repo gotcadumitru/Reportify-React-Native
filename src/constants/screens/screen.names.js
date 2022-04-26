@@ -14,4 +14,6 @@ export const SCREENS = {
   EDIT_PROFILE: 'EditProfile',
   USER_DOCUMENTS: 'Documents',
   FILTER: 'Filter',
+  REPORT_CONTENT: 'ReportContent',
+  CHAT: 'Chat',
 };

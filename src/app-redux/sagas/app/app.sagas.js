@@ -10,6 +10,7 @@ import {
   addPostRequest,
   editPostRequest,
   categoriesRequest,
+  getSinglePostRequest,
 } from 'api/index';
 
 // * Action types
@@ -20,6 +21,8 @@ import {
   ADD_POST,
   VOTE_ITEM,
   GET_CATEGORIES,
+  FAVORITE_ITEM,
+  GET_SINGLE_POST,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {getStorageData} from 'helpers/storage';
@@ -226,12 +229,38 @@ function* voteItemGenerator({index, field}) {
     newPosts[index][field] = addedItems;
     newPosts[index][fieldToExclude] = removedItems;
 
-    yield put(setter({posts: newPosts}));
+    yield put(setter({posts: newPosts, filteredPosts: newPosts}));
     const res = yield editPostGenerator({
       data: {[field]: addedItems, [fieldToExclude]: removedItems},
       id: newPosts[index]._id,
     });
   } catch (e) {}
+}
+
+function* favoriteItemGenerator({index}) {
+  try {
+    const state = yield select(getState);
+    const {posts, profile, currentItem} = state;
+    const arrToUpdate = posts[index].favorites;
+
+    const includes = arrToUpdate.includes(profile.id);
+
+    let addedItems;
+    if (includes) {
+      addedItems = arrToUpdate.filter(id => profile.id !== id);
+    } else {
+      addedItems = [...arrToUpdate, profile.id];
+    }
+
+    let newPosts = [...posts];
+    newPosts[index].favorites = addedItems;
+
+    yield put(setter({posts: newPosts, filteredPosts: newPosts}));
+    const res = yield editPostGenerator({
+      data: {favorites: addedItems},
+      id: newPosts[index]._id,
+    });
+  } catch (error) {}
 }
 
 function* editPostGenerator({data, id}) {
@@ -250,6 +279,17 @@ function* getCategoriesGenerator() {
   } catch (error) {}
 }
 
+function* getSinglePostGenerator({id}) {
+  try {
+    const state = yield select(getState);
+    const {currentPost} = state;
+    const res = yield call(getSinglePostRequest, id);
+    if (res) {
+      yield put(setter({currentPost: {...currentPost, ...res.post}}));
+    }
+  } catch (error) {}
+}
+
 // * Watcher
 export function* appActionWatcher() {
   yield takeEvery(UPLOAD_FILES, uploadFilesGenerator);
@@ -257,5 +297,7 @@ export function* appActionWatcher() {
   yield takeEvery(GET_ALL_POSTS, getAllPostsGenerator);
   yield takeEvery(ADD_POST, addPostGenerator);
   yield takeEvery(VOTE_ITEM, voteItemGenerator);
+  yield takeEvery(FAVORITE_ITEM, favoriteItemGenerator);
   yield takeEvery(GET_CATEGORIES, getCategoriesGenerator);
+  yield takeEvery(GET_SINGLE_POST, getSinglePostGenerator);
 }

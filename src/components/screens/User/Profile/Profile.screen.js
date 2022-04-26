@@ -6,14 +6,43 @@ import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function Profile(props) {
-  const {navigation, logout, profile, getProfile} = props;
-
+  const {navigation, logout, profile, getProfile, posts} = props;
+  const [stats, setStats] = React.useState([]);
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getProfile();
     });
     return unsubscribe;
   }, [navigation]);
+
+  React.useEffect(() => {
+    let likes = 0;
+    let disLikes = 0;
+    let reports = 0;
+    let favorites = 0;
+
+    posts.forEach(post => {
+      if (post.author.id === profile._id) {
+        reports++;
+      }
+      if (post.likes.includes(profile._id)) {
+        likes++;
+      }
+      if (post.disLikes.includes(profile._id)) {
+        disLikes++;
+      }
+      if (post.favorites.includes(profile._id)) {
+        favorites++;
+      }
+    });
+    const statistics = [
+      {label: 'Raportări', value: reports},
+      {label: 'Likes', value: likes},
+      {label: 'Dislikes', value: disLikes},
+      {label: 'Favorite', value: favorites},
+    ];
+    setStats(statistics);
+  }, [posts]);
 
   const renderStats = ({item}) => {
     return (
@@ -60,7 +89,7 @@ export default function Profile(props) {
           style={styles.statisticsContainer}>
           <FlatList
             renderItem={renderStats}
-            data={dummyStats}
+            data={stats}
             scrollEnabled={false}
             horizontal
             contentContainerStyle={styles.statsRenderContainer}
@@ -81,25 +110,6 @@ export default function Profile(props) {
     </View>
   );
 }
-
-const dummyStats = [
-  {
-    label: 'Likes',
-    value: 24,
-  },
-  {
-    label: 'Reports',
-    value: 14,
-  },
-  {
-    label: 'Favorite',
-    value: 24,
-  },
-  {
-    label: 'Dislikes',
-    value: 24,
-  },
-];
 
 const styles = StyleSheet.create({
   container: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, View, Text, Image} from 'react-native';
 import Connection from 'components/connections/App.connection';
 import {createStackNavigator} from '@react-navigation/stack';
 import Splash from 'components/screens/Splash/Splash.screen.js';
@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {SCREENS} from 'constants/screens/screen.names';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import styles from './Navigation.styles';
 
 const Stack = createStackNavigator();
 
@@ -76,6 +77,39 @@ export default function AppStackNavigator({navigation}) {
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                   <Ionicons name="chevron-back" size={30} />
                 </TouchableOpacity>
+              ),
+            })}
+          />
+
+          <Stack.Screen
+            name={SCREENS.REPORT_CONTENT}
+            component={Connection.ReportContent}
+            options={({navigation, route}) => ({
+              gestureEnabled: false,
+              headerShown: true,
+              title: null,
+              headerLeft: () => (
+                <View style={{flexDirection: 'row', width: '100%'}}>
+                  <TouchableOpacity
+                    style={{marginLeft: 10}}
+                    onPress={() => navigation.goBack()}>
+                    <Ionicons name="chevron-back" size={30} />
+                  </TouchableOpacity>
+                  <View style={{flexDirection: 'row', marginLeft: 20}}>
+                    <Image
+                      source={{uri: route.params.author.profileImage.fileUrl}}
+                      style={{width: 30, height: 30, borderRadius: 30}}
+                    />
+                    <View style={{marginLeft: 10}}>
+                      <Text style={styles.headerTitle}>
+                        {route.params.title}
+                      </Text>
+                      <Text style={styles.headerSubTitle}>
+                        {route.params.author.name} {route.params.author.surname}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
               ),
             })}
           />

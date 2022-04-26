@@ -13,6 +13,8 @@ export default function Input(props) {
     width = SCREEN_SIZE.WIDTH * 0.8,
     placeholder,
     onSubmitEditing,
+    noHeightMultiline,
+    inputRef = null,
   } = props;
   return (
     <View style={[style, {marginVertical: 5, alignSelf: 'center'}]}>
@@ -24,7 +26,8 @@ export default function Input(props) {
             width,
             backgroundColor: !editable ? COLORS.MEDIUM_GRAY : COLORS.INPUT,
             color: !editable ? 'white' : 'black',
-            ...(multiline && {minHeight: 100}),
+            ...(multiline && !noHeightMultiline && {minHeight: 100}),
+            ...(noHeightMultiline && {maxHeight: 150}),
           },
         ]}
         onChangeText={onChangeText}
@@ -34,6 +37,7 @@ export default function Input(props) {
         multiline={Boolean(multiline)}
         placeholder={placeholder}
         onSubmitEditing={onSubmitEditing}
+        ref={inputRef}
       />
     </View>
   );

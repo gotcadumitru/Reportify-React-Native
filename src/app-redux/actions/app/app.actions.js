@@ -62,6 +62,20 @@ export const voteItem = (index, field) => ({
   field,
 });
 
+export const favoriteItem = index => ({
+  type: TYPES.FAVORITE_ITEM,
+  index,
+});
+
+export const getSinglePost = id => ({
+  type: TYPES.GET_SINGLE_POST,
+  id,
+});
+
+export const resetFilters = () => ({
+  type: TYPES.RESET_FILTERS,
+});
+
 export const getCategories = () => ({
   type: TYPES.GET_CATEGORIES,
 });

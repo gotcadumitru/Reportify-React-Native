@@ -13,6 +13,7 @@ import {
   addPostRequest,
   editPostRequest,
   categoriesRequest,
+  getSinglePostRequest,
 } from './user/user.requests';
 
 export {
@@ -27,4 +28,5 @@ export {
   addPostRequest,
   editPostRequest,
   categoriesRequest,
+  getSinglePostRequest,
 };

@@ -14,6 +14,7 @@ import Reports from 'components/screens/User/Home/Reports.screen.js';
 import AddReport from 'components/screens/User/Home/AddReport.screen.js';
 import MapsReports from 'components/screens/User/Home/MapsReports.screen.js';
 import Filter from 'components/screens/User/Home/Filter.screen.js';
+import ReportContent from 'components/screens/User/Home/ReportContent.screen.js';
 
 import {
   setter,
@@ -30,6 +31,9 @@ import {
   addPost,
   voteItem,
   getCategories,
+  favoriteItem,
+  resetFilters,
+  getSinglePost,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -48,10 +52,13 @@ const mapDispatchToProps = dispatch => ({
   getProfile: () => dispatch(getProfile()),
   editUser: (data, backForward) => dispatch(editUser(data, backForward)),
   logout: () => dispatch(logout()),
+  resetFilters: () => dispatch(resetFilters()),
   getAllPosts: () => dispatch(getAllPosts()),
   addPost: data => dispatch(addPost(data)),
   voteItem: (index, field) => dispatch(voteItem(index, field)),
   getCategories: () => dispatch(getCategories()),
+  favoriteItem: index => dispatch(favoriteItem(index)),
+  getSinglePost: id => dispatch(getSinglePost(id)),
 });
 
 export default {
@@ -67,4 +74,5 @@ export default {
   AddReport: connect(mapStateToProps, mapDispatchToProps)(AddReport),
   MapsReports: connect(mapStateToProps, mapDispatchToProps)(MapsReports),
   Filter: connect(mapStateToProps, mapDispatchToProps)(Filter),
+  ReportContent: connect(mapStateToProps, mapDispatchToProps)(ReportContent),
 };

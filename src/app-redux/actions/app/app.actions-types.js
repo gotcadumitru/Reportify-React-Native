@@ -12,4 +12,7 @@ export const LOGOUT = 'LOGOUT';
 export const GET_ALL_POSTS = 'GET_ALL_POSTS';
 export const ADD_POST = 'ADD_POST';
 export const VOTE_ITEM = 'VOTE_ITEM';
+export const FAVORITE_ITEM = 'FAVORITE_ITEM';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
+export const RESET_FILTERS = 'RESET_FILTERS';
+export const GET_SINGLE_POST = 'GET_SINGLE_POST';

@@ -6,23 +6,22 @@ import {
   StyleSheet,
   TextInput,
   ImageBackground,
-  ScrollView,
   Animated,
   FlatList,
   Image,
   RefreshControl,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
+import onShareItem from 'helpers/shareItem';
 import Carousel from 'react-native-snap-carousel';
 import Pdf from 'react-native-pdf';
 import Video from 'react-native-video';
-import Share from 'react-native-share';
-import base64File from 'helpers/base64File';
 import {SCREENS} from 'constants/screens/screen.names';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {ScrollView} from 'react-native-gesture-handler';
 const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
@@ -39,7 +38,9 @@ export default function Reports(props) {
     navigation,
     setter,
     voteItem,
+    favoriteItem,
     getCategories,
+    getSinglePost,
   } = props;
 
   React.useEffect(() => {
@@ -49,33 +50,6 @@ export default function Reports(props) {
 
   const onRefresh = () => {
     getAllPosts();
-  };
-
-  const onShareItem = async item => {
-    try {
-      const image = item.files.find(file => file.mimetype.includes('image'));
-      if (image) {
-        setter({isLoading: true});
-        const base64Image = await base64File(image.fileUrl);
-
-        Share.open({
-          title: item.title,
-          subject: item.title,
-          message: item.description,
-          ...(image && {url: base64Image}),
-        }).finally(res => {
-          setter({isLoading: false});
-        });
-      }
-    } catch (error) {
-      setter({
-        response: {
-          isResponse: true,
-          message: 'A aparut o eroare!',
-          type: false,
-        },
-      });
-    }
   };
 
   const renderFile = ({item, index}) => {
@@ -115,6 +89,7 @@ export default function Reports(props) {
   const renderPost = ({item, index}) => {
     const isLiked = item?.likes?.includes(profile?.id);
     const isDisliked = item?.disLikes?.includes(profile?.id);
+    const isFavorite = item?.favorites?.includes(profile?.id);
 
     return (
       <View style={{marginTop: 20}}>
@@ -143,22 +118,35 @@ export default function Reports(props) {
             {item.author.name} {item.author.surname}
           </Text>
         </View>
-        <Carousel
-          data={item.files}
-          renderItem={renderFile}
-          sliderWidth={SLIDER_WIDTH}
-          itemWidth={ITEM_WIDTH}
-          layout={'stack'}
-          layoutCardOffset={`18`}
-        />
-        <View style={styles.reportFooterComponent}>
+        <View style={{height: SCREEN_SIZE.WIDTH * 0.6, width: '100%'}}>
+          <Carousel
+            data={item.files}
+            renderItem={renderFile}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={ITEM_WIDTH}
+            layout={'stack'}
+            layoutCardOffset={`18`}
+          />
+        </View>
+        <Pressable
+          style={styles.reportFooterComponent}
+          onPress={() => {
+            setter({currentPost: item});
+            getSinglePost(item._id);
+            navigation.navigate(SCREENS.REPORT_CONTENT, {
+              title: item.title,
+              author: item.author,
+            });
+          }}>
           <View style={{flex: 1}}>
             <Text style={styles.authorText}>Titlu: {item.title}</Text>
           </View>
           <View style={styles.reportShareContainer}>
-            <TouchableOpacity style={{width: 50}}>
+            <TouchableOpacity
+              style={{width: 50}}
+              onPress={() => favoriteItem(index)}>
               <Ionicons
-                name={false ? 'book' : 'bookmark-outline'}
+                name={isFavorite ? 'bookmark' : 'bookmark-outline'}
                 size={30}
                 color={COLORS.DARK}
               />
@@ -169,7 +157,7 @@ export default function Reports(props) {
               <Ionicons name="share-social" size={30} color={COLORS.DARK} />
             </TouchableOpacity>
           </View>
-        </View>
+        </Pressable>
       </View>
     );
   };

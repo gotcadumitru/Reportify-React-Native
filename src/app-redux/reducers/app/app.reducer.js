@@ -25,6 +25,8 @@ const defaultState = {
     distance: [1, 70],
     isDistance: false,
   },
+  currentItem: null,
+  areFilters: false,
 };
 
 // * Reducer
@@ -33,7 +35,14 @@ export default function appReducer(state = {...defaultState}, action = {}) {
     case TYPES.SETTER: {
       return {...state, ...action.value};
     }
-
+    case TYPES.RESET_FILTERS: {
+      return {
+        ...state,
+        filters: defaultState.filters,
+        filteredPosts: state.posts,
+        areFilters: false,
+      };
+    }
     default:
       return state;
   }
