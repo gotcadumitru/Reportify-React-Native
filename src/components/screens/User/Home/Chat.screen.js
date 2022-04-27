@@ -17,9 +17,13 @@ import {useFormik} from 'formik';
 import Input from 'utils/Input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import useUserNewMessages from 'hooks/useUserNewMessages';
+import dayjs from 'dayjs';
+
 export default function ChatScreen(props) {
   const {navigation, chatMessages, profile} = props;
   const messageInputRef = React.useRef();
+  const scrollViewRef = React.useRef();
+
   const keyboardHeight = useKeyboard();
   const sendMessage = useUserNewMessages();
 
@@ -48,16 +52,87 @@ export default function ChatScreen(props) {
     handleReset();
   }
 
+  function getDate(candidate, date) {
+    try {
+      if (candidate && date) {
+        let res = dayjs(candidate).diff(dayjs(date), 'days');
+        return res > 0 ? dayjs(candidate).format('DD/MM/YYYY') : false;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  const renderChatItem = ({item, index}) => {
+    const isUserSender = profile?._id === item?.sender?._id;
+    let newMessageDate = false;
+    if (index > 0) {
+      newMessageDate = getDate(
+        item.createdAt,
+        chatMessages[index - 1]?.createdAt,
+      );
+    }
+    return (
+      <>
+        {newMessageDate && (
+          <View style={{alignSelf: 'center', marginVertical: 10}}>
+            <Text style={{color: COLORS.GRAY}}>{newMessageDate}</Text>
+          </View>
+        )}
+        <View
+          style={{
+            alignItems: isUserSender ? 'flex-end' : 'flex-start',
+            marginVertical: 10,
+          }}>
+          <View
+            style={{
+              flexDirection: !isUserSender ? 'row' : 'row-reverse',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={{uri: item?.sender?.profileImage?.fileUrl}}
+              style={styles.senderImage}
+            />
+            <View>
+              <Text
+                style={[
+                  styles.dateText,
+                  {textAlign: 'right', marginBottom: 5},
+                ]}>
+                {item?.sender?.surname}
+              </Text>
+              <View style={styles.messageContainer}>
+                <Text>{item.text}</Text>
+              </View>
+            </View>
+            <Text style={styles.dateText}>
+              {dayjs(item.createAt).format('HH:mm')}
+            </Text>
+          </View>
+        </View>
+      </>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <Text>dada</Text>
-      <FlatList
-        data={chatMessages}
-        keyboardShouldPersistTaps="always"
-        renderItem={({item}) => (
-          <Text style={{marginVertical: 30}}>{item.text}</Text>
-        )}
-      />
+      <View
+        style={{
+          height: SCREEN_SIZE.HEIGHT - keyboardHeight - 100,
+        }}>
+        <FlatList
+          data={chatMessages}
+          keyboardShouldPersistTaps="always"
+          renderItem={renderChatItem}
+          ListFooterComponent={<View style={{marginBottom: 100}} />}
+          ref={scrollViewRef}
+          onContentSizeChange={() =>
+            scrollViewRef.current.scrollToEnd({animated: true})
+          }
+        />
+      </View>
       <View style={[styles.commentInput, {bottom: keyboardHeight}]}>
         <Input
           vertical={0}
@@ -85,6 +160,7 @@ export default function ChatScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
 
   commentInput: {
@@ -98,5 +174,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopWidth: 1,
     borderColor: COLORS.GRAY,
+  },
+  messageContainer: {
+    backgroundColor: COLORS.INPUT,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    maxWidth: SCREEN_SIZE.WIDTH * 0.6,
+  },
+  senderImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 1000,
+    marginHorizontal: 10,
+  },
+  dateText: {
+    fontSize: 12,
+    color: COLORS.GRAY,
+    marginHorizontal: 10,
   },
 });
