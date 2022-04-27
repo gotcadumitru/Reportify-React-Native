@@ -69,10 +69,35 @@ export const ProfileScreens = [
     label: 'Documente',
     color: COLORS.ORANGE,
   },
+];
+
+export const UserTypeScreens = [
   {
-    name: SCREENS.EDIT_PROFILE,
+    name: SCREENS.TYPE_REPORTS,
+    icon: 'star',
+    label: 'Postările de top',
+    color: COLORS.YELLOW,
+    type: 'popular',
+  },
+  {
+    name: SCREENS.TYPE_REPORTS,
     icon: 'list-circle',
     label: 'Postările raportate',
     color: COLORS.DARK_BLUE,
+    type: 'reported',
+  },
+  {
+    name: SCREENS.TYPE_REPORTS,
+    icon: 'bookmark',
+    label: 'Postările favorite',
+    color: COLORS.PURPLE,
+    type: 'favorites',
+  },
+  {
+    name: SCREENS.TYPE_REPORTS,
+    icon: 'heart',
+    label: 'Postările votate',
+    color: COLORS.RED,
+    type: 'likes',
   },
 ];

@@ -1,7 +1,17 @@
 import React from 'react';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {ProfileScreens} from 'constants/screens/screens.selector';
+import {
+  ProfileScreens,
+  UserTypeScreens,
+} from 'constants/screens/screens.selector';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -57,7 +67,11 @@ export default function Profile(props) {
     return (
       <TouchableOpacity
         style={styles.optionItem}
-        onPress={() => navigation.navigate(item.name)}>
+        onPress={() =>
+          navigation.navigate(item.name, {
+            ...(item?.type && {title: item.label, type: item.type}),
+          })
+        }>
         <View style={APP_STYLES.ROW}>
           <Ionicons name={item.icon} size={40} color={item.color} />
           <Text style={styles.optionText}>{item.label}</Text>
@@ -99,14 +113,30 @@ export default function Profile(props) {
           />
         </Animatable.View>
       </View>
-      <Animatable.View style={styles.body} animation="slideInLeft">
-        <FlatList
-          renderItem={renderOptions}
-          contentContainerStyle={styles.optionsContainer}
-          data={ProfileScreens}
-          ItemSeparatorComponent={() => <View style={styles.bottomSeparator} />}
-        />
-      </Animatable.View>
+      <ScrollView>
+        <Animatable.View style={styles.body} animation="slideInLeft">
+          <FlatList
+            nestedScrollEnabled
+            renderItem={renderOptions}
+            contentContainerStyle={styles.optionsContainer}
+            data={ProfileScreens}
+            ItemSeparatorComponent={() => (
+              <View style={styles.bottomSeparator} />
+            )}
+          />
+        </Animatable.View>
+        <Animatable.View style={styles.body} animation="slideInLeft">
+          <FlatList
+            nestedScrollEnabled
+            renderItem={renderOptions}
+            contentContainerStyle={styles.optionsContainer}
+            data={UserTypeScreens}
+            ItemSeparatorComponent={() => (
+              <View style={styles.bottomSeparator} />
+            )}
+          />
+        </Animatable.View>
+      </ScrollView>
     </View>
   );
 }
@@ -116,7 +146,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flex: 1.7,
+    height: SCREEN_SIZE.HEIGHT * 0.35,
     backgroundColor: COLORS.DARK_BLUE,
     borderBottomEndRadius: 100,
     borderBottomStartRadius: 100,
@@ -124,7 +154,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   body: {
-    flex: 3,
     backgroundColor: 'transparent',
   },
   statisticsContainer: {
@@ -189,7 +218,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: SCREEN_SIZE.WIDTH * 0.9,
     alignSelf: 'center',
-    marginVertical: 40,
+    marginTop: 30,
     padding: 15,
     ...APP_STYLES.LIGHT_SHADOW,
   },

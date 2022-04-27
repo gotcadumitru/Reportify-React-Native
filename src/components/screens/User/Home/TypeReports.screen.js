@@ -21,20 +21,15 @@ import {SCREENS} from 'constants/screens/screen.names';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {ScrollView} from 'react-native-gesture-handler';
 const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
-export default function Reports(props) {
-  const scrollX = React.useRef(new Animated.Value(0)).current;
-
+export default function TypeReportsScreen(props) {
   const {
     profile,
     getAllPosts,
-    filteredPosts: fisPosts,
     format,
     isLoading,
-    getProfile,
     navigation,
     setter,
     voteItem,
@@ -42,27 +37,35 @@ export default function Reports(props) {
     getCategories,
     getSinglePost,
     posts,
+    route,
   } = props;
-
-  const [filteredPosts, setFilteredPosts] = React.useState(fisPosts);
-  const [search, setSearch] = React.useState('');
 
   React.useEffect(() => {
     getAllPosts();
     getCategories();
   }, []);
 
-  React.useEffect(() => {
-    let newPosts = fisPosts.filter(
-      pos =>
-        pos.title.toLowerCase().includes(search.toLowerCase()) ||
-        pos.description.toLowerCase().includes(search.toLowerCase()),
-    );
-    setFilteredPosts(newPosts);
-  }, [search]);
-
   const onRefresh = () => {
     getAllPosts();
+  };
+
+  const selectPosts = posts => {
+    switch (route.params.type) {
+      case 'popular': {
+        return posts.slice(0, 10);
+      }
+      case 'reported': {
+        return posts.filter(item => item.author._id === profile._id);
+      }
+      case 'favorites': {
+        return posts.filter(item => item.favorites.includes(profile._id));
+      }
+      case 'likes': {
+        return posts.filter(item => item.likes.includes(profile._id));
+      }
+      default:
+        return posts;
+    }
   };
 
   const renderFile = ({item, index}) => {
@@ -125,7 +128,7 @@ export default function Reports(props) {
         </View>
         <View style={styles.reportHeaderComponent}>
           <Image
-            source={{uri: item.author.profileImage.fileUrl}}
+            source={{uri: item?.author?.profileImage?.fileUrl}}
             style={styles.authorAvatar}
           />
           <Text style={styles.authorText}>
@@ -178,109 +181,15 @@ export default function Reports(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.locationView}>
-        <Ionicons name="location" size={24} />
-        <Text
-          style={
-            styles.locationText
-          }>{`${profile?.localitate}, ${profile?.oras}`}</Text>
-      </View>
-      <View style={styles.searchContainer}>
-        <View style={{justifyContent: 'center'}}>
-          <TextInput
-            style={styles.searchView}
-            placeholder="Căutare"
-            placeholderTextColor={COLORS.DARK}
-            value={search}
-            onChangeText={setSearch}
-          />
-          <Ionicons
-            name="search"
-            size={24}
-            style={styles.searchIcon}
-            color={COLORS.RED}
-          />
-        </View>
-        <TouchableOpacity
-          style={styles.searchFilterContainer}
-          onPress={() => navigation.navigate(SCREENS.FILTER)}>
-          <Ionicons name="filter" size={24} color={COLORS.DARK} />
-        </TouchableOpacity>
-      </View>
-
       <View>
         <FlatList
-          data={filteredPosts}
+          data={selectPosts(posts)}
           showsVerticalScrollIndicator={false}
           renderItem={renderPost}
           refreshControl={
             <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
           }
-          ListHeaderComponent={
-            <View>
-              <View>
-                <ScrollView
-                  horizontal={true}
-                  pagingEnabled
-                  showsHorizontalScrollIndicator={false}
-                  onScroll={Animated.event([
-                    {
-                      nativeEvent: {
-                        contentOffset: {
-                          x: scrollX,
-                        },
-                      },
-                    },
-                  ])}
-                  scrollEventThrottle={1}>
-                  {[1, 2, 3, 4].map((image, imageIndex) => {
-                    return (
-                      <View style={styles.infoView} key={imageIndex}>
-                        <ImageBackground
-                          source={{
-                            uri: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Gull_portrait_ca_usa.jpg',
-                          }}
-                          style={styles.headerImageSwiper}>
-                          <View style={styles.infoImageView}>
-                            <Text style={styles.infoImageText}>dsd</Text>
-                          </View>
-                        </ImageBackground>
-                      </View>
-                    );
-                  })}
-                </ScrollView>
-              </View>
-              <View style={[styles.indicatorContainer]}>
-                {[1, 2, 3, 4].map((image, imageIndex) => {
-                  const backgroundColor = scrollX.interpolate({
-                    inputRange: [
-                      SCREEN_SIZE.WIDTH * (imageIndex - 1),
-                      SCREEN_SIZE.WIDTH * imageIndex,
-                      SCREEN_SIZE.WIDTH * (imageIndex + 1),
-                    ],
-                    outputRange: [COLORS.GRAY, COLORS.DARK_BLUE, COLORS.GRAY],
-                    extrapolate: 'clamp',
-                  });
-                  return (
-                    <Animated.View
-                      key={imageIndex}
-                      style={[styles.normalDot, {backgroundColor}]}
-                    />
-                  );
-                })}
-              </View>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: 20,
-                  marginVertical: 20,
-                  marginLeft: 20,
-                }}>
-                Raporturi din {profile?.localitate}
-              </Text>
-            </View>
-          }
-          ListFooterComponent={<View style={{height: 250}} />}
+          ListFooterComponent={<View style={{height: 50}} />}
         />
       </View>
     </SafeAreaView>
@@ -308,31 +217,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
   },
-  searchView: {
-    alignSelf: 'center',
-    width: SCREEN_SIZE.WIDTH * 0.7,
-    height: 40,
-    borderRadius: 20,
-    borderColor: COLORS.MEDIUM_GRAY,
-    backgroundColor: COLORS.MEDIUM_GRAY,
-    textAlign: 'center',
-    fontWeight: '600',
-    paddingHorizontal: 50,
-    ...APP_STYLES.SHADOW,
-  },
-  searchContainer: {
-    width: SCREEN_SIZE.WIDTH,
-    marginTop: 30,
-    alignSelf: 'center',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: 15,
-    marginVertical: 'auto',
-  },
+
   headerImageSwiper: {
     flex: 1,
     overflow: 'hidden',
@@ -411,12 +296,5 @@ const styles = StyleSheet.create({
     zIndex: 1000,
     height: 100,
     justifyContent: 'space-between',
-  },
-  searchFilterContainer: {
-    backgroundColor: COLORS.MEDIUM_GRAY,
-    borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    ...APP_STYLES.SHADOW,
   },
 });

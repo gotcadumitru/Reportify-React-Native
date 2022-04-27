@@ -11,7 +11,15 @@ const LATITUDE_DELTA = 2;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default function LocationPicker(props) {
-  const {onClosePicker, isVisible, location, getLocation, onOpenPicker} = props;
+  const {
+    onClosePicker,
+    isVisible,
+    location,
+    getLocation,
+    onOpenPicker,
+    isChangeable = true,
+    miniMapStyle = {},
+  } = props;
   const [loc, setLoc] = React.useState(location);
   const [userLocation, setUserLocation] = React.useState(null);
 
@@ -32,10 +40,11 @@ export default function LocationPicker(props) {
         source={require('assets/lottie/loading.json')}
       />
     );
+
   return (
     <>
       <MapView
-        style={styles.miniMap}
+        style={[styles.miniMap, miniMapStyle]}
         initialRegion={{
           ...userLocation,
           latitudeDelta: 1,
@@ -59,22 +68,26 @@ export default function LocationPicker(props) {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             }}
-            onPress={e => setLoc(e.nativeEvent.coordinate)}
+            onPress={e => {
+              if (isChangeable) setLoc(e.nativeEvent.coordinate);
+            }}
             showsUserLocation>
             <Marker
               coordinate={loc}
               onDragEnd={e => setLoc(e.nativeEvent.coordinate)}
-              draggable
+              draggable={isChangeable}
             />
           </MapView>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              getLocation(loc);
-              onClosePicker();
-            }}>
-            <Text style={styles.buttonText}>Confirmă</Text>
-          </TouchableOpacity>
+          {isChangeable && (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                getLocation(loc);
+                onClosePicker();
+              }}>
+              <Text style={styles.buttonText}>Confirmă</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={[
               styles.button,

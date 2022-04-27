@@ -16,6 +16,7 @@ import MapsReports from 'components/screens/User/Home/MapsReports.screen.js';
 import Filter from 'components/screens/User/Home/Filter.screen.js';
 import ReportContent from 'components/screens/User/Home/ReportContent.screen.js';
 import Chat from 'components/screens/User/Home/Chat.screen.js';
+import TypeReports from 'components/screens/User/Home/TypeReports.screen.js';
 
 import {
   setter,
@@ -79,4 +80,5 @@ export default {
   Filter: connect(mapStateToProps, mapDispatchToProps)(Filter),
   ReportContent: connect(mapStateToProps, mapDispatchToProps)(ReportContent),
   Chat: connect(mapStateToProps, mapDispatchToProps)(Chat),
+  TypeReports: connect(mapStateToProps, mapDispatchToProps)(TypeReports),
 };

@@ -26,6 +26,8 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const MapsReports = props => {
   const {posts, voteItem, profile, getAllPosts, isLoading} = props;
+  const [search, setSearch] = React.useState('');
+  const [localPosts, setLocalPosts] = React.useState(posts);
 
   let mapIndex = 0;
   let mapAnimation = new Animated.Value(0);
@@ -33,8 +35,8 @@ const MapsReports = props => {
   useEffect(() => {
     mapAnimation.addListener(({value}) => {
       let index = Math.floor(value / CARD_WIDTH + 0.3);
-      if (index >= posts.length) {
-        index = posts.length - 1;
+      if (index >= localPosts.length) {
+        index = localPosts.length - 1;
       }
       if (index <= 0) {
         index = 0;
@@ -45,7 +47,7 @@ const MapsReports = props => {
       const regionTimeout = setTimeout(() => {
         if (mapIndex !== index) {
           mapIndex = index;
-          const {location} = posts[index];
+          const {location} = localPosts[index];
           _map.current.animateToRegion(
             {
               ...location,
@@ -63,7 +65,16 @@ const MapsReports = props => {
     getAllPosts();
   }, []);
 
-  const interpolations = posts.map((marker, index) => {
+  useEffect(() => {
+    let newPosts = posts.filter(
+      pos =>
+        pos.title.toLowerCase().includes(search.toLowerCase()) ||
+        pos.description.toLowerCase().includes(search.toLowerCase()),
+    );
+    setLocalPosts(newPosts);
+  }, [search]);
+
+  const interpolations = localPosts.map((marker, index) => {
     const inputRange = [
       (index - 1) * CARD_WIDTH,
       index * CARD_WIDTH,
@@ -126,13 +137,13 @@ const MapsReports = props => {
         <MapView
           ref={_map}
           initialRegion={{
-            ...posts[0].location,
+            ...localPosts[0]?.location,
             latitudeDelta: 0.06,
             longitudeDelta: 0.05,
           }}
           showsUserLocation
           style={styles.container}>
-          {posts.map((marker, index) => {
+          {localPosts.map((marker, index) => {
             const scaleStyle = {
               transform: [
                 {
@@ -163,6 +174,8 @@ const MapsReports = props => {
             style={styles.searchView}
             placeholder="Căutare"
             placeholderTextColor={COLORS.DARK}
+            onChangeText={setSearch}
+            value={search}
           />
           <Ionicons
             name="search"
@@ -204,13 +217,14 @@ const MapsReports = props => {
           ],
           {useNativeDriver: true},
         )}>
-        {posts.map((post, index) => {
+        {localPosts.map((post, index) => {
           const image = post.files.find(file =>
             file.mimetype.includes('image'),
           );
 
           const isLiked = post?.likes?.includes(profile?.id);
           const isDisliked = post?.disLikes?.includes(profile?.id);
+          const INDEX = posts.findIndex(ps => ps._id === post._id);
 
           return (
             <View style={styles.card} key={index}>
@@ -227,7 +241,7 @@ const MapsReports = props => {
                 </View>
                 <View style={styles.likeContainer}>
                   <TouchableOpacity
-                    onPress={() => voteItem(index, 'likes')}
+                    onPress={() => voteItem(INDEX, 'likes')}
                     style={{width: 60}}>
                     <AntDesign
                       name={`like${Number(!isLiked) + 1}`}
@@ -236,7 +250,7 @@ const MapsReports = props => {
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => voteItem(index, 'disLikes')}
+                    onPress={() => voteItem(INDEX, 'disLikes')}
                     style={{width: 60}}>
                     <AntDesign
                       name={`dislike${Number(!isDisliked) + 1}`}

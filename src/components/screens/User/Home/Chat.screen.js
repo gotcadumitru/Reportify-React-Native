@@ -108,7 +108,7 @@ export default function ChatScreen(props) {
               </View>
             </View>
             <Text style={styles.dateText}>
-              {dayjs(item.createAt).format('HH:mm')}
+              {dayjs(item.createdAt).format('HH:mm')}
             </Text>
           </View>
         </View>

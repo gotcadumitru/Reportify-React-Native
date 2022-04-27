@@ -14,6 +14,7 @@ import {
   Pressable,
   KeyboardAvoidingView,
 } from 'react-native';
+import LocationPicker from 'utils/LocationPicker';
 import {useKeyboard} from 'hooks/useKeyboard';
 import Carousel from 'react-native-snap-carousel';
 import Pdf from 'react-native-pdf';
@@ -36,6 +37,7 @@ export default function ReportContentScreen(props) {
   const isLiked = posts[index]?.likes?.includes(profile?.id);
   const isDisliked = posts[index]?.disLikes?.includes(profile?.id);
   const isFavorite = posts[index]?.favorites?.includes(profile?.id);
+  const [isLocationPicker, setIsLocationPicker] = React.useState(false);
   const messageInputRef = React.useRef();
   const keyboardHeight = useKeyboard();
 
@@ -105,7 +107,19 @@ export default function ReportContentScreen(props) {
             />
           </TouchableOpacity>
         </View>
-
+        <View style={{alignSelf: 'center'}}>
+          <LocationPicker
+            isVisible={isLocationPicker}
+            onClosePicker={() => setIsLocationPicker(false)}
+            onOpenPicker={() => setIsLocationPicker(true)}
+            isChangeable={false}
+            miniMapStyle={{
+              borderRadius: 0,
+              height: 100,
+              width: SCREEN_SIZE.WIDTH,
+            }}
+          />
+        </View>
         <View style={styles.actionContainer}>
           <TouchableOpacity
             onPress={() => voteItem(index, 'likes')}
@@ -137,6 +151,8 @@ export default function ReportContentScreen(props) {
             styles.actionContainer,
             {
               borderTopWidth: 0,
+              borderBottomWidth: 0,
+              borderWidth: 0,
               marginTop: 0,
               justifyContent: 'space-between',
               paddingHorizontal: 30,
@@ -144,6 +160,10 @@ export default function ReportContentScreen(props) {
           ]}>
           <Text>{posts[index].likes.length} aprecieri</Text>
           <Text>{posts[index].comments.length} comentarii</Text>
+        </View>
+        <View style={styles.descriptionContainer}>
+          <Text style={{fontWeight: 'bold'}}>Descriere:</Text>
+          <Text>{posts[index].description}</Text>
         </View>
       </ScrollView>
       <KeyboardAvoidingView>
@@ -185,7 +205,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 1,
     marginHorizontal: 10,
-    marginTop: 10,
     borderColor: COLORS.MEDIUM_GRAY,
     paddingVertical: 10,
     flexDirection: 'row',
@@ -211,5 +230,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopWidth: 1,
     borderColor: COLORS.GRAY,
+  },
+  descriptionContainer: {
+    // marginHorizontal: 10,
+    backgroundColor: COLORS.INPUT,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderBottomEndRadius: 20,
+    borderBottomStartRadius: 20,
   },
 });

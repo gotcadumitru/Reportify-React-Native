@@ -67,6 +67,20 @@ export default function AppStackNavigator({navigation}) {
             component={Connection.EditProfile}
           />
           <Stack.Screen
+            name={SCREENS.TYPE_REPORTS}
+            component={Connection.TypeReports}
+            options={({navigation, route}) => ({
+              gestureEnabled: false,
+              headerShown: true,
+              title: route.params.title,
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name="chevron-back" size={30} />
+                </TouchableOpacity>
+              ),
+            })}
+          />
+          <Stack.Screen
             name={SCREENS.FILTER}
             component={Connection.Filter}
             options={({navigation, route}) => ({

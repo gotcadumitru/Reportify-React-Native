@@ -16,4 +16,5 @@ export const SCREENS = {
   FILTER: 'Filter',
   REPORT_CONTENT: 'ReportContent',
   CHAT: 'Chat',
+  TYPE_REPORTS: 'TypeReports',
 };
