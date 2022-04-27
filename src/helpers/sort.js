@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const sortByDate = (a, b) => {
   return new Date(b.createdAt) - new Date(a.createdAt);
 };
@@ -43,4 +45,14 @@ export function distanceFilter(post, filters) {
     filters.distance[1],
   );
   return checkDistance;
+}
+
+export function getSortedPosts(areFilters, posts, filters) {
+  let result = posts;
+  if (areFilters) {
+    result = filteredByType(posts, filters.type)
+      .filter(post => filterByDate(post, filters))
+      .filter(post => distanceFilter(post, filters));
+  }
+  return result;
 }

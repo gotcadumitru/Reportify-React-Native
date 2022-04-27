@@ -41,6 +41,7 @@ export default function Reports(props) {
     favoriteItem,
     getCategories,
     getSinglePost,
+    posts,
   } = props;
 
   React.useEffect(() => {
@@ -90,18 +91,19 @@ export default function Reports(props) {
     const isLiked = item?.likes?.includes(profile?.id);
     const isDisliked = item?.disLikes?.includes(profile?.id);
     const isFavorite = item?.favorites?.includes(profile?.id);
+    const INDEX = posts.findIndex(ps => ps._id === item._id);
 
     return (
       <View style={{marginTop: 20}}>
         <View style={styles.likesContainer}>
-          <TouchableOpacity onPress={() => voteItem(index, 'likes')}>
+          <TouchableOpacity onPress={() => voteItem(INDEX, 'likes')}>
             <AntDesign
               name={`like${Number(!isLiked) + 1}`}
               size={34}
               color={'white'}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => voteItem(index, 'disLikes')}>
+          <TouchableOpacity onPress={() => voteItem(INDEX, 'disLikes')}>
             <AntDesign
               name={`dislike${Number(!isDisliked) + 1}`}
               size={34}
@@ -144,7 +146,7 @@ export default function Reports(props) {
           <View style={styles.reportShareContainer}>
             <TouchableOpacity
               style={{width: 50}}
-              onPress={() => favoriteItem(index)}>
+              onPress={() => favoriteItem(INDEX)}>
               <Ionicons
                 name={isFavorite ? 'bookmark' : 'bookmark-outline'}
                 size={30}

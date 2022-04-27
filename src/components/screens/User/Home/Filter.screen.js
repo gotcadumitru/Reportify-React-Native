@@ -15,14 +15,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Mui from 'react-native-vector-icons/MaterialCommunityIcons';
 import dayjs from 'dayjs';
 import {
-  sortByDate,
   sortByLength,
   filteredByType,
   filterByDate,
   distanceFilter,
 } from 'helpers/sort';
 import {getDistance} from 'geolib';
-import _ from 'lodash';
 
 export default function FilterScreen(props) {
   const {navigation, filters, setter, posts, resetFilters} = props;

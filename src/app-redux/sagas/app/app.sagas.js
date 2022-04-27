@@ -26,7 +26,7 @@ import {
 } from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {getStorageData} from 'helpers/storage';
-import {sortByDate, sortByLength} from 'helpers/sort';
+import {sortByLength, getSortedPosts} from 'helpers/sort';
 // * Generators
 
 const getState = state => state.appReducer;
@@ -126,6 +126,8 @@ function* uploadFilesGenerator({files}) {
 
 function* getAllPostsGenerator() {
   try {
+    const state = yield select(getState);
+    const {areFilters, filters} = state;
     yield put(setter({isLoading: true}));
     const format = yield getStorageData('format');
     if (format) {
@@ -146,10 +148,12 @@ function* getAllPostsGenerator() {
           );
           return post;
         });
+      let filteredPosts = getSortedPosts(areFilters, sortedPosts, filters);
+
       yield put(
         setter({
           posts: sortedPosts,
-          filteredPosts: sortedPosts,
+          filteredPosts,
           userLocation: coords,
         }),
       );
@@ -210,7 +214,7 @@ function* addPostGenerator({data}) {
 function* voteItemGenerator({index, field}) {
   try {
     const state = yield select(getState);
-    const {posts, profile} = state;
+    const {posts, profile, filters, areFilters} = state;
     const fieldToExclude = field !== 'likes' ? 'likes' : 'disLikes';
 
     const arrToUpdate = posts[index][field];
@@ -229,7 +233,9 @@ function* voteItemGenerator({index, field}) {
     newPosts[index][field] = addedItems;
     newPosts[index][fieldToExclude] = removedItems;
 
-    yield put(setter({posts: newPosts, filteredPosts: newPosts}));
+    let filteredPosts = getSortedPosts(areFilters, newPosts, filters);
+
+    yield put(setter({posts: newPosts, filteredPosts}));
     const res = yield editPostGenerator({
       data: {[field]: addedItems, [fieldToExclude]: removedItems},
       id: newPosts[index]._id,
@@ -240,7 +246,7 @@ function* voteItemGenerator({index, field}) {
 function* favoriteItemGenerator({index}) {
   try {
     const state = yield select(getState);
-    const {posts, profile, currentItem} = state;
+    const {posts, profile, currentItem, areFilters, filters} = state;
     const arrToUpdate = posts[index].favorites;
 
     const includes = arrToUpdate.includes(profile.id);
@@ -255,7 +261,9 @@ function* favoriteItemGenerator({index}) {
     let newPosts = [...posts];
     newPosts[index].favorites = addedItems;
 
-    yield put(setter({posts: newPosts, filteredPosts: newPosts}));
+    filteredPosts = getSortedPosts(areFilters, newPosts, filters);
+
+    yield put(setter({posts: newPosts, filteredPosts}));
     const res = yield editPostGenerator({
       data: {favorites: addedItems},
       id: newPosts[index]._id,

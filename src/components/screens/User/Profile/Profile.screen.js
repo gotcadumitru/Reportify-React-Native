@@ -36,7 +36,7 @@ export default function Profile(props) {
       }
     });
     const statistics = [
-      {label: 'Raportări', value: reports},
+      {label: 'Raport.', value: reports},
       {label: 'Likes', value: likes},
       {label: 'Dislikes', value: disLikes},
       {label: 'Favorite', value: favorites},
