@@ -162,7 +162,7 @@ export default function ReportContentScreen(props) {
               name="send"
               color={values.message.length > 0 ? COLORS.DARK_BLUE : COLORS.GRAY}
               size={30}
-              style={{marginLeft: 10, marginTop: 15}}
+              style={{marginLeft: 10}}
             />
           </TouchableOpacity>
         </View>

@@ -14,4 +14,5 @@ export const API_ROUTES = {
   UPLOAD_FILES: FILES + '/upload',
   POSTS: POST,
   CATEGORIES: POST + '/categories',
+  MESSAGES: BASE + '/message/all/',
 };

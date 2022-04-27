@@ -2,7 +2,8 @@ import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {SCREENS} from './screen.names';
 import {COLORS} from 'theme/theme';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {navigationRef} from 'navigation/Root.navigation';
 export const TabScreens = [
   {
     name: SCREENS.REPORTS,
@@ -16,7 +17,16 @@ export const TabScreens = [
     icon: require('assets/lottie/icons/chat.json'),
     height: 40,
     width: 40,
-    source: 'MyProfile',
+    source: 'Chat',
+    options: {
+      headerShown: true,
+      title: 'Support',
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigationRef.goBack()}>
+          <Ionicons name="chevron-back" size={30} />
+        </TouchableOpacity>
+      ),
+    },
   },
   {
     name: SCREENS.ADD_REPORT,

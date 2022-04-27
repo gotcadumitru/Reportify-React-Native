@@ -30,3 +30,9 @@ export const categoriesRequest = async () => {
     return response.data;
   });
 };
+
+export const getAllUserMessagesRequest = async id => {
+  return axios.get(API_ROUTES.MESSAGES + id).then(response => {
+    return response.data;
+  });
+};

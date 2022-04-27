@@ -14,6 +14,7 @@ import {
   editPostRequest,
   categoriesRequest,
   getSinglePostRequest,
+  getAllUserMessagesRequest,
 } from './user/user.requests';
 
 export {
@@ -29,4 +30,5 @@ export {
   editPostRequest,
   categoriesRequest,
   getSinglePostRequest,
+  getAllUserMessagesRequest,
 };

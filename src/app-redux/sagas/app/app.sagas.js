@@ -11,6 +11,7 @@ import {
   editPostRequest,
   categoriesRequest,
   getSinglePostRequest,
+  getAllUserMessagesRequest,
 } from 'api/index';
 
 // * Action types
@@ -23,6 +24,7 @@ import {
   GET_CATEGORIES,
   FAVORITE_ITEM,
   GET_SINGLE_POST,
+  GET_ALL_USER_MESSAGES,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter} from 'app-redux/actions/app/app.actions';
 import {getStorageData} from 'helpers/storage';
@@ -298,6 +300,15 @@ function* getSinglePostGenerator({id}) {
   } catch (error) {}
 }
 
+function* getAllUserMessagesGenerator({userId}) {
+  try {
+    const response = yield call(getAllUserMessagesRequest, userId);
+    yield put(setter({chatMessages: response.messages}));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // * Watcher
 export function* appActionWatcher() {
   yield takeEvery(UPLOAD_FILES, uploadFilesGenerator);
@@ -308,4 +319,5 @@ export function* appActionWatcher() {
   yield takeEvery(FAVORITE_ITEM, favoriteItemGenerator);
   yield takeEvery(GET_CATEGORIES, getCategoriesGenerator);
   yield takeEvery(GET_SINGLE_POST, getSinglePostGenerator);
+  yield takeEvery(GET_ALL_USER_MESSAGES, getAllUserMessagesGenerator);
 }

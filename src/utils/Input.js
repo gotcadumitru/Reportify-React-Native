@@ -15,10 +15,11 @@ export default function Input(props) {
     onSubmitEditing,
     noHeightMultiline,
     inputRef = null,
+    vertical = 5,
   } = props;
   return (
-    <View style={[style, {marginVertical: 5, alignSelf: 'center'}]}>
-      <Text style={styles.title}>{title}</Text>
+    <View style={[style, {marginVertical: vertical, alignSelf: 'center'}]}>
+      {title && <Text style={styles.title}>{title}</Text>}
       <TextInput
         style={[
           styles.input,

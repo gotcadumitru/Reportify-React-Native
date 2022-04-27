@@ -79,3 +79,8 @@ export const resetFilters = () => ({
 export const getCategories = () => ({
   type: TYPES.GET_CATEGORIES,
 });
+
+export const getAllUserMessages = userId => ({
+  type: TYPES.GET_ALL_USER_MESSAGES,
+  userId,
+});

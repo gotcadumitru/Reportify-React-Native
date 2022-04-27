@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 
 // * Default state
 const defaultState = {
+  chatMessages: [],
   isLoading: false,
   isSignedIn: false,
   response: null,

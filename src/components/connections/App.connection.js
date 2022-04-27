@@ -15,6 +15,7 @@ import AddReport from 'components/screens/User/Home/AddReport.screen.js';
 import MapsReports from 'components/screens/User/Home/MapsReports.screen.js';
 import Filter from 'components/screens/User/Home/Filter.screen.js';
 import ReportContent from 'components/screens/User/Home/ReportContent.screen.js';
+import Chat from 'components/screens/User/Home/Chat.screen.js';
 
 import {
   setter,
@@ -34,6 +35,7 @@ import {
   favoriteItem,
   resetFilters,
   getSinglePost,
+  getAllUserMessages,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -59,6 +61,7 @@ const mapDispatchToProps = dispatch => ({
   getCategories: () => dispatch(getCategories()),
   favoriteItem: index => dispatch(favoriteItem(index)),
   getSinglePost: id => dispatch(getSinglePost(id)),
+  getAllUserMessages: userId => dispatch(getAllUserMessages(userId)),
 });
 
 export default {
@@ -75,4 +78,5 @@ export default {
   MapsReports: connect(mapStateToProps, mapDispatchToProps)(MapsReports),
   Filter: connect(mapStateToProps, mapDispatchToProps)(Filter),
   ReportContent: connect(mapStateToProps, mapDispatchToProps)(ReportContent),
+  Chat: connect(mapStateToProps, mapDispatchToProps)(Chat),
 };
