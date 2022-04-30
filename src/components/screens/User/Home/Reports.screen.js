@@ -108,13 +108,16 @@ export default function Reports(props) {
     return (
       <View style={{marginTop: 20}}>
         <View style={styles.likesContainer}>
-          <TouchableOpacity onPress={() => voteItem(INDEX, 'likes')}>
-            <AntDesign
-              name={`like${Number(!isLiked) + 1}`}
-              size={34}
-              color={'white'}
-            />
-          </TouchableOpacity>
+          <View>
+            <Text style={styles.likesCountText}>{item?.likes?.length}</Text>
+            <TouchableOpacity onPress={() => voteItem(INDEX, 'likes')}>
+              <AntDesign
+                name={`like${Number(!isLiked) + 1}`}
+                size={34}
+                color={'white'}
+              />
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity onPress={() => voteItem(INDEX, 'disLikes')}>
             <AntDesign
               name={`dislike${Number(!isDisliked) + 1}`}
@@ -210,7 +213,7 @@ export default function Reports(props) {
 
       <View>
         <FlatList
-          data={filteredPosts}
+          data={fisPosts}
           showsVerticalScrollIndicator={false}
           renderItem={renderPost}
           refreshControl={
@@ -409,7 +412,7 @@ const styles = StyleSheet.create({
     right: SCREEN_SIZE.WIDTH * 0.1,
     top: 80,
     zIndex: 1000,
-    height: 100,
+    height: 130,
     justifyContent: 'space-between',
   },
   searchFilterContainer: {
@@ -418,5 +421,16 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
     ...APP_STYLES.SHADOW,
+  },
+  likesCountText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    borderWidth: 2,
+    padding: 5,
+    borderRadius: 10,
+    borderColor: 'white',
+    marginBottom: 5,
   },
 });

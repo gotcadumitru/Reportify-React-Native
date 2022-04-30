@@ -37,10 +37,10 @@ export default function ResetPassword(props) {
             alignItems: 'center',
             flex: 3,
           }}>
-          <Text style={styles.welcomeText}>Reset password</Text>
+          <Text style={styles.welcomeText}>Resetează parola</Text>
         </View>
         <View style={{marginTop: 20, flex: 4}}>
-          <Text style={styles.topInputText}>Email address</Text>
+          <Text style={styles.topInputText}>Adresa de email</Text>
 
           <View style={styles.inputContainer}>
             <TextInput
@@ -56,7 +56,7 @@ export default function ResetPassword(props) {
             </Text>
           </View>
           <Text style={styles.authText}>
-            Please follow the instructions received in the email!
+            Vă rugăm să urmați instrucțiunile primite în e-mail!
           </Text>
         </View>
 
@@ -64,14 +64,14 @@ export default function ResetPassword(props) {
           <TouchableOpacity
             style={[styles.btn, styles.shadow]}
             onPress={handleSubmit}>
-            <Text style={styles.btnText}>Recover</Text>
+            <Text style={styles.btnText}>Resetează</Text>
           </TouchableOpacity>
         </View>
         <View style={{flex: 1}}>
           <TouchableOpacity
             style={{paddingTop: 25}}
             onPress={() => navigation.goBack()}>
-            <Text style={styles.forgotPassText}>I remembered my password</Text>
+            <Text style={styles.forgotPassText}>Mi-am amintit parola!</Text>
           </TouchableOpacity>
         </View>
         <View
@@ -81,7 +81,7 @@ export default function ResetPassword(props) {
             marginTop: 30,
             flex: 1,
           }}>
-          <Text>or connect with</Text>
+          <Text>sau conectativa cu</Text>
         </View>
         <View style={[styles.socialMediaView, {flex: 5}]}>
           <TouchableOpacity
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: SCREEN_SIZE.WIDTH * 0.8,
     height: SCREEN_SIZE.HEIGHT * 0.06,
-    backgroundColor: COLORS.PURPLE,
+    backgroundColor: COLORS.DARK_BLUE,
     borderRadius: 20,
   },
   btnText: {
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     elevation: 24,
   },
   forgotPassText: {
-    color: COLORS.PURPLE,
+    color: COLORS.DARK_BLUE,
     fontWeight: 'bold',
     textAlign: 'right',
   },

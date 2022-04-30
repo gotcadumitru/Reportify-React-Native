@@ -76,10 +76,12 @@ export default function FilePicker(props) {
 }
 const pickerParams = {
   //   cropping: true,
-  compressImageQuality: 0.7,
+  compressImageQuality: 0.6,
   multiple: true,
   freeStyleCropEnabled: true,
   mediaType: 'any',
+  forceJpg: true,
+  compressVideoPreset: 'LowQuality',
 };
 const styles = StyleSheet.create({
   changeImageContainer: {

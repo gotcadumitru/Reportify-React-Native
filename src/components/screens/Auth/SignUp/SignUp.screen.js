@@ -22,9 +22,9 @@ export default function SingUp(props) {
   const {handleSubmit, handleChange, handleBlur, values, errors, touched} =
     useFormik({
       initialValues: {
-        email: 'dragoshuniq@yahoo.com',
-        password: '123456',
-        repPassword: '123456',
+        email: '',
+        password: '',
+        repPassword: '',
       },
       onSubmit: signUpUser,
       validationSchema: signUpSchema,
@@ -60,7 +60,7 @@ export default function SingUp(props) {
                 fontWeight: 'bold',
                 textAlign: 'center',
               }}>
-              SIGN UP
+              INSCRIE-TE
             </Text>
           </View>
           <View
@@ -77,13 +77,13 @@ export default function SingUp(props) {
             alignItems: 'center',
             flex: 1,
           }}>
-          <Text style={styles.welcomeText}>Welcome to Reportify</Text>
+          <Text style={styles.welcomeText}>Bun venit in Reportify</Text>
           <Text style={styles.authText}>
-            Create account by filling in the information below:
+            Creează cont completând informațiile de mai jos:
           </Text>
         </View>
         <View style={{marginTop: 20, flex: 10}}>
-          <Text style={styles.topInputText}>Email address</Text>
+          <Text style={styles.topInputText}>Adresa de email</Text>
 
           <View style={styles.inputContainer}>
             <TextInput
@@ -98,13 +98,13 @@ export default function SingUp(props) {
           <Text style={styles.errors}>
             {errors.email && touched.email && errors.email}
           </Text>
-          <Text style={styles.topInputText}>Password</Text>
+          <Text style={styles.topInputText}>Parola</Text>
 
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.textInput}
               autoCorrect={false}
-              placeholder="Shhh! This is super secret!"
+              placeholder="Shhh! Este super secret!"
               placeholderTextColor="#000000"
               secureTextEntry={isSecurePassword}
               value={values.password}
@@ -127,7 +127,7 @@ export default function SingUp(props) {
           <Text style={styles.errors}>
             {errors.password && touched.password && errors.password}
           </Text>
-          <Text style={styles.topInputText}>Repeat Password</Text>
+          <Text style={styles.topInputText}>Repetați parola</Text>
 
           <View style={styles.inputContainer}>
             <TextInput
@@ -165,7 +165,7 @@ export default function SingUp(props) {
               onPress={() => {
                 navigation.navigate(SCREENS.RESET_PASSWORD);
               }}>
-              <Text style={styles.forgotPassText}>Forgot password?</Text>
+              <Text style={styles.forgotPassText}>Aţi uitat parola?</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -174,7 +174,7 @@ export default function SingUp(props) {
           <TouchableOpacity
             style={[styles.btn, styles.shadow]}
             onPress={handleSubmit}>
-            <Text style={styles.btnText}>Sign up</Text>
+            <Text style={styles.btnText}>Inregistrare</Text>
           </TouchableOpacity>
         </View>
         <View
@@ -184,7 +184,7 @@ export default function SingUp(props) {
             marginTop: 60,
             flex: 1,
           }}>
-          <Text>or connect with</Text>
+          <Text>sau conectați-vă cu</Text>
         </View>
         <View style={[styles.socialMediaView, {flex: 3}]}>
           <TouchableOpacity
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios'
         ? SCREEN_SIZE.HEIGHT * 0.06
         : SCREEN_SIZE.HEIGHT * 0.06,
-    backgroundColor: COLORS.PURPLE,
+    backgroundColor: COLORS.DARK_BLUE,
     borderRadius: 20,
   },
   btnSecond: {
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     height: SCREEN_SIZE.HEIGHT * 0.06,
     backgroundColor: 'transparent',
     borderRadius: 20,
-    borderColor: COLORS.PURPLE,
+    borderColor: COLORS.DARK_BLUE,
     borderWidth: 2,
     marginTop: 20,
   },
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   forgotPassText: {
-    color: COLORS.PURPLE,
+    color: COLORS.DARK_BLUE,
     fontWeight: 'bold',
     textAlign: 'right',
   },

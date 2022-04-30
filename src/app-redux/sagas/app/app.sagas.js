@@ -12,6 +12,7 @@ import {
   categoriesRequest,
   getSinglePostRequest,
   getAllUserMessagesRequest,
+  postCommentRequest,
 } from 'api/index';
 
 // * Action types
@@ -25,8 +26,9 @@ import {
   FAVORITE_ITEM,
   GET_SINGLE_POST,
   GET_ALL_USER_MESSAGES,
+  ADD_COMMENT,
 } from 'app-redux/actions/app/app.actions-types';
-import {setter} from 'app-redux/actions/app/app.actions';
+import {setter, getSinglePost} from 'app-redux/actions/app/app.actions';
 import {getStorageData} from 'helpers/storage';
 import {sortByLength, getSortedPosts} from 'helpers/sort';
 // * Generators
@@ -309,6 +311,17 @@ function* getAllUserMessagesGenerator({userId}) {
   }
 }
 
+function* addCommentGenerator({payload}) {
+  try {
+    const state = yield select(getState);
+    const {currentPost} = state;
+    const response = yield call(postCommentRequest, payload);
+    yield put(getSinglePost(currentPost._id));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // * Watcher
 export function* appActionWatcher() {
   yield takeEvery(UPLOAD_FILES, uploadFilesGenerator);
@@ -320,4 +333,5 @@ export function* appActionWatcher() {
   yield takeEvery(GET_CATEGORIES, getCategoriesGenerator);
   yield takeEvery(GET_SINGLE_POST, getSinglePostGenerator);
   yield takeEvery(GET_ALL_USER_MESSAGES, getAllUserMessagesGenerator);
+  yield takeEvery(ADD_COMMENT, addCommentGenerator);
 }

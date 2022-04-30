@@ -36,3 +36,10 @@ export const getAllUserMessagesRequest = async id => {
     return response.data;
   });
 };
+
+export const postCommentRequest = async data => {
+  console.log(data);
+  return axios.post(API_ROUTES.COMMENTS, {...data}).then(response => {
+    return response;
+  });
+};

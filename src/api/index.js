@@ -15,6 +15,7 @@ import {
   categoriesRequest,
   getSinglePostRequest,
   getAllUserMessagesRequest,
+  postCommentRequest,
 } from './user/user.requests';
 
 export {
@@ -31,4 +32,5 @@ export {
   categoriesRequest,
   getSinglePostRequest,
   getAllUserMessagesRequest,
+  postCommentRequest,
 };

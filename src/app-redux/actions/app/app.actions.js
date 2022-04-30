@@ -84,3 +84,8 @@ export const getAllUserMessages = userId => ({
   type: TYPES.GET_ALL_USER_MESSAGES,
   userId,
 });
+
+export const addComment = payload => ({
+  type: TYPES.ADD_COMMENT,
+  payload,
+});

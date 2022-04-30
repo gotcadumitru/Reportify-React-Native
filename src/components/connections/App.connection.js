@@ -37,6 +37,7 @@ import {
   resetFilters,
   getSinglePost,
   getAllUserMessages,
+  addComment,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -63,6 +64,7 @@ const mapDispatchToProps = dispatch => ({
   favoriteItem: index => dispatch(favoriteItem(index)),
   getSinglePost: id => dispatch(getSinglePost(id)),
   getAllUserMessages: userId => dispatch(getAllUserMessages(userId)),
+  addComment: payload => dispatch(addComment(payload)),
 });
 
 export default {

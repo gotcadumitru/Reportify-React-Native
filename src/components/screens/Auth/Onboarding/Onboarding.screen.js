@@ -13,6 +13,8 @@ export default function OnboardingScreen(props) {
 
   return (
     <Onboarding
+      nextLabel="Continuă"
+      skipLabel="Sari"
       pages={[
         {
           backgroundColor: '#ffffff',
@@ -24,8 +26,8 @@ export default function OnboardingScreen(props) {
               source={require('assets/lottie/woman.json')}
             />
           ),
-          title: 'Welcome',
-          subtitle: 'Welcome to the app',
+          title: 'Reportify',
+          subtitle: 'Bine ati venit!',
         },
         {
           backgroundColor: COLORS.PURPLE,
@@ -37,8 +39,8 @@ export default function OnboardingScreen(props) {
               source={require('assets/lottie/paper.json')}
             />
           ),
-          title: 'Report the issues',
-          subtitle: 'Help the community with real life problems',
+          title: 'Raportați problemele',
+          subtitle: 'Ajută comunitatea cu probleme din viața reală',
         },
         {
           backgroundColor: COLORS.GREEN,
@@ -50,8 +52,8 @@ export default function OnboardingScreen(props) {
               source={require('assets/lottie/question.json')}
             />
           ),
-          title: 'Live perfect',
-          subtitle: 'Make your place better!',
+          title: 'Trăiește mai bine',
+          subtitle: 'Fă comunitatea mai bună!',
         },
       ]}
       onDone={onFinishOnboarding}

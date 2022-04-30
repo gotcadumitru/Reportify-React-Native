@@ -111,13 +111,16 @@ export default function TypeReportsScreen(props) {
     return (
       <View style={{marginTop: 20}}>
         <View style={styles.likesContainer}>
-          <TouchableOpacity onPress={() => voteItem(INDEX, 'likes')}>
-            <AntDesign
-              name={`like${Number(!isLiked) + 1}`}
-              size={34}
-              color={'white'}
-            />
-          </TouchableOpacity>
+          <View>
+            <Text style={styles.likesCountText}>{item?.likes?.length}</Text>
+            <TouchableOpacity onPress={() => voteItem(INDEX, 'likes')}>
+              <AntDesign
+                name={`like${Number(!isLiked) + 1}`}
+                size={34}
+                color={'white'}
+              />
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity onPress={() => voteItem(INDEX, 'disLikes')}>
             <AntDesign
               name={`dislike${Number(!isDisliked) + 1}`}
@@ -294,7 +297,18 @@ const styles = StyleSheet.create({
     right: SCREEN_SIZE.WIDTH * 0.1,
     top: 80,
     zIndex: 1000,
-    height: 100,
+    height: 130,
     justifyContent: 'space-between',
+  },
+  likesCountText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    borderWidth: 2,
+    padding: 5,
+    borderRadius: 10,
+    borderColor: 'white',
+    marginBottom: 5,
   },
 });
