@@ -8,7 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "splash": "react-native generate-bootsplash src/assets/logo.png  --background-color=FFFCFF  --logo-width=200  --assets-path=assets  --flavor=main",
+    "splash": "react-native generate-bootsplash src/assets/logo.png  --background-color=FFFCFF  --logo-width=150  --assets-path=assets  --flavor=main",
     "clean:android": "cd android && ./gradlew clean && cd ../",
     "clean:ios": "cd ios && xcodebuild clean && cd ../",
     "clean:cache": "react-native start --reset-cache",
