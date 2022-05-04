@@ -6,6 +6,8 @@ import {
   Platform,
   TouchableOpacity,
   TextInput,
+  ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import {COLORS, SCREEN_SIZE} from 'theme/theme';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -17,6 +19,8 @@ import {signInSchema} from './SignIn.schema';
 
 export default function SingIn(props) {
   const {navigation, signIn, signInGoogle, signInFacebook} = props;
+
+  const {height, width} = useWindowDimensions();
   const [isSecurePassword, setIsSecurePassword] = React.useState(true);
   const {handleSubmit, handleChange, handleBlur, values, errors, touched} =
     useFormik({
@@ -31,9 +35,9 @@ export default function SingIn(props) {
   }
 
   return (
-    <View style={{height: SCREEN_SIZE.HEIGHT}}>
+    <ScrollView>
       <View style={styles.container}>
-        <View style={styles.header}>
+        <View style={styles.header({width})}>
           <View
             style={{
               flex: 1,
@@ -78,7 +82,7 @@ export default function SingIn(props) {
 
           <View style={styles.inputContainer}>
             <TextInput
-              style={styles.textInput}
+              style={styles.textInput({width})}
               placeholder="you@your-domain.com"
               placeholderTextColor="#000000"
               value={values.email}
@@ -93,7 +97,7 @@ export default function SingIn(props) {
 
           <View style={styles.inputContainer}>
             <TextInput
-              style={styles.textInput}
+              style={styles.textInput({width})}
               autoCorrect={false}
               placeholder="Shhh! Este super secret!"
               placeholderTextColor="#000000"
@@ -134,12 +138,12 @@ export default function SingIn(props) {
 
         <View style={[styles.btnView, {flex: 1}]}>
           <TouchableOpacity
-            style={[styles.btn, styles.shadow]}
+            style={[styles.btn({height, width}), styles.shadow]}
             onPress={handleSubmit}>
             <Text style={styles.btnText}>Conectare</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.btnSecond, styles.shadow]}
+            style={[styles.btnSecond({height, width}), styles.shadow]}
             onPress={() => {
               navigation.navigate(SCREENS.SIGN_UP);
             }}>
@@ -186,7 +190,7 @@ export default function SingIn(props) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -210,28 +214,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btn: {
+  btn: props => ({
     justifyContent: 'center',
     alignItems: 'center',
-    width: SCREEN_SIZE.WIDTH * 0.8,
-    height:
-      Platform.OS === 'ios'
-        ? SCREEN_SIZE.HEIGHT * 0.06
-        : SCREEN_SIZE.HEIGHT * 0.06,
+    width: props.width * 0.8,
+    height: 50,
     backgroundColor: COLORS.DARK_BLUE,
     borderRadius: 20,
-  },
-  btnSecond: {
+  }),
+  btnSecond: props => ({
     justifyContent: 'center',
     alignItems: 'center',
-    width: SCREEN_SIZE.WIDTH * 0.8,
-    height: SCREEN_SIZE.HEIGHT * 0.06,
+    width: props.width * 0.8,
+    height: 50,
     backgroundColor: 'transparent',
     borderRadius: 20,
     borderColor: COLORS.DARK_BLUE,
     borderWidth: 2,
     marginTop: 20,
-  },
+  }),
   btnText: {
     color: 'white',
     fontWeight: 'bold',
@@ -250,10 +251,10 @@ const styles = StyleSheet.create({
     borderRadius: SCREEN_SIZE.WIDTH * 0.2,
     marginHorizontal: 20,
   },
-  textInput: {
+  textInput: props => ({
     paddingLeft: 20,
-    width: SCREEN_SIZE.WIDTH * 0.8,
-    height: SCREEN_SIZE.HEIGHT * 0.065,
+    width: props.width * 0.8,
+    height: 50,
     borderRadius: 10,
     backgroundColor: '#CFD8DC',
     opacity: 0.3,
@@ -266,7 +267,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10.32,
 
     elevation: 16,
-  },
+  }),
   inputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -293,14 +294,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'right',
   },
-  header: {
+  header: props => ({
     flex: 2,
-    width: SCREEN_SIZE.WIDTH * 0.9,
+    width: props.width * 0.9,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 20,
-  },
+  }),
   errors: {
     color: COLORS.RED,
     fontWeight: '600',
