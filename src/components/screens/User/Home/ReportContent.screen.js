@@ -84,7 +84,7 @@ export default function ReportContentScreen(props) {
           <Image source={{uri: item.fileUrl}} style={styles.fileView} />
         </View>
       );
-    } else if (item?.type?.includes('pdf')) {
+    } else if (item?.mimetype?.includes('pdf')) {
       return (
         <View>
           <Pdf

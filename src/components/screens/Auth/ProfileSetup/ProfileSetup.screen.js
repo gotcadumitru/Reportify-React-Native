@@ -86,7 +86,7 @@ export default function ProfileSetup(props) {
   };
 
   const renderFile = ({item, index}) => {
-    if (item?.mime?.includes('image')) {
+    if (item?.mimetype?.includes('image')) {
       return (
         <View>
           <TouchableOpacity
@@ -101,7 +101,7 @@ export default function ProfileSetup(props) {
           <Image source={{uri: item.path}} style={styles.imageView} />
         </View>
       );
-    } else if (item?.type?.includes('pdf')) {
+    } else if (item?.mimetype?.includes('pdf')) {
       return (
         <View>
           <TouchableOpacity
@@ -126,7 +126,7 @@ export default function ProfileSetup(props) {
           />
         </View>
       );
-    } else if (item?.mime?.includes('video')) {
+    } else if (item?.mimetype?.includes('video')) {
       return (
         <View>
           <TouchableOpacity

@@ -11,12 +11,15 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
+import Pdf from 'react-native-pdf';
+import Video from 'react-native-video';
 import MapView from 'react-native-maps';
 import Share from 'react-native-share';
 import Geolocation from '@react-native-community/geolocation';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import onShareItem from 'helpers/shareItem';
 
 const {width, height} = Dimensions.get('window');
 
@@ -25,7 +28,7 @@ const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const MapsReports = props => {
-  const {posts, voteItem, profile, getAllPosts, isLoading} = props;
+  const {posts, voteItem, profile, getAllPosts, isLoading, navigation} = props;
   const [search, setSearch] = React.useState('');
   const [localPosts, setLocalPosts] = React.useState(posts);
 
@@ -62,8 +65,12 @@ const MapsReports = props => {
   });
 
   useEffect(() => {
-    getAllPosts();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getAllPosts();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     let newPosts = posts.filter(
@@ -103,33 +110,6 @@ const MapsReports = props => {
 
   const _map = React.useRef(null);
   const _scrollView = React.useRef(null);
-
-  const onShareItem = async item => {
-    try {
-      const image = item.files.find(file => file.mimetype.includes('image'));
-      if (image) {
-        setter({isLoading: true});
-        const base64Image = await base64File(image.fileUrl);
-
-        Share.open({
-          title: item.title,
-          subject: item.title,
-          message: item.description,
-          ...(image && {url: base64Image}),
-        }).finally(res => {
-          setter({isLoading: false});
-        });
-      }
-    } catch (error) {
-      setter({
-        response: {
-          isResponse: true,
-          message: 'A aparut o eroare!',
-          type: false,
-        },
-      });
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -221,7 +201,11 @@ const MapsReports = props => {
           const image = post.files.find(file =>
             file.mimetype.includes('image'),
           );
+          const video = post.files.find(file =>
+            file.mimetype.includes('video'),
+          );
 
+          const pdf = post.files.find(file => file.mimetype.includes('pdf'));
           const isLiked = post?.likes?.includes(profile?.id);
           const isDisliked = post?.disLikes?.includes(profile?.id);
           const INDEX = posts.findIndex(ps => ps._id === post._id);
@@ -233,6 +217,7 @@ const MapsReports = props => {
                 style={styles.cardImage}
                 resizeMode="cover"
               />
+
               <View style={styles.textContent}>
                 <View style={{flex: 1}}>
                   <Text numberOfLines={1} style={styles.cardtitle}>

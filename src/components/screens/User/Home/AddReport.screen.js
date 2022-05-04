@@ -82,15 +82,14 @@ export default function AddReport(props) {
     files.splice(index, 1);
     setFieldValue('files', files);
   };
-
   const renderFile = ({item, index}) => {
-    if (item?.mime?.includes('image')) {
+    if (item?.mimetype?.includes('image')) {
       return (
         <View>
           <Image source={{uri: item.path}} style={styles.imageView} />
         </View>
       );
-    } else if (item?.type?.includes('pdf')) {
+    } else if (item?.mimetype?.includes('pdf')) {
       return (
         <View>
           <Pdf
@@ -100,7 +99,7 @@ export default function AddReport(props) {
           />
         </View>
       );
-    } else if (item?.mime?.includes('video')) {
+    } else if (item?.mimetype?.includes('video')) {
       return (
         <View
           style={{

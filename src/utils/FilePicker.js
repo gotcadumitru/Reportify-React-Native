@@ -10,16 +10,19 @@ export default function FilePicker(props) {
   const makePicture = type => {
     ImagePicker.openCamera({cropping: true, mediaType: type})
       .then(image => {
-        getFile([image]);
+        getFile([{...image, mimetype: image.mime}]);
       })
-
       .finally(onClosePicker);
   };
 
   const choosePicture = () => {
     ImagePicker.openPicker({...pickerParams, multiple: !single})
       .then(images => {
-        getFile(images);
+        getFile(
+          images.map(image => {
+            return {...image, mimetype: image.mime};
+          }),
+        );
       })
       .finally(onClosePicker);
   };
@@ -29,7 +32,11 @@ export default function FilePicker(props) {
       type: [DocumentPicker.types.pdf],
     })
       .then(docs => {
-        getFile(docs);
+        getFile(
+          docs.map(doc => {
+            return {...doc, mimetype: doc.type};
+          }),
+        );
       })
       .finally(onClosePicker);
   };

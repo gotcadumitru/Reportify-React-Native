@@ -21,7 +21,7 @@ export default function Documents(props) {
           </View>
         </View>
       );
-    } else if (item?.type?.includes('pdf')) {
+    } else if (item?.mimetype?.includes('pdf')) {
       return (
         <View>
           <Pdf
