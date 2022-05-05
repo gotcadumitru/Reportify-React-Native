@@ -9,6 +9,7 @@ import {
   Image,
   TouchableOpacity,
   KeyboardAvoidingView,
+  useWindowDimensions,
 } from 'react-native';
 import {SCREENS} from 'constants/screens/screen.names';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
@@ -25,8 +26,8 @@ export default function ChatScreen(props) {
   const scrollViewRef = React.useRef();
 
   const keyboardHeight = useKeyboard();
+  const {width, height} = useWindowDimensions();
   const sendMessage = useUserNewMessages();
-
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       if (messageInputRef && messageInputRef.current) {
@@ -133,7 +134,7 @@ export default function ChatScreen(props) {
           }
         />
       </View>
-      <View style={[styles.commentInput, {bottom: keyboardHeight}]}>
+      <View style={[styles.commentInput, {bottom: keyboardHeight, width}]}>
         <Input
           vertical={0}
           inputRef={messageInputRef}
@@ -143,6 +144,7 @@ export default function ChatScreen(props) {
           noHeightMultiline
           value={values.message}
           onChangeText={handleChange('message')}
+          width={width * 0.8}
         />
         <TouchableOpacity onPress={handleSubmit}>
           <Ionicons

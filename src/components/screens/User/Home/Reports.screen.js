@@ -23,6 +23,8 @@ import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {ScrollView} from 'react-native-gesture-handler';
+import {INFO_DATA} from 'constants/data/info.data';
+
 const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
@@ -48,6 +50,12 @@ export default function Reports(props) {
 
   const [filteredPosts, setFilteredPosts] = React.useState(fisPosts);
   const [search, setSearch] = React.useState('');
+
+  React.useEffect(() => {
+    if (fisPosts) {
+      setFilteredPosts(fisPosts);
+    }
+  }, [fisPosts]);
 
   React.useEffect(() => {
     getAllPosts();
@@ -218,7 +226,7 @@ export default function Reports(props) {
         <FlatList
           numColumns={Number(isLandscape) + 1}
           keyExtractor={item => item._id}
-          data={fisPosts}
+          data={filteredPosts}
           key={Number(isLandscape)}
           showsVerticalScrollIndicator={false}
           renderItem={renderPost}
@@ -242,16 +250,16 @@ export default function Reports(props) {
                     },
                   ])}
                   scrollEventThrottle={1}>
-                  {[1, 2, 3, 4].map((image, imageIndex) => {
+                  {INFO_DATA.map((info, infoInd) => {
                     return (
-                      <View style={styles.infoView({width})} key={imageIndex}>
+                      <View style={styles.infoView({width})} key={infoInd}>
                         <ImageBackground
-                          source={{
-                            uri: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Gull_portrait_ca_usa.jpg',
-                          }}
+                          source={info.image}
                           style={styles.headerImageSwiper}>
                           <View style={styles.infoImageView}>
-                            <Text style={styles.infoImageText}>dsd</Text>
+                            <Text style={styles.infoImageText}>
+                              {info.label}
+                            </Text>
                           </View>
                         </ImageBackground>
                       </View>

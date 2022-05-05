@@ -12,6 +12,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   Pressable,
+  useWindowDimensions,
 } from 'react-native';
 import onShareItem from 'helpers/shareItem';
 import Carousel from 'react-native-snap-carousel';
@@ -39,7 +40,8 @@ export default function TypeReportsScreen(props) {
     posts,
     route,
   } = props;
-
+  const {height, width} = useWindowDimensions();
+  const isLandscape = width > height;
   React.useEffect(() => {
     getAllPosts();
     getCategories();
@@ -183,19 +185,19 @@ export default function TypeReportsScreen(props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <FlatList
-          data={selectPosts(posts)}
-          showsVerticalScrollIndicator={false}
-          renderItem={renderPost}
-          refreshControl={
-            <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
-          }
-          ListFooterComponent={<View style={{height: 50}} />}
-        />
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <FlatList
+        numColumns={Number(isLandscape) + 1}
+        key={Number(isLandscape)}
+        data={selectPosts(posts)}
+        showsVerticalScrollIndicator={false}
+        renderItem={renderPost}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
+        }
+        ListFooterComponent={<View style={{height: 50}} />}
+      />
+    </View>
   );
 }
 
@@ -234,21 +236,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginHorizontal: 4,
   },
-  indicatorContainer: {
+  indicatorContainer: props => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
     height: 40,
-    width: SCREEN_SIZE.WIDTH,
+    width: props.width,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
-  },
-  infoView: {
-    width: SCREEN_SIZE.WIDTH,
+  }),
+  infoView: props => ({
+    width: props.width,
     height: 200,
     marginTop: 20,
-  },
+  }),
   infoImageView: {
     backgroundColor: '#151922',
     paddingVertical: 15,

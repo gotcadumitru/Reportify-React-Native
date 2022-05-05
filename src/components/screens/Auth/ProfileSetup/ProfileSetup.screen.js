@@ -84,7 +84,6 @@ export default function ProfileSetup(props) {
     files.splice(index, 1);
     setFieldValue('files', files);
   };
-
   const renderFile = ({item, index}) => {
     if (item?.mimetype?.includes('image')) {
       return (

@@ -6,6 +6,9 @@ import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import {TabScreens} from 'constants/screens/screens.selector';
 import {SCREENS} from 'constants/screens/screen.names';
 import LottieView from 'lottie-react-native';
+import {useSelector} from 'react-redux';
+import {AccountStatus} from 'constants/data/account.status';
+import useAccountStatus from 'hooks/useAccountStatus';
 
 const TabIconButton = props => {
   const {isFocused, screen} = props;
@@ -65,6 +68,8 @@ const TabIconButton = props => {
 
 const TabBar = props => {
   const {state, descriptors, navigation} = props;
+  const notConfirmedAcc = useAccountStatus();
+
   return (
     <Animatable.View>
       <View style={styles.container}>
@@ -94,11 +99,15 @@ const TabBar = props => {
             <View
               key={index}
               style={[styles.itemContainer, APP_STYLES.LIGHT_SHADOW]}>
-              <Pressable onPress={onPress} style={styles.tabIcon}>
+              <Pressable
+                onPress={onPress}
+                style={styles.tabIcon}
+                disabled={notConfirmedAcc && route.name !== SCREENS.MY_PROFILE}>
                 <TabIconButton
                   route={label}
                   isFocused={isFocused}
                   screen={TabScreens[index]}
+                  isNotConfirmed={notConfirmedAcc}
                 />
               </Pressable>
             </View>

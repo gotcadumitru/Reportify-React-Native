@@ -18,6 +18,7 @@ export default function FilePicker(props) {
   const choosePicture = () => {
     ImagePicker.openPicker({...pickerParams, multiple: !single})
       .then(images => {
+        if (single) return getFile(images);
         getFile(
           images.map(image => {
             return {...image, mimetype: image.mime};

@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   Pressable,
   KeyboardAvoidingView,
+  useWindowDimensions,
 } from 'react-native';
 import LocationPicker from 'utils/LocationPicker';
 import {useKeyboard} from 'hooks/useKeyboard';
@@ -35,7 +36,6 @@ dayjs.extend(relativeTime);
 
 const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
-
 export default function ReportContentScreen(props) {
   const {currentPost, profile, voteItem, posts, favoriteItem, addComment} =
     props;
@@ -46,7 +46,8 @@ export default function ReportContentScreen(props) {
   const [isLocationPicker, setIsLocationPicker] = React.useState(false);
   const messageInputRef = React.useRef();
   const keyboardHeight = useKeyboard();
-
+  const {width, height} = useWindowDimensions();
+  const isLandscape = width > height;
   const {handleSubmit, handleChange, values, handleReset, setFieldValue} =
     useFormik({
       initialValues: {
@@ -81,7 +82,10 @@ export default function ReportContentScreen(props) {
     if (item?.mimetype?.includes('image')) {
       return (
         <View>
-          <Image source={{uri: item.fileUrl}} style={styles.fileView} />
+          <Image
+            source={{uri: item.fileUrl}}
+            style={styles.fileView({width})}
+          />
         </View>
       );
     } else if (item?.mimetype?.includes('pdf')) {
@@ -90,14 +94,14 @@ export default function ReportContentScreen(props) {
           <Pdf
             fitPolicy={0}
             source={{uri: item.fileUrl}}
-            style={styles.fileView}
+            style={styles.fileView({width})}
           />
         </View>
       );
     } else if (item?.mimetype?.includes('video')) {
       return (
         <View>
-          <View style={styles.fileView}>
+          <View style={styles.fileView({width})}>
             <Video
               source={{uri: item.fileUrl}}
               style={{width: '100%', height: '100%', borderRadius: 20}}
@@ -154,7 +158,9 @@ export default function ReportContentScreen(props) {
             </View>
           </View>
         </View>
-        {comment.comments.map(com => renderComments(com, left + 15))}
+        {comment.comments.map(com =>
+          renderComments(com, left + width * 0.05 * (Number(isLandscape) + 1)),
+        )}
       </>
     );
   };
@@ -190,7 +196,7 @@ export default function ReportContentScreen(props) {
               miniMapStyle={{
                 borderRadius: 0,
                 height: 100,
-                width: SCREEN_SIZE.WIDTH,
+                width,
               }}
             />
           </View>
@@ -239,7 +245,7 @@ export default function ReportContentScreen(props) {
             <Text style={{fontWeight: 'bold'}}>Descriere:</Text>
             <Text>{posts[index].description}</Text>
           </View>
-          <View style={styles.commContainer}>
+          <View style={[styles.commContainer]}>
             <Text style={{fontWeight: 'bold'}}>Comentarii:</Text>
             {currentPost.comments.map(comment => {
               return renderComments(comment);
@@ -249,7 +255,7 @@ export default function ReportContentScreen(props) {
         </View>
       </ScrollView>
       <KeyboardAvoidingView>
-        <View style={[styles.commentInput, {bottom: keyboardHeight}]}>
+        <View style={[styles.commentInput, {bottom: keyboardHeight, width}]}>
           {values?.replyName.length > 0 ? (
             <View
               style={[APP_STYLES.ROW, {marginLeft: 30, marginVertical: 10}]}>
@@ -272,6 +278,7 @@ export default function ReportContentScreen(props) {
               noHeightMultiline
               value={values.message}
               onChangeText={handleChange('message')}
+              width={width * 0.8}
             />
             <TouchableOpacity onPress={handleSubmit}>
               <Ionicons
@@ -295,11 +302,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  fileView: {
+  fileView: props => ({
     height: 200,
-    width: ITEM_WIDTH,
+    width: props.width,
     alignSelf: 'center',
-  },
+  }),
   actionContainer: {
     borderTopWidth: 1,
     borderBottomWidth: 1,

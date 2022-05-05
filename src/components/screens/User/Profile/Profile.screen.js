@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {
@@ -14,16 +15,21 @@ import {
 } from 'constants/screens/screens.selector';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import useAccountStatus from 'hooks/useAccountStatus';
 
 export default function Profile(props) {
   const {navigation, logout, profile, getProfile, posts} = props;
   const [stats, setStats] = React.useState([]);
+  const isAccountNotConfirmed = useAccountStatus();
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getProfile();
     });
     return unsubscribe;
   }, [navigation]);
+
+  const {height, width} = useWindowDimensions();
+  const isLandscape = width > height;
 
   React.useEffect(() => {
     let likes = 0;
@@ -83,61 +89,67 @@ export default function Profile(props) {
     );
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-          <Ionicons name="log-out-outline" size={36} color="white" />
-        </TouchableOpacity>
-        <View style={styles.userInfoContainer}>
-          <Animatable.Image
-            source={{uri: profile?.profileImage?.fileUrl}}
-            style={styles.userImage}
-            animation="slideInDown"
-          />
-          <Animatable.Text animation="slideInRight" style={styles.userNameText}>
-            {profile?.name} {profile?.surname}
-          </Animatable.Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+            <Ionicons name="log-out-outline" size={36} color="white" />
+          </TouchableOpacity>
+          <View style={styles.userInfoContainer}>
+            <Animatable.Image
+              source={{uri: profile?.profileImage?.fileUrl}}
+              style={styles.userImage}
+              animation="slideInDown"
+            />
+            <Animatable.Text
+              animation="slideInRight"
+              style={styles.userNameText}>
+              {profile?.name} {profile?.surname}
+            </Animatable.Text>
+          </View>
+          <Animatable.View
+            animation="slideInUp"
+            style={styles.statisticsContainer({width})}>
+            <FlatList
+              renderItem={renderStats}
+              data={stats}
+              scrollEnabled={false}
+              horizontal
+              contentContainerStyle={styles.statsRenderContainer}
+              ItemSeparatorComponent={() => (
+                <View style={{...(!isLandscape && styles.statsSeparator)}} />
+              )}
+            />
+          </Animatable.View>
         </View>
-        <Animatable.View
-          animation="slideInUp"
-          style={styles.statisticsContainer}>
-          <FlatList
-            renderItem={renderStats}
-            data={stats}
-            scrollEnabled={false}
-            horizontal
-            contentContainerStyle={styles.statsRenderContainer}
-            ItemSeparatorComponent={() => (
-              <View style={styles.statsSeparator} />
-            )}
-          />
-        </Animatable.View>
+        <View style={{marginBottom: 100}}>
+          <Animatable.View style={styles.body} animation="slideInLeft">
+            <FlatList
+              nestedScrollEnabled
+              renderItem={renderOptions}
+              contentContainerStyle={styles.optionsContainer({width})}
+              data={ProfileScreens}
+              ItemSeparatorComponent={() => (
+                <View style={styles.bottomSeparator({width})} />
+              )}
+            />
+          </Animatable.View>
+          {!isAccountNotConfirmed && (
+            <Animatable.View style={styles.body} animation="slideInLeft">
+              <FlatList
+                nestedScrollEnabled
+                renderItem={renderOptions}
+                contentContainerStyle={styles.optionsContainer({width})}
+                data={UserTypeScreens}
+                ItemSeparatorComponent={() => (
+                  <View style={styles.bottomSeparator({width})} />
+                )}
+              />
+            </Animatable.View>
+          )}
+        </View>
       </View>
-      <ScrollView>
-        <Animatable.View style={styles.body} animation="slideInLeft">
-          <FlatList
-            nestedScrollEnabled
-            renderItem={renderOptions}
-            contentContainerStyle={styles.optionsContainer}
-            data={ProfileScreens}
-            ItemSeparatorComponent={() => (
-              <View style={styles.bottomSeparator} />
-            )}
-          />
-        </Animatable.View>
-        <Animatable.View style={styles.body} animation="slideInLeft">
-          <FlatList
-            nestedScrollEnabled
-            renderItem={renderOptions}
-            contentContainerStyle={styles.optionsContainer}
-            data={UserTypeScreens}
-            ItemSeparatorComponent={() => (
-              <View style={styles.bottomSeparator} />
-            )}
-          />
-        </Animatable.View>
-      </ScrollView>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -156,17 +168,17 @@ const styles = StyleSheet.create({
   body: {
     backgroundColor: 'transparent',
   },
-  statisticsContainer: {
+  statisticsContainer: props => ({
     backgroundColor: 'white',
     borderRadius: 30,
-    width: SCREEN_SIZE.WIDTH * 0.9,
+    width: props.width * 0.9,
     alignSelf: 'center',
     height: 100,
     flex: 1,
     position: 'absolute',
     bottom: -15,
     ...APP_STYLES.LIGHT_SHADOW,
-  },
+  }),
   userInfoContainer: {
     alignSelf: 'center',
     justifyContent: 'center',
@@ -213,15 +225,15 @@ const styles = StyleSheet.create({
     marginVertical: 35,
     borderColor: COLORS.GRAY,
   },
-  optionsContainer: {
+  optionsContainer: props => ({
     backgroundColor: 'white',
     borderRadius: 30,
-    width: SCREEN_SIZE.WIDTH * 0.9,
+    width: props.width * 0.9,
     alignSelf: 'center',
     marginTop: 30,
     padding: 15,
     ...APP_STYLES.LIGHT_SHADOW,
-  },
+  }),
   statsItem: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -233,16 +245,16 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginLeft: 10,
   },
-  bottomSeparator: {
+  bottomSeparator: props => ({
     marginVertical: 10,
     height: 2,
     borderRadius: 10,
     backgroundColor: COLORS.LIGHT_GRAY,
-    width: SCREEN_SIZE.WIDTH * 0.7,
+    width: props.width * 0.8,
     alignSelf: 'center',
     borderColor: COLORS.LIGHT_GRAY,
     marginHorizontal: 15,
-  },
+  }),
   optionItem: {
     flexDirection: 'row',
     alignItems: 'center',

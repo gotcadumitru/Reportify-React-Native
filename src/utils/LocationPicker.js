@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import MapView, {Marker} from 'react-native-maps';
@@ -22,6 +28,8 @@ export default function LocationPicker(props) {
   } = props;
   const [loc, setLoc] = React.useState(location);
   const [userLocation, setUserLocation] = React.useState(null);
+
+  const {width, height} = useWindowDimensions();
 
   React.useEffect(() => {
     Geolocation.getCurrentPosition(({coords}) => {
