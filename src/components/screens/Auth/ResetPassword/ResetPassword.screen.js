@@ -6,6 +6,8 @@ import {
   Platform,
   TouchableOpacity,
   TextInput,
+  ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {COLORS, SCREEN_SIZE} from 'theme/theme';
@@ -13,6 +15,8 @@ import {useFormik} from 'formik';
 import {resetPassSchema} from './resetPass.schema';
 export default function ResetPassword(props) {
   const {navigation, resetPassword, signInGoogle, signInFacebook} = props;
+  const {height, width} = useWindowDimensions();
+
   const {handleSubmit, handleChange, handleBlur, values, errors, touched} =
     useFormik({
       initialValues: {
@@ -28,7 +32,7 @@ export default function ResetPassword(props) {
       validationSchema: resetPassSchema,
     });
   return (
-    <View style={{height: SCREEN_SIZE.HEIGHT}}>
+    <ScrollView>
       <View style={styles.container}>
         <View
           style={{
@@ -44,7 +48,7 @@ export default function ResetPassword(props) {
 
           <View style={styles.inputContainer}>
             <TextInput
-              style={styles.textInput}
+              style={styles.textInput({width})}
               placeholder="you@your-domain.com"
               placeholderTextColor="#000000"
               value={values.email}
@@ -62,7 +66,7 @@ export default function ResetPassword(props) {
 
         <View style={[styles.bntView, {flex: 2}]}>
           <TouchableOpacity
-            style={[styles.btn, styles.shadow]}
+            style={[styles.btn({height, width}), styles.shadow]}
             onPress={handleSubmit}>
             <Text style={styles.btnText}>Resetează</Text>
           </TouchableOpacity>
@@ -112,7 +116,7 @@ export default function ResetPassword(props) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -131,21 +135,21 @@ const styles = StyleSheet.create({
     color: COLORS.GRAY,
     fontSize: 14,
     marginTop: 10,
-    width: SCREEN_SIZE.WIDTH * 0.8,
+    width: '80%',
   },
   bntView: {
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
   },
-  btn: {
+  btn: props => ({
     justifyContent: 'center',
     alignItems: 'center',
-    width: SCREEN_SIZE.WIDTH * 0.8,
-    height: SCREEN_SIZE.HEIGHT * 0.06,
+    width: props.width * 0.8,
+    height: 50,
     backgroundColor: COLORS.DARK_BLUE,
     borderRadius: 20,
-  },
+  }),
   btnText: {
     color: 'white',
     fontWeight: 'bold',
@@ -164,10 +168,10 @@ const styles = StyleSheet.create({
     borderRadius: SCREEN_SIZE.WIDTH * 0.2,
     marginHorizontal: 20,
   },
-  textInput: {
+  textInput: props => ({
     paddingLeft: 20,
-    width: SCREEN_SIZE.WIDTH * 0.8,
-    height: SCREEN_SIZE.HEIGHT * 0.065,
+    width: props.width * 0.8,
+    height: 50,
     borderRadius: 10,
     backgroundColor: '#CFD8DC',
     opacity: 0.3,
@@ -180,7 +184,8 @@ const styles = StyleSheet.create({
     shadowRadius: 10.32,
 
     elevation: 16,
-  },
+  }),
+
   inputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',

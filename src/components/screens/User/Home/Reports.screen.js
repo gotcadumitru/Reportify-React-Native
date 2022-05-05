@@ -12,6 +12,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   Pressable,
+  useWindowDimensions,
 } from 'react-native';
 import onShareItem from 'helpers/shareItem';
 import Carousel from 'react-native-snap-carousel';
@@ -27,7 +28,8 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
 export default function Reports(props) {
   const scrollX = React.useRef(new Animated.Value(0)).current;
-
+  const {height, width} = useWindowDimensions();
+  const isLandscape = width > height;
   const {
     profile,
     getAllPosts,
@@ -180,40 +182,44 @@ export default function Reports(props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.locationView}>
-        <Ionicons name="location" size={24} />
-        <Text
-          style={
-            styles.locationText
-          }>{`${profile?.localitate}, ${profile?.oras}`}</Text>
-      </View>
-      <View style={styles.searchContainer}>
-        <View style={{justifyContent: 'center'}}>
-          <TextInput
-            style={styles.searchView}
-            placeholder="Căutare"
-            placeholderTextColor={COLORS.DARK}
-            value={search}
-            onChangeText={setSearch}
-          />
-          <Ionicons
-            name="search"
-            size={24}
-            style={styles.searchIcon}
-            color={COLORS.RED}
-          />
+    <View style={styles.container}>
+      <SafeAreaView>
+        <View style={styles.locationView}>
+          <Ionicons name="location" size={24} />
+          <Text
+            style={
+              styles.locationText
+            }>{`${profile?.localitate}, ${profile?.oras}`}</Text>
         </View>
-        <TouchableOpacity
-          style={styles.searchFilterContainer}
-          onPress={() => navigation.navigate(SCREENS.FILTER)}>
-          <Ionicons name="filter" size={24} color={COLORS.DARK} />
-        </TouchableOpacity>
-      </View>
-
+        <View style={styles.searchContainer({width})}>
+          <View style={{justifyContent: 'center'}}>
+            <TextInput
+              style={styles.searchView({width})}
+              placeholder="Căutare"
+              placeholderTextColor={COLORS.DARK}
+              value={search}
+              onChangeText={setSearch}
+            />
+            <Ionicons
+              name="search"
+              size={24}
+              style={styles.searchIcon}
+              color={COLORS.RED}
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.searchFilterContainer}
+            onPress={() => navigation.navigate(SCREENS.FILTER)}>
+            <Ionicons name="filter" size={24} color={COLORS.DARK} />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
       <View>
         <FlatList
+          numColumns={Number(isLandscape) + 1}
+          keyExtractor={item => item._id}
           data={fisPosts}
+          key={Number(isLandscape)}
           showsVerticalScrollIndicator={false}
           renderItem={renderPost}
           refreshControl={
@@ -238,7 +244,7 @@ export default function Reports(props) {
                   scrollEventThrottle={1}>
                   {[1, 2, 3, 4].map((image, imageIndex) => {
                     return (
-                      <View style={styles.infoView} key={imageIndex}>
+                      <View style={styles.infoView({width})} key={imageIndex}>
                         <ImageBackground
                           source={{
                             uri: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Gull_portrait_ca_usa.jpg',
@@ -253,13 +259,13 @@ export default function Reports(props) {
                   })}
                 </ScrollView>
               </View>
-              <View style={[styles.indicatorContainer]}>
+              <View style={[styles.indicatorContainer({width})]}>
                 {[1, 2, 3, 4].map((image, imageIndex) => {
                   const backgroundColor = scrollX.interpolate({
                     inputRange: [
-                      SCREEN_SIZE.WIDTH * (imageIndex - 1),
-                      SCREEN_SIZE.WIDTH * imageIndex,
-                      SCREEN_SIZE.WIDTH * (imageIndex + 1),
+                      width * (imageIndex - 1),
+                      width * imageIndex,
+                      width * (imageIndex + 1),
                     ],
                     outputRange: [COLORS.GRAY, COLORS.DARK_BLUE, COLORS.GRAY],
                     extrapolate: 'clamp',
@@ -286,7 +292,7 @@ export default function Reports(props) {
           ListFooterComponent={<View style={{height: 250}} />}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -311,9 +317,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
   },
-  searchView: {
+  searchView: props => ({
     alignSelf: 'center',
-    width: SCREEN_SIZE.WIDTH * 0.7,
+    width: props.width * 0.7,
     height: 40,
     borderRadius: 20,
     borderColor: COLORS.MEDIUM_GRAY,
@@ -322,15 +328,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingHorizontal: 50,
     ...APP_STYLES.SHADOW,
-  },
-  searchContainer: {
-    width: SCREEN_SIZE.WIDTH,
+  }),
+  searchContainer: props => ({
+    width: props.width,
     marginTop: 30,
     alignSelf: 'center',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row',
-  },
+  }),
   searchIcon: {
     position: 'absolute',
     left: 15,
@@ -349,21 +355,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginHorizontal: 4,
   },
-  indicatorContainer: {
+  indicatorContainer: props => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
     height: 40,
-    width: SCREEN_SIZE.WIDTH,
+    width: props.width,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
-  },
-  infoView: {
-    width: SCREEN_SIZE.WIDTH,
+  }),
+  infoView: props => ({
+    width: props.width,
     height: 200,
     marginTop: 20,
-  },
+  }),
   infoImageView: {
     backgroundColor: '#151922',
     paddingVertical: 15,
