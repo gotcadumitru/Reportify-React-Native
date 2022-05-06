@@ -5,12 +5,14 @@ import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import Pdf from 'react-native-pdf';
 import Video from 'react-native-video';
 import {status} from 'constants/data/account.status';
+import useAccountStatus from 'hooks/useAccountStatus';
 const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 4);
 
 export default function Documents(props) {
   const {profile} = props;
+  const isAccountNotConfirmed = useAccountStatus();
   const renderFile = ({item, index}) => {
     if (item?.mimetype?.includes('image')) {
       return (
@@ -52,7 +54,13 @@ export default function Documents(props) {
     <View style={{flex: 1, marginTop: 100}}>
       <View style={{marginVertical: 15}}>
         <Text style={styles.mainText}>Statutul contului dvs:</Text>
-        <Text style={styles.statusText}>{status[profile?.accountStatus]}</Text>
+        <Text
+          style={[
+            styles.statusText,
+            {color: isAccountNotConfirmed ? COLORS.RED : COLORS.GREEN},
+          ]}>
+          {status[profile?.accountStatus]}
+        </Text>
       </View>
       <Carousel
         data={profile?.domiciliuFiles || []}
@@ -95,7 +103,7 @@ const styles = StyleSheet.create({
   mainText: {
     color: COLORS.DARK,
     fontWeight: '500',
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
     marginVertical: 5,
   },

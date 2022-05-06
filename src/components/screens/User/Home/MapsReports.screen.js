@@ -19,7 +19,6 @@ import Geolocation from '@react-native-community/geolocation';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import onShareItem from 'helpers/shareItem';
 
 const {width, height} = Dimensions.get('window');
 
