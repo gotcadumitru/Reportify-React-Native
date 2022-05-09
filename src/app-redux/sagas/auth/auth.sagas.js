@@ -77,7 +77,8 @@ function* signUpGenerator({email, password}) {
 
 function* forgotPasswordGenerator({email}) {
   try {
-    const res = yield call(forgotPasswordRequest, {email});
+    console.log('gavno', email);
+    const res = yield call(forgotPasswordRequest, email);
     if (res)
       yield put(
         setter({
@@ -89,11 +90,12 @@ function* forgotPasswordGenerator({email}) {
         }),
       );
   } catch (error) {
+    console.log(error);
     yield put(
       setter({
         response: {
           isResponse: true,
-          message: error.data.message,
+          message: 'Something went wrong!',
           type: false,
         },
       }),

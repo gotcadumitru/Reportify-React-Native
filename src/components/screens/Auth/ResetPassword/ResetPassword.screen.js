@@ -20,11 +20,7 @@ export default function ResetPassword(props) {
   const {handleSubmit, handleChange, handleBlur, values, errors, touched} =
     useFormik({
       initialValues: {
-        name: '',
-        surname: '',
-        oras: '',
-        localitate: '',
-        files: [],
+        email: '',
       },
       onSubmit: data => {
         resetPassword(data.email);
@@ -187,7 +183,7 @@ const styles = StyleSheet.create({
   }),
 
   inputContainer: {
-    flexDirection: 'row',
+    // flexDirection: 'row',d
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 15,
@@ -196,7 +192,7 @@ const styles = StyleSheet.create({
   topInputText: {
     // fontFamily: "Roboto-Light",
     marginLeft: 10,
-    marginBottom: 5,
+    marginBottom: 10,
   },
   shadow: {
     shadowColor: '#000',
