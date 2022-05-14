@@ -93,16 +93,22 @@ export default function ChatScreen(props) {
               alignItems: 'center',
             }}>
             <Image
-              source={{uri: item?.sender?.profileImage?.fileUrl}}
+              source={{
+                uri: isUserSender
+                  ? item?.sender?.profileImage?.fileUrl
+                  : item?.moderator?.profileImage?.fileUrl,
+              }}
               style={styles.senderImage}
             />
             <View>
               <Text
                 style={[
                   styles.dateText,
-                  {textAlign: 'right', marginBottom: 5},
+                  {textAlign: isUserSender ? 'right' : 'left', marginBottom: 5},
                 ]}>
-                {item?.sender?.surname}
+                {isUserSender
+                  ? item?.sender?.surname
+                  : item?.moderator?.surname}
               </Text>
               <View style={styles.messageContainer}>
                 <Text>{item.text}</Text>

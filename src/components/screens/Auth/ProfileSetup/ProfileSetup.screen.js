@@ -36,7 +36,7 @@ export default function ProfileSetup(props) {
       oras: profile?.oras,
       files: [],
       birthday: new Date(),
-      profileImage: profile?.profileImage,
+      profileImage: null,
     },
     onSubmit: setupProfile,
     validationSchema: profileSchema,

@@ -38,7 +38,7 @@ export default function Profile(props) {
     let favorites = 0;
 
     posts.forEach(post => {
-      if (post.author.id === profile._id) {
+      if (post.author._id === profile._id) {
         reports++;
       }
       if (post.likes.includes(profile._id)) {

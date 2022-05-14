@@ -8,7 +8,7 @@ const useUserNewMessages = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllUserMessages(user._id));
-    socket.current = io('https://team-backend-c.herokuapp.com/');
+    socket.current = io('http://192.168.43.252:8080/');
 
     socket.current.on('getMessage', () => {
       dispatch(getAllUserMessages(user._id));
