@@ -8,7 +8,7 @@ O problemă sau o dorință este votată(“upvoted”) de alți utilizatori
 doar în cazul în care o consideră de un mare interes general, cererile urmând
 să fie ordonate în funcție de prioritatea calculată pe baza voturilor
 
-![Logo](https://imgur.com/a/PbKupt2)
+![Logo](https://i.imgur.com/BE4c3FY.png)
 
 ## Tehnologii folosite
 
