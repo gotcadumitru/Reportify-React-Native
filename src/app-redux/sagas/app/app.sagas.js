@@ -13,6 +13,7 @@ import {
   getSinglePostRequest,
   getAllUserMessagesRequest,
   postCommentRequest,
+  getAllLocationUsersRequest,
 } from 'api/index';
 
 // * Action types
@@ -27,6 +28,7 @@ import {
   GET_SINGLE_POST,
   GET_ALL_USER_MESSAGES,
   ADD_COMMENT,
+  GET_ALL_USERS_LOCATION,
 } from 'app-redux/actions/app/app.actions-types';
 import {setter, getSinglePost} from 'app-redux/actions/app/app.actions';
 import {getStorageData} from 'helpers/storage';
@@ -322,6 +324,20 @@ function* addCommentGenerator({payload}) {
   }
 }
 
+function* getAllUsersLocationGenerator({payload}) {
+  setter({isLoading: true});
+
+  try {
+    const res = yield call(getAllLocationUsersRequest, payload);
+    if (res) {
+      yield put(setter({allLocationUsers: res.users}));
+    }
+  } catch (error) {
+  } finally {
+    setter({isLoading: false});
+  }
+}
+
 // * Watcher
 export function* appActionWatcher() {
   yield takeEvery(UPLOAD_FILES, uploadFilesGenerator);
@@ -334,4 +350,5 @@ export function* appActionWatcher() {
   yield takeEvery(GET_SINGLE_POST, getSinglePostGenerator);
   yield takeEvery(GET_ALL_USER_MESSAGES, getAllUserMessagesGenerator);
   yield takeEvery(ADD_COMMENT, addCommentGenerator);
+  yield takeEvery(GET_ALL_USERS_LOCATION, getAllUsersLocationGenerator);
 }

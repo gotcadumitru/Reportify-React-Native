@@ -28,6 +28,8 @@ const defaultState = {
   },
   currentItem: null,
   areFilters: false,
+  mapContacts: [],
+  allLocationUsers: [],
 };
 
 // * Reducer

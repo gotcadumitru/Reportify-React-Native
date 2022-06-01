@@ -17,6 +17,7 @@ import Filter from 'components/screens/User/Home/Filter.screen.js';
 import ReportContent from 'components/screens/User/Home/ReportContent.screen.js';
 import Chat from 'components/screens/User/Home/Chat.screen.js';
 import TypeReports from 'components/screens/User/Home/TypeReports.screen.js';
+import Friends from 'components/screens/User/Profile/Friends.screen.js';
 
 import {
   setter,
@@ -38,6 +39,7 @@ import {
   getSinglePost,
   getAllUserMessages,
   addComment,
+  getAllUsersLocation,
 } from 'app-redux/actions/app/app.actions';
 // * Map state to props
 const mapStateToProps = (state, ownProps) => ({
@@ -65,6 +67,7 @@ const mapDispatchToProps = dispatch => ({
   getSinglePost: id => dispatch(getSinglePost(id)),
   getAllUserMessages: userId => dispatch(getAllUserMessages(userId)),
   addComment: payload => dispatch(addComment(payload)),
+  getAllUsersLocation: payload => dispatch(getAllUsersLocation(payload)),
 });
 
 export default {
@@ -83,4 +86,5 @@ export default {
   ReportContent: connect(mapStateToProps, mapDispatchToProps)(ReportContent),
   Chat: connect(mapStateToProps, mapDispatchToProps)(Chat),
   TypeReports: connect(mapStateToProps, mapDispatchToProps)(TypeReports),
+  Friends: connect(mapStateToProps, mapDispatchToProps)(Friends),
 };

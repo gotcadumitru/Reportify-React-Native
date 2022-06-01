@@ -5,6 +5,7 @@ const FILES = BASE + '/files';
 
 export const API_ROUTES = {
   REGISTER: AUTH + '/register',
+  LOCATION_USERS: AUTH + '/users',
   LOGIN: AUTH + '/login',
   PROFILE: AUTH + '/me',
   GOOGLE_LOGIN: AUTH + '/googlelogin',

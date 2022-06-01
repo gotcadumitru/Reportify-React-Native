@@ -17,4 +17,5 @@ export const SCREENS = {
   REPORT_CONTENT: 'ReportContent',
   CHAT: 'Chat',
   TYPE_REPORTS: 'TypeReports',
+  FRIENDS: 'Friends',
 };

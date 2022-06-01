@@ -312,6 +312,8 @@ PODS:
     - glog
   - react-native-blob-util (0.15.0):
     - React-Core
+  - react-native-contacts (7.0.4):
+    - React-Core
   - react-native-date-picker (4.2.1):
     - React-Core
   - react-native-document-picker (8.1.0):
@@ -494,6 +496,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
+  - react-native-contacts (from `../node_modules/react-native-contacts`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
@@ -597,6 +600,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-blob-util:
     :path: "../node_modules/react-native-blob-util"
+  react-native-contacts:
+    :path: "../node_modules/react-native-contacts"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
@@ -704,6 +709,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 90f0bfd5d04e0b066c29216a110ffb9a6c34f23f
   React-logger: 8474fefa09d05f573a13c044cb0dfd751d4e52e3
   react-native-blob-util: a5d3561045ed98cfb2fb80cbbff600fae0e8edee
+  react-native-contacts: 1bff4c47816d611f26b06fa8b3eaf2db4d1b2c86
   react-native-date-picker: 211dead8aeaecab3904a07b967f580e6ea3dee88
   react-native-document-picker: 5663fe4bcdb646200683a41790464d2793307ac8
   react-native-fbsdk-next: 6d497a06fc5c33360f5794b4428a0236789a60e6
@@ -739,6 +745,6 @@ SPEC CHECKSUMS:
   Yoga: 6671cf077f614314c22fd09ddf87d7abeee64e96
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 82b92af9515b8ac9bfdcbf643b6c4a04d915a10d
+PODFILE CHECKSUM: 31f8103bf2aa076e9f5174e487bbcca896bb49d0
 
 COCOAPODS: 1.11.3

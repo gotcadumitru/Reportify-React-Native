@@ -89,3 +89,8 @@ export const addComment = payload => ({
   type: TYPES.ADD_COMMENT,
   payload,
 });
+
+export const getAllUsersLocation = payload => ({
+  type: TYPES.GET_ALL_USERS_LOCATION,
+  payload,
+});

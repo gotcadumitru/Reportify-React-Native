@@ -69,6 +69,12 @@ export const ProfileScreens = [
     label: 'Documente',
     color: COLORS.ORANGE,
   },
+  {
+    name: SCREENS.FRIENDS,
+    icon: 'people-sharp',
+    label: 'Prieteni',
+    color: COLORS.GREEN,
+  },
 ];
 
 export const UserTypeScreens = [

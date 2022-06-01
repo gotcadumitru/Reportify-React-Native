@@ -67,6 +67,19 @@ export default function AppStackNavigator({navigation}) {
             component={Connection.EditProfile}
           />
           <Stack.Screen
+            name={SCREENS.FRIENDS}
+            component={Connection.Friends}
+            options={({navigation, route}) => ({
+              headerShown: true,
+              title: 'Prieteni',
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Ionicons name="chevron-back" size={30} />
+                </TouchableOpacity>
+              ),
+            })}
+          />
+          <Stack.Screen
             name={SCREENS.TYPE_REPORTS}
             component={Connection.TypeReports}
             options={({navigation, route}) => ({
@@ -94,7 +107,6 @@ export default function AppStackNavigator({navigation}) {
               ),
             })}
           />
-
           <Stack.Screen
             name={SCREENS.REPORT_CONTENT}
             component={Connection.ReportContent}
@@ -127,7 +139,6 @@ export default function AppStackNavigator({navigation}) {
               ),
             })}
           />
-
           <Stack.Screen
             name={SCREENS.USER_DOCUMENTS}
             component={Connection.Documents}

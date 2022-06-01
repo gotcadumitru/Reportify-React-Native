@@ -16,6 +16,7 @@ import {
   getSinglePostRequest,
   getAllUserMessagesRequest,
   postCommentRequest,
+  getAllLocationUsersRequest,
 } from './user/user.requests';
 
 export {
@@ -33,4 +34,5 @@ export {
   getSinglePostRequest,
   getAllUserMessagesRequest,
   postCommentRequest,
+  getAllLocationUsersRequest,
 };
