@@ -6,8 +6,12 @@ import {
   StyleSheet,
   StatusBar,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import Contacts from 'react-native-contacts';
+import SendSMS from 'react-native-sms';
+import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 
 export default function Friends(props) {
@@ -60,6 +64,57 @@ export default function Friends(props) {
   function checkUserHaveApp(phone) {
     return JSON.stringify(allLocationUsers).includes(phone);
   }
+  const getAvatarInitials = textString => {
+    if (!textString) return '';
+    const text = textString.trim();
+    const textSplit = text.split(' ');
+
+    if (textSplit.length <= 1) return text.charAt(0);
+
+    const initials =
+      textSplit[0].charAt(0) + textSplit[textSplit.length - 1].charAt(0);
+
+    return initials;
+  };
+
+  function sendSMSmessage(number) {
+    const image = require('assets/logo.png');
+    const metadata = resolveAssetSource(image);
+    const url = metadata.uri;
+
+    const attachment = {
+      url: url,
+      iosType: 'public.jpeg',
+      iosFilename: 'Image.jpeg',
+      androidType: 'image/*',
+    };
+
+    SendSMS.send(
+      {
+        body: 'Participa la viata comunitatii instaland aplicatia Reportify!',
+        recipients: [number],
+        successTypes: ['sent', 'queued'],
+        attachment: attachment,
+      },
+      (completed, cancelled, error) => {
+        console.log('SMS status: ' + completed + cancelled + error);
+      },
+    );
+  }
+
+  const renderInitials = initials => {
+    return (
+      <View style={styles.initialsView}>
+        <Text
+          adjustsFontSizeToFit
+          numberOfLines={1}
+          minimumFontScale={0.01}
+          style={[{fontSize: 25}]}>
+          {initials}
+        </Text>
+      </View>
+    );
+  };
 
   const ContactItem = ({title: contact}) => {
     const phone = contact.phoneNumbers[0].number
@@ -69,14 +124,14 @@ export default function Friends(props) {
     return (
       <View style={styles.sectionItem}>
         <View style={{position: 'relative'}}>
-          <Image
-            style={styles.contactImage}
-            source={
-              contact.hasThumbnail
-                ? {uri: contact.thumbnailPath}
-                : require('assets/noimage.png')
-            }
-          />
+          {contact.hasThumbnail ? (
+            <Image
+              style={styles.contactImage}
+              source={{uri: contact.thumbnailPath}}
+            />
+          ) : (
+            renderInitials(getAvatarInitials(contact.givenName))
+          )}
           {haveApp && (
             <Image source={require('assets/logo.png')} style={styles.appLogo} />
           )}
@@ -85,6 +140,15 @@ export default function Friends(props) {
           <Text style={styles.title}>{contact.givenName}</Text>
           <Text style={styles.phoneNumber}>{phone}</Text>
         </View>
+        {!haveApp && (
+          <TouchableOpacity
+            style={styles.inviteButton}
+            onPress={() => {
+              sendSMSmessage(phone);
+            }}>
+            <Text style={styles.inviteText}>Invite</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   };
@@ -161,5 +225,27 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     backgroundColor: 'white',
+  },
+  inviteButton: {
+    backgroundColor: COLORS.DARK_BLUE,
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 10,
+    bottom: 0,
+    top: 0,
+    paddingHorizontal: 20,
+    height: 30,
+    borderRadius: 20,
+  },
+  inviteText: {textAlign: 'center', color: 'white'},
+  initialsView: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    backgroundColor: COLORS.INPUT,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

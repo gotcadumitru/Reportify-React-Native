@@ -344,6 +344,8 @@ PODS:
     - RCTTypeSafety
     - React
     - ReactCommon/turbomodule/core
+  - react-native-sms (1.11.0):
+    - React
   - react-native-video (5.2.0):
     - React-Core
     - react-native-video/Video (= 5.2.0)
@@ -504,6 +506,7 @@ DEPENDENCIES:
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-sms (from `../node_modules/react-native-sms`)
   - react-native-video (from `../node_modules/react-native-video`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -616,6 +619,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pdf"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-sms:
+    :path: "../node_modules/react-native-sms"
   react-native-video:
     :path: "../node_modules/react-native-video"
   React-perflogger:
@@ -717,6 +722,7 @@ SPEC CHECKSUMS:
   react-native-maps: d752b0dd0e1951d815b1336332835aab6b4a836f
   react-native-pdf: de35db0d8f1e5d37e65e887554f7d4bd062af56b
   react-native-safe-area-context: f98b0b16d1546d208fc293b4661e3f81a895afd9
+  react-native-sms: 31fbb9d6ebb565ad32e409eaf9dc70329936a129
   react-native-video: a4c2635d0802f983594b7057e1bce8f442f0ad28
   React-perflogger: 15cb741d6c2379f4d3fc8f9e4d4e1110ef3020cb
   React-RCTActionSheet: ea9099db0597bd769430db1e2d011fd5fdb7fc5e
