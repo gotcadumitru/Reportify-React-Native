@@ -143,7 +143,11 @@ export default function SingIn(props) {
             <Text style={styles.btnText}>Conectare</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.btnSecond({height, width}), styles.shadow]}
+            style={[
+              styles.btnSecond({height, width}),
+              styles.shadow,
+              {backgroundColor: 'white'},
+            ]}
             onPress={() => {
               navigation.navigate(SCREENS.SIGN_UP);
             }}>

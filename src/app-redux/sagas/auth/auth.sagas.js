@@ -105,6 +105,12 @@ function* forgotPasswordGenerator({email}) {
 
 function* signInGoogleGenerator() {
   try {
+    // yield GoogleSignin.configure({
+    //   offlineAccess: false,
+    //   androidClientId:
+    //     '346836464582-i01uu2v59rj506ejhpqu9qs218qs8hcg.apps.googleusercontent.com',
+    //   forceConsentPrompt: true,
+    // });
     yield GoogleSignin.hasPlayServices();
     yield GoogleSignin.signIn();
     const tokens = yield GoogleSignin.getTokens();
@@ -113,6 +119,7 @@ function* signInGoogleGenerator() {
     yield put(getProfile());
     yield setStorageData('token', res.token);
   } catch (error) {
+    console.log('googlesignInerror: ', JSON.stringify(error, null, 2));
     yield put(
       setter({
         response: {

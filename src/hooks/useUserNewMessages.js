@@ -9,7 +9,8 @@ const useUserNewMessages = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllUserMessages(user._id));
-    socket.current = io('http://192.168.149.22:8080/');
+    // socket.current = io('http://192.168.149.22:8080/');
+    socket.current = io('http://192.168.1.7:8080/');
 
     socket.current.on('newMessage', () => {
       dispatch(getAllUserMessages(user._id));

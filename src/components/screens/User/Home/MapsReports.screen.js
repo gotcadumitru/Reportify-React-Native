@@ -27,7 +27,15 @@ const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const MapsReports = props => {
-  const {posts, voteItem, profile, getAllPosts, isLoading, navigation} = props;
+  const {
+    posts,
+    voteItem,
+    profile,
+    getAllPosts,
+    isLoading,
+    navigation,
+    location,
+  } = props;
   const [search, setSearch] = React.useState('');
   const [localPosts, setLocalPosts] = React.useState(posts);
 
@@ -66,6 +74,7 @@ const MapsReports = props => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getAllPosts();
+      getOneTimeLocation();
     });
 
     return unsubscribe;
@@ -110,13 +119,29 @@ const MapsReports = props => {
   const _map = React.useRef(null);
   const _scrollView = React.useRef(null);
 
+  const getOneTimeLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        dispatch(setter({location: position.coords}));
+      },
+      error => {},
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 1000,
+      },
+    );
+  };
+
+  const initialRegion =
+    localPosts.length > 0 ? localPosts[0]?.location : location;
   return (
     <View style={styles.container}>
       {!isLoading && (
         <MapView
           ref={_map}
           initialRegion={{
-            ...localPosts[0]?.location,
+            ...initialRegion,
             latitudeDelta: 0.06,
             longitudeDelta: 0.05,
           }}

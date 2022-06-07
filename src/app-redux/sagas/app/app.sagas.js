@@ -165,6 +165,7 @@ function* getAllPostsGenerator() {
       );
     }
   } catch (e) {
+    console.log('gettingData', JSON.stringify(e, null, 2));
     yield put(
       setter({
         response: {

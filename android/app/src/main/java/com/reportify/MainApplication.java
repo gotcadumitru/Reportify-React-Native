@@ -1,5 +1,6 @@
 package com.reportify;
 import com.brentvatne.react.ReactVideoPackage;
+import com.airbnb.android.react.lottie.LottiePackage;
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -15,13 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
-@Override
-protected List<ReactPackage> getPackages() {
-    return Arrays.asList(
-            new MainReactPackage(),
-            new ReactVideoPackage()
-    );
-}
+
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
         @Override
@@ -35,6 +30,8 @@ protected List<ReactPackage> getPackages() {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          packages.add(new LottiePackage());
+          packages.add(new ReactVideoPackage());
           return packages;
         }
 

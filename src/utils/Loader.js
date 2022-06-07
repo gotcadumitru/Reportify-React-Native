@@ -16,7 +16,8 @@ export default function Loader() {
       onModalHide={() => {
         if (app?.hasResponse)
           dispatch(setter({response: app.hasResponse, hasResponse: null}));
-      }}>
+      }}
+      style={{shadow: 'none'}}>
       <View style={styles.modalView}>
         <LottieView
           source={require('assets/lottie/loading.json')}
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 0,
     justifyContent: 'flex-end',
   },
 });

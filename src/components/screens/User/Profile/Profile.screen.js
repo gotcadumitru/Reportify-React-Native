@@ -107,6 +107,8 @@ export default function Profile(props) {
               {profile?.name} {profile?.surname}
             </Animatable.Text>
           </View>
+        </View>
+        <View style={{marginBottom: 100}}>
           <Animatable.View
             animation="slideInUp"
             style={styles.statisticsContainer({width})}>
@@ -121,9 +123,9 @@ export default function Profile(props) {
               )}
             />
           </Animatable.View>
-        </View>
-        <View style={{marginBottom: 100}}>
-          <Animatable.View style={styles.body} animation="slideInLeft">
+          <Animatable.View
+            style={[styles.body, {marginTop: 50}]}
+            animation="slideInLeft">
             <FlatList
               nestedScrollEnabled
               renderItem={renderOptions}
@@ -176,7 +178,7 @@ const styles = StyleSheet.create({
     height: 100,
     flex: 1,
     position: 'absolute',
-    bottom: -15,
+    top: -50,
     ...APP_STYLES.LIGHT_SHADOW,
   }),
   userInfoContainer: {

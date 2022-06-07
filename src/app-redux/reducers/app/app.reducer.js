@@ -30,6 +30,7 @@ const defaultState = {
   areFilters: false,
   mapContacts: [],
   allLocationUsers: [],
+  location: null,
 };
 
 // * Reducer
