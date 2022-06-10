@@ -3,25 +3,23 @@ import {useDispatch, useSelector} from 'react-redux';
 import {io} from 'socket.io-client';
 import {getAllUserMessages} from 'app-redux/actions/app/app.actions';
 import axios from 'axios';
+import socket from 'app-redux/thunk/socket';
 const useUserNewMessages = () => {
   const user = useSelector(state => state.appReducer.profile);
-  const socket = useRef();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllUserMessages(user._id));
     // socket.current = io('http://192.168.149.22:8080/');
-    socket.current = io('http://192.168.1.7:8080/');
-
-    socket.current.on('newMessage', () => {
+    socket.on('newMessage', () => {
       dispatch(getAllUserMessages(user._id));
     });
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    socket.current.emit('addUser', {idForUser: user._id, idForModerator: null});
+    socket.emit('addUser', {idForUser: user._id, idForModerator: null});
     return () => {
-      socket.current.disconnect();
+      socket.disconnect();
     };
     // eslint-disable-next-line
   }, [user.id]);

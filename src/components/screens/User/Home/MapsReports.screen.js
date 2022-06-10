@@ -19,6 +19,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useDispatch} from 'react-redux';
 
 const {width, height} = Dimensions.get('window');
 
@@ -38,6 +39,7 @@ const MapsReports = props => {
   } = props;
   const [search, setSearch] = React.useState('');
   const [localPosts, setLocalPosts] = React.useState(posts);
+  const dispatch = useDispatch();
 
   let mapIndex = 0;
   let mapAnimation = new Animated.Value(0);
