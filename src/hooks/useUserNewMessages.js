@@ -4,6 +4,7 @@ import {io} from 'socket.io-client';
 import {getAllUserMessages} from 'app-redux/actions/app/app.actions';
 import axios from 'axios';
 import socket from 'app-redux/thunk/socket';
+import {startListeningToUsersConnectedToFromMyLocationWS} from 'app-redux/thunk/socket.thunk';
 const useUserNewMessages = () => {
   const user = useSelector(state => state.appReducer.profile);
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const useUserNewMessages = () => {
 
   useEffect(() => {
     socket.emit('addUser', {idForUser: user._id, idForModerator: null});
+    dispatch(startListeningToUsersConnectedToFromMyLocationWS());
     return () => {
       socket.disconnect();
     };

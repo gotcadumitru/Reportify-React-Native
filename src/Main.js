@@ -6,6 +6,7 @@ import sagas from 'app-redux/sagas/index';
 import axios from 'axios';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {Settings} from 'react-native-fbsdk-next';
+import RealtimeVideoChat from 'components/screens/User/Home/RealTimeVideo.component';
 
 GoogleSignin.configure({
   webClient:
@@ -22,6 +23,7 @@ export default function App() {
   }, []);
   return (
     <Provider store={store}>
+      <RealtimeVideoChat />
       <Navigation />
     </Provider>
   );

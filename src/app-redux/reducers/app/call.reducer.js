@@ -15,7 +15,7 @@ const initialState = {
   allModeratorChats: null,
 };
 
-const userReducer = (state = initialState, action) => {
+const callReducer = (state = initialState, action) => {
   switch (action.type) {
     case userActions.SET_USERS_CONNECTED_TO_WS_FROM_MY_LOCATION: {
       const connectedToWsUsersFromMyLocation = action.payload;
@@ -89,4 +89,4 @@ const userReducer = (state = initialState, action) => {
   }
 };
 
-export default userReducer;
+export default callReducer;
