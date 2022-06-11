@@ -1,8 +1,15 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {View, Text, useWindowDimensions} from 'react-native';
+import {
+  View,
+  Text,
+  useWindowDimensions,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import {IoMdCall} from 'react-icons/io';
 import Mui from 'react-native-vector-icons/MaterialIcons';
+import MuIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Modal from 'react-native-modal';
 import {
@@ -24,9 +31,20 @@ import {
   setUsersWhoAnsweredMeAC,
   setUsersWhoCallMeAC,
   setUserWhoICallAC,
+  resetCallStatus,
 } from 'app-redux/thunk/user.action';
+import {COLORS} from 'theme/theme';
+import Loader from 'utils/Loader';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const RealtimeVideoChat = ({changeStatus, ...props}) => {
+const RealtimeVideoChat = () => {
+  const [isCamera, setIsCamera] = React.useState(true);
+  const [isMicrophone, setIsMicrophone] = React.useState(true);
+
+  const appReducer = useSelector(state => state.appReducer);
+  const {profile} = appReducer;
+
   const connectedToWsUsersFromMyLocation = useSelector(
     state => state.callReducer.connectedToWsUsersFromMyLocation,
   );
@@ -48,7 +66,7 @@ const RealtimeVideoChat = ({changeStatus, ...props}) => {
   const dispatch = useDispatch();
   const isRealTimeVideoChatEnabled =
     Object.keys(usersWhoCallMe).length || userWhoICall;
-  console.log(Object.keys(usersWhoCallMe));
+
   useEffect(() => {
     if (isRealTimeVideoChatEnabled) {
       peerConnection.current = new RTCPeerConnection(configuration);
@@ -101,11 +119,7 @@ const RealtimeVideoChat = ({changeStatus, ...props}) => {
 
     setLocalStream(streamMedia.current);
     console.log('streamMedia.current', streamMedia.current);
-    streamMedia.current
-      .getTracks()
-      .forEach(track =>
-        peerConnection.current.addTrack(track, streamMedia.current),
-      );
+    peerConnection.current.addStream(streamMedia.current);
     if (userWhoICall) {
       onConnectClick(userWhoICall);
     }
@@ -113,13 +127,12 @@ const RealtimeVideoChat = ({changeStatus, ...props}) => {
   const closeConnection = () => {
     peerConnection.current.close();
     peerConnection.current = null;
-    // streamMedia.current.getTracks().forEach(function (track) {
-    //   track.stop();
-    // });
+    streamMedia.current.getTracks().forEach(function (track) {
+      track.stop();
+    });
     setIsAlreadyCalling(false);
-    dispatch(setUsersWhoCallMeAC(undefined, userWhoICall));
-    dispatch(setUsersWhoAnsweredMeAC(userWhoICall, undefined));
-    dispatch(setUserWhoICallAC(null));
+    dispatch(resetCallStatus());
+    setIsCamera(true);
     setLocalStream(null);
     setRemoteStream(null);
   };
@@ -178,6 +191,36 @@ const RealtimeVideoChat = ({changeStatus, ...props}) => {
     dispatch(answerToUserCallThunk(socketId, answer));
   };
 
+  const switchCamera = async () => {
+    try {
+      let cameraCount = 0;
+
+      const devices = await mediaDevices.enumerateDevices();
+
+      devices.map(device => {
+        if (device.kind != 'videoinput') {
+          return;
+        }
+
+        cameraCount = cameraCount + 1;
+      });
+      if (cameraCount < 2) {
+        return;
+      }
+      const videoTrack = await localStream.getVideoTracks()[0];
+      videoTrack._switchCamera();
+    } catch (err) {}
+  };
+
+  const handleChangeMicrophone = async () => {
+    try {
+      localStream.getAudioTracks().forEach(track => {
+        track.enabled = !isMicrophone;
+      });
+      setIsMicrophone(!isMicrophone);
+    } catch (err) {}
+  };
+
   if (!isRealTimeVideoChatEnabled) {
     return <View />;
   }
@@ -187,60 +230,121 @@ const RealtimeVideoChat = ({changeStatus, ...props}) => {
       // handleModalStatus={handleIsRealtimeVideoChatShow}
       isVisible={isRealtimeVideoChatShow || true}
       style={{width, height, backgroundColor: 'white', margin: 0, padding: 0}}>
-      <Text>Video chat:</Text>
-      <View>
+      <View style={{flex: 1, justifyContent: 'center'}}>
         <View>
-          <View>
-            <View>
-              <Text>Primul </Text>
-              <>
-                {localStream ? (
-                  // <Video autoPlay source={{uri: remoteStreamRef}} />
-                  <View style={{height: 300, width: 300}}>
-                    <RTCView
-                      streamURL={localStream.toURL()}
-                      style={{flex: 1}}
-                    />
-                  </View>
-                ) : (
-                  <Text>Loadinf</Text>
-                )}
-              </>
+          <View style={{height: height * 0.4}}>
+            <View
+              style={{
+                height: '100%',
+                width: width,
+                alignSelf: 'center',
+                borderWidth: 1,
+              }}>
+              <TouchableOpacity
+                style={styles.cameraButtonState}
+                onPress={() => setIsCamera(!isCamera)}>
+                <MuIcons
+                  name={isCamera ? 'camera' : 'camera-off'}
+                  size={40}
+                  color="white"
+                />
+              </TouchableOpacity>
+              {isCamera && (
+                <TouchableOpacity
+                  style={styles.cameraButton}
+                  onPress={() => switchCamera()}>
+                  <Ionicons name="camera-reverse" size={40} color="white" />
+                </TouchableOpacity>
+              )}
+              {isCamera ? (
+                <>
+                  {localStream ? (
+                    <View
+                      style={{
+                        height: '100%',
+                        width: width,
+                        alignSelf: 'center',
+                      }}>
+                      <RTCView
+                        objectFit="cover"
+                        streamURL={localStream.toURL()}
+                        style={{flex: 1}}
+                      />
+                    </View>
+                  ) : (
+                    <Loader />
+                  )}
+                </>
+              ) : (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%',
+                  }}>
+                  <Text style={{fontSize: 40}}>{profile?.surname}</Text>
+                  <Text style={{fontSize: 40}}>{profile?.name}</Text>
+                </View>
+              )}
             </View>
           </View>
-          <View>
-            <View>
-              <Text>Al doilea</Text>
-              <>
-                {remoteStream ? (
-                  // <Video autoPlay source={{uri: remoteStreamRef}} />
-                  <View style={{height: 300, width: 300}}>
-                    <RTCView
-                      streamURL={remoteStream.toURL()}
-                      style={{flex: 1}}
-                    />
-                  </View>
-                ) : (
-                  <Text>Loadinf</Text>
-                )}
-              </>
-            </View>
+          <View style={{height: height * 0.4}}>
+            <>
+              {remoteStream ? (
+                <View
+                  style={{
+                    height: '100%',
+                    width: width * 8,
+                    alignSelf: 'center',
+                  }}>
+                  <RTCView streamURL={remoteStream.toURL()} style={{flex: 1}} />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%',
+                  }}>
+                  <Text style={{fontSize: 40}}>SUPPORT</Text>
+                </View>
+              )}
+            </>
           </View>
-          <>
-            {!userWhoICall && !usersWhoCallMe[userWhoICall] && (
-              <Mui
-                name="call"
-                size={50}
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginTop: 20,
+            }}>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={closeConnection}>
+              <Mui name="call-end" size={50} color={COLORS.RED} />
+            </TouchableOpacity>
+            {!userWhoICall && !usersWhoCallMe[userWhoICall] ? (
+              <TouchableOpacity
+                style={styles.actionButton}
                 onPress={() =>
                   onAnswerClick(
                     Object.keys(usersWhoCallMe)[0],
                     Object.values(usersWhoCallMe)[0],
                   )
-                }
-              />
+                }>
+                <Mui name="call" size={50} color={COLORS.GREEN} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={handleChangeMicrophone}>
+                <FontAwesome
+                  name={isMicrophone ? 'microphone' : 'microphone-slash'}
+                  size={40}
+                  color={COLORS.DARK}
+                />
+              </TouchableOpacity>
             )}
-            <Mui name="call-end" size={50} onPress={closeConnection} />
-          </>
+          </View>
         </View>
       </View>
     </Modal>
@@ -248,3 +352,38 @@ const RealtimeVideoChat = ({changeStatus, ...props}) => {
 };
 
 export default RealtimeVideoChat;
+
+const styles = StyleSheet.create({
+  actionButton: {
+    backgroundColor: '#e8f4f8',
+    borderRadius: 100,
+    width: 80,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cameraButton: {
+    position: 'absolute',
+    zIndex: 10,
+    right: 10,
+    top: 10,
+    backgroundColor: COLORS.DARK,
+    borderRadius: 10,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cameraButtonState: {
+    position: 'absolute',
+    zIndex: 10,
+    left: 10,
+    top: 10,
+    backgroundColor: COLORS.DARK,
+    borderRadius: 10,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

@@ -15,14 +15,12 @@ import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
 import {COLORS, SCREEN_SIZE, APP_STYLES} from 'theme/theme';
 
 export default function Friends(props) {
-  const {
-    setter,
-    contacts,
-    mapContacts,
-    getAllUsersLocation,
-    profile,
-    allLocationUsers,
-  } = props;
+  const {setter, mapContacts, getAllUsersLocation, profile, allLocationUsers} =
+    props;
+  const [selected, setSelected] = React.useState(0);
+
+  const [contactsApp, setContactsApp] = React.useState([]);
+  const [contactsNoApp, setContactsNoApp] = React.useState([]);
 
   React.useEffect(() => {
     setter({isLoading: true});
@@ -60,6 +58,10 @@ export default function Friends(props) {
         setter({isLoading: false});
       });
   }, []);
+
+  React.useEffect(() => {
+    filterAccounts();
+  }, [mapContacts]);
 
   function checkUserHaveApp(phone) {
     return JSON.stringify(allLocationUsers).includes(phone);
@@ -153,11 +155,79 @@ export default function Friends(props) {
     );
   };
 
+  const getSelected = value => {
+    return selected === value;
+  };
+
+  const filterAccounts = () => {
+    const contactsWithApp = [];
+    const contactsWithoutApp = [];
+
+    mapContacts.forEach(({data, title}) => {
+      let currentLetterContacts = [];
+      let otherLetterContacts = [];
+
+      data.forEach(contact => {
+        const number = contact.phoneNumbers[0].number
+          .replace(/\s/g, '')
+          .replace(/[()]/g, '');
+        if (checkUserHaveApp(number)) {
+          currentLetterContacts.push(contact);
+        } else {
+          otherLetterContacts.push(contact);
+        }
+      });
+      if (currentLetterContacts.length > 0) {
+        contactsWithApp.push({title, data: currentLetterContacts});
+      }
+      if (otherLetterContacts.length > 0) {
+        contactsWithoutApp.push({title, data: otherLetterContacts});
+      }
+    });
+    setContactsNoApp(contactsWithoutApp);
+    setContactsApp(contactsWithApp);
+  };
+
+  const getSectionListContacts = () => {
+    switch (selected) {
+      case 1:
+        return contactsApp;
+      case 2:
+        return contactsNoApp;
+      default:
+        return mapContacts;
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <TouchableOpacity
+          style={styles.filterButton(getSelected(0))}
+          onPress={() => setSelected(0)}>
+          <Text style={styles.filterButtonText(true)}>All Contacts</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.filterButton(getSelected(1))}
+          onPress={() => {
+            setSelected(1);
+            filterAccounts();
+          }}>
+          <Image
+            source={require('assets/logo.png')}
+            style={styles.friendsLogo}
+          />
+          <Text style={styles.filterButtonText(true)}>Friends</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.filterButton(getSelected(2))}
+          onPress={() => setSelected(2)}>
+          <Text style={styles.filterButtonText(true)}>Contacts</Text>
+        </TouchableOpacity>
+      </View>
       <SectionList
         stickySectionHeadersEnabled={false}
-        sections={mapContacts}
+        sections={getSectionListContacts()}
         keyExtractor={(item, index) => item + index}
         renderItem={({item}) => <ContactItem title={item} />}
         renderSectionHeader={({section: {title}}) => (
@@ -226,6 +296,11 @@ const styles = StyleSheet.create({
     height: 25,
     backgroundColor: 'white',
   },
+  friendsLogo: {
+    width: 25,
+    height: 25,
+    marginRight: 5,
+  },
   inviteButton: {
     backgroundColor: COLORS.DARK_BLUE,
     justifyContent: 'center',
@@ -248,4 +323,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  filterButton: selected => ({
+    backgroundColor: selected ? COLORS.LIGHT_BLUE : COLORS.MEDIUM_GRAY,
+    paddingHorizontal: 20,
+    marginRight: 15,
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  }),
+  filterButtonText: selected => ({
+    color: selected ? 'white' : COLORS.DARK,
+    fontWeight: selected ? '500' : '400',
+    lineHeight: 40,
+  }),
 });

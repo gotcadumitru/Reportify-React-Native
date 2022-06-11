@@ -4,6 +4,8 @@ export const userActions = {
   REMOVE_USER_CONNECTED_TO_WS_FROM_MY_LOCATION:
     'REMOVE_USER_CONNECTED_TO_WS_FROM_MY_LOCATION',
   SET_USER_WHO_CALL_ME: 'SET_USER_WHO_CALL_ME',
+  RESET_CALL_STATUS: 'RESET_CALL_STATUS',
+
   SET_USER_WHO_ANSWERED_ME: 'SET_USER_WHO_ANSWERED_ME',
   SET_USER_WHO_I_CALL: 'SET_USER_WHO_I_CALL',
 };
@@ -19,6 +21,10 @@ export const removeUserConnectedToWsFromMyLocationAC = user => ({
 export const setUsersWhoCallMeAC = (offer, socketId) => ({
   type: userActions.SET_USER_WHO_CALL_ME,
   payload: {offer, socketId},
+});
+
+export const resetCallStatus = () => ({
+  type: userActions.RESET_CALL_STATUS,
 });
 
 export const setUsersWhoAnsweredMeAC = (socketId, answer) => ({

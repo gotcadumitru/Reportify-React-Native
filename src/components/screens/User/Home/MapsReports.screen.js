@@ -36,6 +36,7 @@ const MapsReports = props => {
     isLoading,
     navigation,
     location,
+    setter,
   } = props;
   const [search, setSearch] = React.useState('');
   const [localPosts, setLocalPosts] = React.useState(posts);
@@ -124,7 +125,7 @@ const MapsReports = props => {
   const getOneTimeLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
-        dispatch(setter({location: position.coords}));
+        setter({location: position.coords});
       },
       error => {},
       {

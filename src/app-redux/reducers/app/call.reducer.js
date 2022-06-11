@@ -24,7 +24,17 @@ const callReducer = (state = initialState, action) => {
         connectedToWsUsersFromMyLocation,
       };
     }
+    case userActions.RESET_CALL_STATUS: {
+      delete state.usersWhoCallMe[state.userWhoICall];
+      delete state.usersWhoAnsweredMe[state.userWhoICall];
 
+      return {
+        ...state,
+        usersWhoCallMe: {...state.usersWhoCallMe},
+        usersWhoAnsweredMe: {...state.usersWhoAnsweredMe},
+        userWhoICall: null,
+      };
+    }
     case userActions.REMOVE_USER_CONNECTED_TO_WS_FROM_MY_LOCATION: {
       const user = action.payload;
       return {
