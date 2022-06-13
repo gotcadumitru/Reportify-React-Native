@@ -76,8 +76,8 @@ const MapsReports = props => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      getAllPosts();
       getOneTimeLocation();
+      getAllPosts();
     });
 
     return unsubscribe;
@@ -90,7 +90,7 @@ const MapsReports = props => {
         pos.description.toLowerCase().includes(search.toLowerCase()),
     );
     setLocalPosts(newPosts);
-  }, [search]);
+  }, [search, posts]);
 
   const interpolations = localPosts.map((marker, index) => {
     const inputRange = [
@@ -236,44 +236,44 @@ const MapsReports = props => {
           const isLiked = post?.likes?.includes(profile?.id);
           const isDisliked = post?.disLikes?.includes(profile?.id);
           const INDEX = posts.findIndex(ps => ps._id === post._id);
+          if (image)
+            return (
+              <View style={styles.card} key={index}>
+                <Image
+                  source={{uri: image.fileUrl}}
+                  style={styles.cardImage}
+                  resizeMode="cover"
+                />
 
-          return (
-            <View style={styles.card} key={index}>
-              <Image
-                source={{uri: image.fileUrl}}
-                style={styles.cardImage}
-                resizeMode="cover"
-              />
-
-              <View style={styles.textContent}>
-                <View style={{flex: 1}}>
-                  <Text numberOfLines={1} style={styles.cardtitle}>
-                    {post.title}
-                  </Text>
-                </View>
-                <View style={styles.likeContainer}>
-                  <TouchableOpacity
-                    onPress={() => voteItem(INDEX, 'likes')}
-                    style={{width: 60}}>
-                    <AntDesign
-                      name={`like${Number(!isLiked) + 1}`}
-                      size={26}
-                      color={COLORS.DARK}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => voteItem(INDEX, 'disLikes')}
-                    style={{width: 60}}>
-                    <AntDesign
-                      name={`dislike${Number(!isDisliked) + 1}`}
-                      size={26}
-                      color={COLORS.DARK}
-                    />
-                  </TouchableOpacity>
+                <View style={styles.textContent}>
+                  <View style={{flex: 1}}>
+                    <Text numberOfLines={1} style={styles.cardtitle}>
+                      {post.title}
+                    </Text>
+                  </View>
+                  <View style={styles.likeContainer}>
+                    <TouchableOpacity
+                      onPress={() => voteItem(INDEX, 'likes')}
+                      style={{width: 60}}>
+                      <AntDesign
+                        name={`like${Number(!isLiked) + 1}`}
+                        size={26}
+                        color={COLORS.DARK}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => voteItem(INDEX, 'disLikes')}
+                      style={{width: 60}}>
+                      <AntDesign
+                        name={`dislike${Number(!isDisliked) + 1}`}
+                        size={26}
+                        color={COLORS.DARK}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
-            </View>
-          );
+            );
         })}
       </Animated.ScrollView>
     </View>
