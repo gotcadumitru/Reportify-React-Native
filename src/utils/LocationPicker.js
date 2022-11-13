@@ -20,7 +20,7 @@ export default function LocationPicker(props) {
   const {
     onClosePicker,
     isVisible,
-    location,
+    location = {latitude: 47.6408307, longitude: 26.2417255},
     getLocation,
     onOpenPicker,
     isChangeable = true,
@@ -35,11 +35,12 @@ export default function LocationPicker(props) {
     Geolocation.getCurrentPosition(({coords}) => {
       setUserLocation(coords);
       if (!location) {
+        console.log('herere');
         setLoc(coords);
       }
     });
   }, []);
-  if (!userLocation)
+  if (!loc)
     return (
       <LottieView
         style={{height: 250}}
@@ -54,7 +55,7 @@ export default function LocationPicker(props) {
       <MapView
         style={[styles.miniMap, miniMapStyle]}
         initialRegion={{
-          ...userLocation,
+          ...loc,
           latitudeDelta: 1,
           longitudeDelta: 1,
         }}
@@ -62,7 +63,7 @@ export default function LocationPicker(props) {
         rotateEnabled={false}
         scrollEnabled={false}
         zoomEnabled={false}
-        showsUserLocation
+        // showsUserLocation
         onPress={onOpenPicker}>
         <Marker coordinate={loc} />
       </MapView>
@@ -72,7 +73,7 @@ export default function LocationPicker(props) {
           <MapView
             style={styles.map}
             initialRegion={{
-              ...userLocation,
+              ...loc,
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             }}

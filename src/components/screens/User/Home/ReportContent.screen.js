@@ -31,7 +31,7 @@ import Mui from 'react-native-vector-icons/MaterialCommunityIcons';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {getDeepNumber} from 'helpers/count';
-
+import _ from 'lodash';
 dayjs.extend(relativeTime);
 
 const SLIDER_WIDTH = SCREEN_SIZE.WIDTH;
@@ -116,6 +116,8 @@ export default function ReportContentScreen(props) {
   };
 
   const renderComments = (comment, left = 0) => {
+    const uniqueId = _.uniqueId('comment');
+
     return (
       <>
         <View
@@ -123,7 +125,8 @@ export default function ReportContentScreen(props) {
             flexDirection: 'row',
             marginLeft: left,
             marginVertical: 10,
-          }}>
+          }}
+          key={uniqueId}>
           <Image
             source={{uri: comment.author.profileImage.fileUrl}}
             style={styles.authorCommentImage}
@@ -164,7 +167,6 @@ export default function ReportContentScreen(props) {
       </>
     );
   };
-
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -198,6 +200,7 @@ export default function ReportContentScreen(props) {
                 height: 100,
                 width,
               }}
+              location={currentPost.location}
             />
           </View>
           <View style={styles.actionContainer}>
