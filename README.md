@@ -1,16 +1,12 @@
 # Reportify
 
-Aplicatie in care utilizatorii pot raporta atât diferitele
-probleme ce necesită o rezolvare cât mai rapidă, cât și anumite
-dorințe/îmbunătățiri pe care, odată puse în practică, le-ar considera utile
+An application where users can report both various issues that require quick resolution and certain requests/improvements that they would find useful once implemented.
 
-O problemă sau o dorință este votată(“upvoted”) de alți utilizatori
-doar în cazul în care o consideră de un mare interes general, cererile urmând
-să fie ordonate în funcție de prioritatea calculată pe baza voturilor
+A problem or request can be voted ("upvoted") by other users only if they consider it of significant general interest. Requests are then ordered based on the calculated priority derived from the votes.
 
 ![Logo](https://i.imgur.com/BE4c3FY.png)
 
-## Tehnologii folosite
+## Technologies Used
 
 - [React documentation ](https://reactjs.org/docs/getting-started.html)
 - [React native documentation](https://reactnative.dev/docs/accessibilityinfo)
@@ -20,14 +16,14 @@ să fie ordonate în funcție de prioritatea calculată pe baza voturilor
 
 [Reportify front-end](https://team-frontend-c.herokuapp.com/)
 
-## Autori
+## Authors
 
 - [@gotcadumitru](https://github.com/gotcadumitru)
 - [@dragoshuniq](https://github.com/dragoshuniq)
 
 ## Demo
 
-Link-urile catre prezentarile proiectului
+Links to the project presentations:
 
 [Video youtube 3 min](https://www.youtube.com/watch?v=cm4zX9sRlzM)
 
@@ -37,37 +33,37 @@ Link-urile catre prezentarile proiectului
 
 [Video google drive 10 min](https://drive.google.com/file/d/1nhL3DCjZ2mNbZqBSLYbo9RP2GuteXpY-/view?usp=sharing)
 
-## Functionalitati extra
+## Extra Features
 
-- Live chat pentru support
-- Kanbanboard in timp real pentru modificare statusului postarii (Nou/In Progres...)
-- Utilizarea google maps pentru selectarea locatiei
-- Harta SVG dinamica in functie de numarul de probleme raportate in judete
-- Posibilitatea de a incarca si vizualiza PDF-uri
-- Posibilitatea de a impartasi o postare pe orice retea de socializare
-- Logarea cu google/facebook
+- Live chat for support
+- Real-time Kanban board for updating post statuses (New/In Progress...)
+- Integration with Google Maps for location selection
+- Dynamic SVG map based on the number of reported issues by region
+- Ability to upload and view PDFs
+- Option to share posts on any social network
+- Login with Google/Facebook
 
-## Functionalitati de baza
+## Core Features
 
 #### Web:
 
-- Logica de autentificare/înregistrare.
-- Secțiune pentru administratorul general al platformei, unde se vor atribui administratorii pentru fiecare comună/localitate/județ
-- Secțiune în care se pot vizualiza toate cererile de înregistrare a utilizatorilor pentru o anumită comună, o localitate sau un anumit județ. La fiecare cerere trebuie verificată dovada domicilierii
-- Secțiune pentru vizualizarea listei tuturor postărilor utilizatorilor.
-- Posibilitatea de a seta statusul unei postări (exemplu: trimis, vizionat, în lucru, efectuat).
-- Secțiune separată în care se pot vedea toate cererile în lucru sau terminate. (kanbanboard)
+- Authentication/registration logic
+- A section for the platform's main administrator to assign administrators for each community/locality/county
+- A section to view all user registration requests for a specific community, locality, or county. Each request requires proof of residence verification
+- A section for viewing a list of all user posts
+- Ability to set the status of a post (e.g., sent, viewed, in progress, completed)
+- A separate section to view all in-progress or completed requests (Kanban board)
 
 #### Mobile:
 
-- Secțiune de autentificare și înregistrare (în care se va cere o metodă de verificare a domicilierii -la alegerea voastră)
-- Secțiune de creare postare în care utilizatorul va adăuga un titlu, o descriere, poze sau videoclipuri.
-- Secțiunea postări favorite.
-- Logică de sortare în funcție de data postării sau numărul de voturi. Se va integra și o metodă de a afișa postări noi in lista celor populare pentru o anumită perioadă de timp(pentru a îi oferi șansa de a fi vizualizată și atunci când utilizatorul are selectată sortarea în funcție de numărul de voturi)
+- Login and registration section (including a method for residence verification of your choice)
+- A post creation section where users can add a title, description, photos, or videos
+- Favorite posts section
+- Sorting logic based on post date or number of votes. There will also be a method to display new posts in the list of popular posts for a certain period, giving them a chance to be seen even when the user has selected sorting by number of votes
 
-#### Comun:
+#### Common:
 
-- Pagina unei postări ce va conține un carousel cu pozele/videoclipurile adăugate de utilizator, posibilitatea de a vota pro/contra ideea prezentată, dar și de a comenta/răspunde la comentarii (folosind un sistem de gestionare al comentariilor similar celui folosit de Reddit).
-- Ambele aplicații trebuie să fie responsive. În cazul în care se va implementa o aplicație mobile, aceasta trebuie să fie responsive atât în mod portret cât și landscape.
-- Folosirea unei teme de culori în construirea celor 2 aplicații.
-- Identitatea aplicației: nume, logo, intro etc.
+- A post page containing a carousel with photos/videos uploaded by the user, the ability to upvote/downvote the idea, and the option to comment/reply to comments (using a comment management system similar to Reddit)
+- Both applications must be responsive. If a mobile application is implemented, it should be responsive in both portrait and landscape modes
+- Use of a consistent color theme in the development of both applications
+- Application identity: name, logo, intro, etc.
